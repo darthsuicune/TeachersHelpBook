@@ -32,12 +32,31 @@ public class DailyEvents {
 		return eventList.size();
 	}
 
+	public boolean isFreeAt(Time time) {
+		for (Event event : eventList) {
+			if (event.isAt(time)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public Event eventAt(Time time) {
-		for(Event event : eventList) {
-			if(event.isAt(time)) {
+		for (Event event : eventList) {
+			if (event.isAt(time)) {
 				return event;
 			}
 		}
-		return new Event(){};
+		return new EventsFactory.EmptyEvent();
+	}
+
+	public List<Event> eventsFrom(Time startingTime, Time endingTime) {
+		List<Event> eventList = new ArrayList<>();
+		for(Event event : eventList) {
+			if(event.isBetween(startingTime, endingTime)) {
+				eventList.add(event);
+			}
+		}
+		return eventList;
 	}
 }

@@ -1,5 +1,6 @@
 package com.suicune.teachershelpbook.model;
 
+import android.text.TextUtils;
 import android.text.format.Time;
 
 /**
@@ -24,6 +25,10 @@ public abstract class Event {
 	public Event(Time start, Time end) {
 		this.start = start;
 		this.end = end;
+	}
+
+	public boolean isEmpty() {
+		return TextUtils.isEmpty(title);
 	}
 
 	public boolean isAt(Time time) {

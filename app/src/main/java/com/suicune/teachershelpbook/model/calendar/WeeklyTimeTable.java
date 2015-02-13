@@ -4,42 +4,68 @@ import android.text.format.Time;
 
 import com.suicune.teachershelpbook.model.Event;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WeeklyTimeTable {
-	Map<DayOfWeek, DailyEvents> dailyEvents;
+	Map<DayOfWeek, DailyEvents> events;
 	Week week;
 	EventsFactory factory;
 
 	public WeeklyTimeTable(Week week, EventsFactory factory) {
-		dailyEvents = new HashMap<>();
+		events = new HashMap<>();
 		this.week = week;
 		this.factory = factory;
 	}
 
-	public DailyEvents getEventsFor(DayOfWeek day) {
-		if(day.isWorkingDay()) {
-			if(dailyEvents.containsKey(day)) {
-				return dailyEvents.get(day);
-			} else {
-				return factory.createDaily(week, day);
-			}
+	public DailyEvents eventsFor(DayOfWeek day) {
+		if (events.containsKey(day)) {
+			return events.get(day);
 		} else {
-			throw new NotAWorkingDayException();
+			DailyEvents dailyEvents = factory.createDaily(week, day);
+			events.put(day, dailyEvents);
+			return dailyEvents;
 		}
 	}
 
+	public Event eventAt(DayOfWeek day, Time time) {
+		if (hasEventsFor(day)) {
+			return events.get(day).eventAt(time);
+		} else {
+			return factory.createEmpty(time);
+		}
+	}
+
+	public List<Event> eventsBetween(Time startingTime, Time endingTime) {
+		if (startingTime.before(endingTime)) {
+			return eventsBetweenValidTimes(startingTime, endingTime);
+		}
+		throw new InvalidTimeRangeException();
+	}
+
+	private List<Event> eventsBetweenValidTimes(Time startingTime, Time endingTime) {
+		List<Event> eventList = new ArrayList<>();
+		for(DayOfWeek day : events.keySet()) {
+			eventList.addAll(events.get(day).eventsFrom(startingTime, endingTime));
+		}
+		return eventList;
+	}
+
 	public boolean hasEventsFor(DayOfWeek day) {
-		if(dailyEvents.containsKey(day)) {
-			DailyEvents events = dailyEvents.get(day);
-			return events.hasEvents();
+		if (day.isWorkingDay()) {
+			if (events.containsKey(day)) {
+				return events.get(day).hasEvents();
+			}
+		} else {
+			throw new NotAWorkingDayException();
 		}
 		return false;
 	}
 
 	public void addEvent(DayOfWeek day, Event event) {
-		if(day.isWorkingDay()) {
+		if (day.isWorkingDay()) {
 			addEventToWorkingDay(day, event);
 		} else {
 			throw new NotAWorkingDayException();
@@ -47,12 +73,8 @@ public class WeeklyTimeTable {
 	}
 
 	private void addEventToWorkingDay(DayOfWeek day, Event event) {
-		DailyEvents events = getEventsFor(day);
+		DailyEvents events = eventsFor(day);
 		events.addEvent(event);
-		dailyEvents.put(day, events);
-	}
-
-	public Event getEventsAt(DayOfWeek day, Time time) {
-		return dailyEvents.get(day).eventAt(time);
+		this.events.put(day, events);
 	}
 }

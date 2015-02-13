@@ -1,12 +1,8 @@
-package com.suicune.teachershelpbook.model;
+package com.suicune.teachershelpbook.model.calendar;
 
 import android.text.format.Time;
 
-import com.suicune.teachershelpbook.model.calendar.DayOfWeek;
-import com.suicune.teachershelpbook.model.calendar.EventsFactory;
-import com.suicune.teachershelpbook.model.calendar.NotAWorkingDayException;
-import com.suicune.teachershelpbook.model.calendar.Week;
-import com.suicune.teachershelpbook.model.calendar.WeeklyTimeTable;
+import com.suicune.teachershelpbook.model.Event;
 
 import junit.framework.TestCase;
 
@@ -43,7 +39,7 @@ public class WeeklyTimeTableTest extends TestCase {
 	}
 
 	private void whenWeAskForAnEventOn(DayOfWeek day) {
-		weeklyTimeTable.getEventsFor(day);
+		weeklyTimeTable.eventsFor(day);
 	}
 
 	private void theDayHasEvents(DayOfWeek day) {
@@ -76,20 +72,20 @@ public class WeeklyTimeTableTest extends TestCase {
 		assertTrue(thrown);
 	}
 
-	public void testHasEventsAtTimeReturnsAnEvent() throws Exception {
+	public void testEventsAtTimeReturnsAnEvent() throws Exception {
 		Event event = whenWeAskForAnEventOnDayAt(WORKING_DAY, new Time());
 		weGetAValidEvent(event);
 	}
 
 	private Event whenWeAskForAnEventOnDayAt(DayOfWeek day, Time time) {
-		return weeklyTimeTable.getEventsAt(day, time);
+		return weeklyTimeTable.eventAt(day, time);
 	}
 
 	private void weGetAValidEvent(Event event) {
 		assertNotNull(event);
 	}
 
-	public void testHasEventsOnWeekendThrowsException() throws Exception {
+	public void testEventsOnWeekendThrowsException() throws Exception {
 		boolean thrown = false;
 		try {
 			whenWeAskForAnEventOnDayAt(WEEKEND, new Time());
