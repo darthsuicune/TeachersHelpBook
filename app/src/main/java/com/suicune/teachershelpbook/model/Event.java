@@ -16,10 +16,10 @@ public abstract class Event {
 
 	}
 
-	public Event(Time time) {
-		this.start = time;
-		this.end = new Time(time);
-		end.hour += 1;
+	public Event(Time start) {
+		this.start = start;
+		this.end = new Time(start);
+		this.end.hour += 1;
 	}
 
 	public Event(Time start, Time end) {
@@ -27,15 +27,17 @@ public abstract class Event {
 		this.end = end;
 	}
 
-	public boolean isEmpty() {
+	public boolean isValid() {
 		return TextUtils.isEmpty(title);
 	}
 
 	public boolean isAt(Time time) {
-		return false;
+		return Time.compare(time, start) == 0 ||
+                (time.after(start) && time.before(end)) ||
+                Time.compare(time, end) == 0;
 	}
 
 	public boolean isBetween(Time start, Time end) {
-		return false;
+		return isAt(start) || isAt(end) || this.start.before(start) || this.end.before(end);
 	}
 }

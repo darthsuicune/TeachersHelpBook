@@ -21,7 +21,17 @@ public class EventsFactory {
 		return new Event() {};
 	}
 
-	public static class EmptyEvent extends Event {
+    public Event newEventAt(Time start) {
+        return new Event(start) {
+        };
+    }
+
+    public Event newEventBetween(Time start, Time end) {
+        return new Event(start, end) {
+        };
+    }
+
+    public static class EmptyEvent extends Event {
 
 	}
 }
