@@ -2,17 +2,17 @@ package com.suicune.teachershelpbook.model;
 
 import android.text.format.Time;
 
-import com.suicune.teachershelpbook.model.calendar.EventsFactory;
+import com.suicune.teachershelpbook.model.calendar.EventsProvider;
 
 import junit.framework.TestCase;
 
 public class EventTest extends TestCase {
     Event event;
-    EventsFactory factory;
+    EventsProvider factory;
 
     public void setUp() throws Exception {
         super.setUp();
-        factory = new EventsFactory();
+        factory = new EventsProvider();
     }
 
     public void testIsAtPresentTime() throws Exception {
@@ -22,7 +22,7 @@ public class EventTest extends TestCase {
     }
 
     private void anEventAt(Time time) {
-        event = factory.newEventAt(time);
+        event = factory.createEmpty(time);
     }
 
     private void isAt(Time time) {

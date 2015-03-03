@@ -10,12 +10,14 @@ import java.util.Date;
 
 public class WeeklyTimeTableTest extends TestCase {
 	public static final DayOfWeek WORKING_DAY = DayOfWeek.MONDAY;
-	public static final DayOfWeek WEEKEND = DayOfWeek.SATURDAY;
+	public static final DayOfWeek WEEKEND_DAY = DayOfWeek.SATURDAY;
 	WeeklyTimeTable weeklyTimeTable;
+	EventsProvider provider;
 
 	@Override protected void setUp() throws Exception {
 		super.setUp();
-		weeklyTimeTable = new WeeklyTimeTable(new Week(new Date()), new EventsFactory());
+		provider = new EventsProvider();
+		weeklyTimeTable = new WeeklyTimeTable(new Week(new Date()), provider);
 	}
 
 	public void testAddEventsOnWorkingDayWorks() throws Exception {
@@ -24,7 +26,7 @@ public class WeeklyTimeTableTest extends TestCase {
 	}
 
 	private void withAProperEventOn(DayOfWeek day) {
-		Event event = new Event(){};
+		Event event = provider.createEmpty();
 		weeklyTimeTable.addEvent(day, event);
 	}
 
@@ -49,7 +51,7 @@ public class WeeklyTimeTableTest extends TestCase {
 	public void testAddEventsOnNonWorkingDaysThrowsException() throws Exception {
 		boolean thrown = false;
 		try {
-			withAProperEventOn(WEEKEND);
+			withAProperEventOn(WEEKEND_DAY);
 		} catch(NotAWorkingDayException e) {
 			thrown = true;
 		} finally {
@@ -60,7 +62,7 @@ public class WeeklyTimeTableTest extends TestCase {
 	public void testDailyEventsForWeekendThrowsException() throws Exception {
 		boolean thrown = false;
 		try {
-			whenWeAskForAnEventOn(WEEKEND);
+			whenWeAskForAnEventOn(WEEKEND_DAY);
 		} catch(NotAWorkingDayException e) {
 			thrown = true;
 		} finally {
@@ -88,7 +90,7 @@ public class WeeklyTimeTableTest extends TestCase {
 	public void testEventsOnWeekendThrowsException() throws Exception {
 		boolean thrown = false;
 		try {
-			whenWeAskForAnEventOnDayAt(WEEKEND, new Time());
+			whenWeAskForAnEventOnDayAt(WEEKEND_DAY, new Time());
 		} catch(NotAWorkingDayException e) {
 			thrown = true;
 		} finally {

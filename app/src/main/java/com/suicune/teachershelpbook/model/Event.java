@@ -12,16 +12,6 @@ public abstract class Event {
 	String title;
 	String description;
 
-	public Event() {
-
-	}
-
-	public Event(Time start) {
-		this.start = start;
-		this.end = new Time(start);
-		this.end.hour += 1;
-	}
-
 	public Event(Time start, Time end) {
 		this.start = start;
 		this.end = end;
@@ -39,5 +29,13 @@ public abstract class Event {
 
 	public boolean isBetween(Time start, Time end) {
 		return isAt(start) || isAt(end) || this.start.before(start) || this.end.before(end);
+	}
+
+	public void title(String title) {
+		this.title = title;
+	}
+
+	public void description(String description) {
+		this.description = description;
 	}
 }

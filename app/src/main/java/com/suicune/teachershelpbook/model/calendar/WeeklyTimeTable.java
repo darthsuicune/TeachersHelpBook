@@ -12,15 +12,18 @@ import java.util.Map;
 public class WeeklyTimeTable {
 	Map<DayOfWeek, DailyEvents> events;
 	Week week;
-	EventsFactory factory;
+	EventsProvider factory;
 
-	public WeeklyTimeTable(Week week, EventsFactory factory) {
+	public WeeklyTimeTable(Week week, EventsProvider factory) {
 		events = new HashMap<>();
 		this.week = week;
 		this.factory = factory;
 	}
 
 	public DailyEvents eventsFor(DayOfWeek day) {
+		if(!day.isWorkingDay()) {
+			throw new NotAWorkingDayException();
+		}
 		if (events.containsKey(day)) {
 			return events.get(day);
 		} else {
@@ -42,7 +45,7 @@ public class WeeklyTimeTable {
 		if (startingTime.before(endingTime)) {
 			return eventsBetweenValidTimes(startingTime, endingTime);
 		}
-		throw new InvalidTimeRangeException();
+		throw new InvalidTimeRangeException(startingTime, endingTime);
 	}
 
 	private List<Event> eventsBetweenValidTimes(Time startingTime, Time endingTime) {

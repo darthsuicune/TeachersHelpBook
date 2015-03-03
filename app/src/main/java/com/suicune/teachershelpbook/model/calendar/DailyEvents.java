@@ -12,12 +12,14 @@ import java.util.List;
  * Created by lapuente on 13.02.15.
  */
 public class DailyEvents {
+	EventsProvider provider;
 	List<Event> eventList;
 	Date date;
 
-	public DailyEvents(Date date) {
+	public DailyEvents(Date date, EventsProvider provider) {
 		eventList = new ArrayList<>();
 		this.date = date;
+		this.provider = provider;
 	}
 
 	public boolean hasEvents() {
@@ -47,7 +49,7 @@ public class DailyEvents {
 				return event;
 			}
 		}
-		return new EventsFactory.EmptyEvent();
+		return provider.createEmpty();
 	}
 
 	public List<Event> eventsFrom(Time startingTime, Time endingTime) {

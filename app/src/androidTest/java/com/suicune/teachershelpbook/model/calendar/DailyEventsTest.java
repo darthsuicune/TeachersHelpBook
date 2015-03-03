@@ -10,10 +10,13 @@ import java.util.Date;
 
 public class DailyEventsTest extends TestCase {
 	DailyEvents events;
+	EventsProvider provider;
 
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		events = new DailyEvents(new Date());
+		provider = new EventsProvider();
+		events = new DailyEvents(new Date(), provider);
 	}
 
 	public void testAddEventIncreasesTheEventCount() throws Exception {
@@ -22,14 +25,14 @@ public class DailyEventsTest extends TestCase {
 	}
 
 	private void whenWeAddAnEvent() {
-		events.addEvent(new Event() {});
+		events.addEvent(provider.createEmpty());
 	}
 
 	private void theEventListSizeIncreasesBy1() {
 		assertTrue(events.count() == 1);
 	}
 
-	private void testEventAtReturnsAValidObject() {
+	public void testEventAtReturnsAValidObject() throws Exception {
 		Event event = whenWeAskForAnEvent();
 		weGetAValidObject(event);
 	}
