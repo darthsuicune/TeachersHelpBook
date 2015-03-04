@@ -2,7 +2,8 @@ package com.suicune.teachershelpbook.model;
 
 import android.text.format.Time;
 
-import com.suicune.teachershelpbook.model.calendar.EventsProvider;
+import com.suicune.teachershelpbook.model.events.EventsProvider;
+import com.suicune.teachershelpbook.model.events.Event;
 
 import junit.framework.TestCase;
 

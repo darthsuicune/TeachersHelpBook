@@ -1,7 +1,9 @@
-package com.suicune.teachershelpbook.model;
+package com.suicune.teachershelpbook.model.events;
 
 import android.text.TextUtils;
 import android.text.format.Time;
+
+import java.util.Date;
 
 /**
  * Created by lapuente on 13.02.15.
@@ -21,10 +23,10 @@ public abstract class Event {
 		return TextUtils.isEmpty(title);
 	}
 
-	public boolean isAt(Time time) {
-		return Time.compare(time, start) == 0 ||
-                (time.after(start) && time.before(end)) ||
-                Time.compare(time, end) == 0;
+	public boolean isAt(Date date) {
+		return Time.compare(date, start) == 0 ||
+                (date.after(start) && date.before(end)) ||
+                Time.compare(date, end) == 0;
 	}
 
 	public boolean isBetween(Time start, Time end) {

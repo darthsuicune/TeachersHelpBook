@@ -1,4 +1,4 @@
-package com.suicune.teachershelpbook.model.course;
+package com.suicune.teachershelpbook.model.courses.subjects;
 
 /**
  * Created by lapuente on 13.02.15.

@@ -1,27 +1,29 @@
-package com.suicune.teachershelpbook.model.calendar;
+package com.suicune.teachershelpbook.model.events;
 
+import android.database.Cursor;
 import android.text.format.Time;
 
-import com.suicune.teachershelpbook.model.Event;
+import com.suicune.teachershelpbook.model.courses.Course;
+
+import java.util.Date;
 
 /**
  * Created by lapuente on 13.02.15.
  */
 public class EventsProvider {
 	public static final int DEFAULT_EVENT_DURATION = 1;
+	Course course;
 
-	public DailyEvents createDaily(Week week, DayOfWeek day) {
-		if(!day.isWorkingDay()) {
-			throw new NotAWorkingDayException();
-		}
-		return new DailyEvents(week.day(day), this);
+	public EventsProvider(Course course) {
+		this.course = course;
 	}
 
 	/**
 	 * Create an empty event that starts right now and ends after one hour
 	 * @return new event that starts right now and ends after one hour
+	 * @param date
 	 */
-	public Event createEmpty() {
+	public Event createEmpty(Date date) {
 		Time start = new Time();
 		start.setToNow();
 		return createEmpty(start);
@@ -39,9 +41,6 @@ public class EventsProvider {
 	}
 
 	public Event createEmpty(Time start, Time end) {
-		if(end.before(start)) {
-			throw new InvalidTimeRangeException(start, end);
-		}
 		return new Event(start, end) {};
 	}
 
@@ -58,4 +57,8 @@ public class EventsProvider {
 		event.description(description);
 		return event;
     }
+
+	public static EventList listFromCursor(Cursor data) {
+		return null;
+	}
 }
