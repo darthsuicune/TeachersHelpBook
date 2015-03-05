@@ -12,20 +12,37 @@
         android:name="com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment"
         android:id="@+id/course_weekly_previous"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
     <fragment
-        android:name="com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment"
-        android:id="@+id/course_weekly_next"
+        android:name="com.suicune.teachershelpbook.views.fragments.courses.CoursePanelFragment"
+        android:id="@+id/course_overview_panel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <fragment
-        android:name="com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment"
-        android:id="@+id/course_weekly_second_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/course_weekly_previous" />
     <fragment
         android:name="com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment"
         android:id="@+id/course_weekly_main_fragment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/course_weekly_previous"
+        android:layout_toRightOf="@+id/course_weekly_previous"/>
+    <fragment
+        android:name="com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment"
+        android:id="@+id/course_weekly_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+    <fragment
+        android:name="com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment"
+        android:id="@+id/course_weekly_second_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/course_weekly_next"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

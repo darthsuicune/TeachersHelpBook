@@ -1,6 +1,7 @@
 package com.suicune.teachershelpbook.views.fragments.courses;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
@@ -26,21 +28,9 @@ public class WeeklyEventsFragment extends Fragment {
 	private WeeklyEventsListener eventsListener;
 	private WeeklyPreviewListener previewListener;
 	private Date referenceDate;
-	protected int viewLayoutId;
+	private TextView dateView;
 
 	public WeeklyEventsFragment() {
-	}
-
-	public static WeeklyEventsFragment getInstance() {
-		WeeklyEventsFragment fragment = new WeeklyEventsFragment();
-		fragment.viewLayoutId = R.layout.weekly_events_fragment;
-		return fragment;
-	}
-
-	public static WeeklyEventsFragment getPreviewInstance() {
-		WeeklyEventsFragment fragment = new WeeklyEventsFragment();
-		fragment.viewLayoutId = R.layout.weekly_events_preview_fragment;
-		return fragment;
 	}
 
 	@Override public void onAttach(Activity activity) {
@@ -52,45 +42,51 @@ public class WeeklyEventsFragment extends Fragment {
 			throw new ClassCastException(
 					activity.getLocalClassName() + " should implement the callback interfaces");
 		}
-		loadEvents();
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 									   @Nullable Bundle savedInstanceState) {
-		View v = inflater.inflate(viewLayoutId, container, false);
-		prepareViews(v);
+		View v;
+		if(this.getId() == R.id.course_weekly_main_fragment) {
+			v = inflater.inflate(R.layout.weekly_events_fragment, container, false);
+			prepareMainLayout(v);
+		} else {
+			v = inflater.inflate(R.layout.weekly_events_preview_fragment, container, false);
+			preparePreviewLayout(v);
+		}
 		return v;
 	}
 
-	private void prepareViews(View v) {
-		if(viewLayoutId == R.layout.weekly_events_preview_fragment) {
-			prepareMainLayout(v);
-		} else {
-			preparePreviewLayout(v);
-		}
-	}
-
 	private void prepareMainLayout(View v) {
-
+		dateView = (TextView) v.findViewById(R.id.weekly_events_text);
 	}
 
 	private void preparePreviewLayout(View v) {
-
+		dateView = (TextView) v.findViewById(R.id.weekly_events_preview_text);
+		dateView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				previewListener.onPreviewTapped(referenceDate);
+			}
+		});
 	}
 
-	public void currentDate(Date currentDate) {
+	public void updateDate(Date currentDate) {
 		this.referenceDate = currentDate;
+		if(dateView != null) {
+			dateView.setText(currentDate.toString());
+		}
 		loadEvents();
 	}
 
+	//TODO: Implement
 	private void loadEvents() {
-		Bundle args = new Bundle();
-		getLoaderManager().restartLoader(LOADER_EVENTS, args, new EventLoaderHelper());
+//		Bundle args = new Bundle();
+//		getLoaderManager().restartLoader(LOADER_EVENTS, args, new EventLoaderHelper());
 	}
 
-	public void currentDate(Date currentDate, int offsetInDays) {
+	public void updateDate(Date currentDate, int offsetInDays) {
 		long time = currentDate.getTime();
-		currentDate(new Date(time + offsetInDays*MILLIS_IN_DAY));
+		updateDate(new Date(time + offsetInDays * MILLIS_IN_DAY));
 	}
 
 	public interface WeeklyPreviewListener {
@@ -105,16 +101,16 @@ public class WeeklyEventsFragment extends Fragment {
 		public void onNewDaySelected(Date newDate);
 	}
 
-	private class EventLoaderHelper implements LoaderManager.LoaderCallbacks<Object> {
-		@Override public Loader<Object> onCreateLoader(int id, Bundle args) {
+	private class EventLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
+		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			return null;
 		}
 
-		@Override public void onLoadFinished(Loader<Object> loader, Object data) {
+		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
 		}
 
-		@Override public void onLoaderReset(Loader<Object> loader) {
+		@Override public void onLoaderReset(Loader<Cursor> loader) {
 
 		}
 	}

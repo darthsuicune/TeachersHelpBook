@@ -11,11 +11,13 @@ import android.view.MenuItem;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
+import com.suicune.teachershelpbook.views.fragments.courses.CoursePanelFragment;
 import com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment;
 
 import java.util.Date;
 
-import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.*;
+import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.WeeklyEventsListener;
+import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.WeeklyPreviewListener;
 
 
 public class CourseOverviewActivity extends ActionBarActivity
@@ -26,6 +28,7 @@ public class CourseOverviewActivity extends ActionBarActivity
 	WeeklyEventsFragment previousWeekFragment;
 	WeeklyEventsFragment nextWeekFragment;
 	WeeklyEventsFragment secondNextWeekFragment;
+	CoursePanelFragment coursePanelFragment;
 	Date currentDate;
 
 
@@ -45,21 +48,25 @@ public class CourseOverviewActivity extends ActionBarActivity
 		}
 	}
 
+	@Override public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putLong(WORKING_DATE, currentDate.getTime());
+	}
+
 	private void setupFragments() {
 		FragmentManager fm = getSupportFragmentManager();
 		mainViewFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
 		previousWeekFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_previous);
-		nextWeekFragment =
-				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_next);
+		nextWeekFragment = (WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_next);
 		secondNextWeekFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_second_next);
+		coursePanelFragment = (CoursePanelFragment) fm.findFragmentById(R.id.course_overview_panel);
+		reportDateToFragments();
 	}
 
-
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
 	}
@@ -75,7 +82,6 @@ public class CourseOverviewActivity extends ActionBarActivity
 		}
 	}
 
-
 	@Override public void onNewEventRequested(Time time) {
 		//TODO: Do something
 	}
@@ -86,18 +92,19 @@ public class CourseOverviewActivity extends ActionBarActivity
 
 	@Override public void onNewDaySelected(Date newDate) {
 		currentDate = newDate;
-		reportNewDateToFragments();
+		reportDateToFragments();
 	}
 
-	private void reportNewDateToFragments() {
-		mainViewFragment.currentDate(currentDate);
-		previousWeekFragment.currentDate(currentDate, -7);
-		nextWeekFragment.currentDate(currentDate, 7);
-		secondNextWeekFragment.currentDate(currentDate, 14);
+	private void reportDateToFragments() {
+		mainViewFragment.updateDate(currentDate);
+		previousWeekFragment.updateDate(currentDate, -7);
+		nextWeekFragment.updateDate(currentDate, 7);
+		secondNextWeekFragment.updateDate(currentDate, 14);
+		coursePanelFragment.updateDate(currentDate);
 	}
 
 	@Override public void onPreviewTapped(Date referenceDate) {
 		currentDate = referenceDate;
-		setupFragments();
+		reportDateToFragments();
 	}
 }

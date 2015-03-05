@@ -3,8 +3,6 @@ package com.suicune.teachershelpbook.model.events;
 import android.text.TextUtils;
 import android.text.format.Time;
 
-import java.util.Date;
-
 /**
  * Created by lapuente on 13.02.15.
  */
@@ -23,7 +21,7 @@ public abstract class Event {
 		return TextUtils.isEmpty(title);
 	}
 
-	public boolean isAt(Date date) {
+	public boolean isAt(Time date) {
 		return Time.compare(date, start) == 0 ||
                 (date.after(start) && date.before(end)) ||
                 Time.compare(date, end) == 0;
