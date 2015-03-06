@@ -5,23 +5,25 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
 import com.suicune.teachershelpbook.views.fragments.courses.CoursePanelFragment;
 import com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.WeeklyEventsListener;
 import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.WeeklyPreviewListener;
 
 
 public class CourseOverviewActivity extends ActionBarActivity
-		implements WeeklyEventsListener, WeeklyPreviewListener {
+		implements WeeklyEventsListener, WeeklyPreviewListener,
+		CoursePanelFragment.CoursePanelListener {
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
@@ -29,7 +31,7 @@ public class CourseOverviewActivity extends ActionBarActivity
 	WeeklyEventsFragment nextWeekFragment;
 	WeeklyEventsFragment secondNextWeekFragment;
 	CoursePanelFragment coursePanelFragment;
-	Date currentDate;
+	DateTime currentDate;
 
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,15 @@ public class CourseOverviewActivity extends ActionBarActivity
 
 	private void prepareCurrentDate(Bundle savedInstanceState) {
 		if (savedInstanceState != null && savedInstanceState.containsKey(WORKING_DATE)) {
-			currentDate = new Date(savedInstanceState.getLong(WORKING_DATE));
+			currentDate = new DateTime(savedInstanceState.getLong(WORKING_DATE));
 		} else {
-			currentDate = new Date();
+			currentDate = new DateTime();
 		}
 	}
 
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(WORKING_DATE, currentDate.getTime());
+		outState.putLong(WORKING_DATE, currentDate.getMillis());
 	}
 
 	private void setupFragments() {
@@ -72,8 +74,8 @@ public class CourseOverviewActivity extends ActionBarActivity
 	}
 
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will automatically handle clicks
-		// on the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
+		// The action bar will automatically handle clicks on the Home/Up button,
+		// so long as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 			case R.id.action_settings:
 				return true;
@@ -82,7 +84,7 @@ public class CourseOverviewActivity extends ActionBarActivity
 		}
 	}
 
-	@Override public void onNewEventRequested(Time time) {
+	@Override public void onNewEventRequested(Period time) {
 		//TODO: Do something
 	}
 
@@ -90,21 +92,30 @@ public class CourseOverviewActivity extends ActionBarActivity
 		//TODO: Do something
 	}
 
-	@Override public void onNewDaySelected(Date newDate) {
+	@Override public void onNewDaySelected(DateTime newDate) {
 		currentDate = newDate;
 		reportDateToFragments();
 	}
 
 	private void reportDateToFragments() {
 		mainViewFragment.updateDate(currentDate);
-		previousWeekFragment.updateDate(currentDate, -7);
-		nextWeekFragment.updateDate(currentDate, 7);
-		secondNextWeekFragment.updateDate(currentDate, 14);
+		previousWeekFragment.updateDate(currentDate.minusWeeks(1));
+		nextWeekFragment.updateDate(currentDate.plusWeeks(1));
+		secondNextWeekFragment.updateDate(currentDate.plusWeeks(2));
 		coursePanelFragment.updateDate(currentDate);
 	}
 
-	@Override public void onPreviewTapped(Date referenceDate) {
+	@Override public void onPreviewTapped(DateTime referenceDate) {
 		currentDate = referenceDate;
 		reportDateToFragments();
+	}
+
+	@Override public void onCurrentWeekTapped() {
+		currentDate = new DateTime();
+		reportDateToFragments();
+	}
+
+	@Override public void onEventCounterTapped() {
+		Toast.makeText(this, "Something fancy will happen!", Toast.LENGTH_LONG).show();
 	}
 }

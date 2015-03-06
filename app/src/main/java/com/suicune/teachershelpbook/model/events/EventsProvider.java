@@ -5,7 +5,9 @@ import android.text.format.Time;
 
 import com.suicune.teachershelpbook.model.courses.Course;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lapuente on 13.02.15.
@@ -59,6 +61,7 @@ public class EventsProvider {
     }
 
 	public static EventList listFromCursor(Cursor data) {
-		return null;
+		List<Event> eventList = new ArrayList<>();
+		return new EventList(eventList);
 	}
 }

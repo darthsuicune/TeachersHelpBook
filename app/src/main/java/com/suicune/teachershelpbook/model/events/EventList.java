@@ -11,4 +11,8 @@ public class EventList {
 	public EventList(List<Event> eventList) {
 		this.eventList = eventList;
 	}
+
+	public int eventCount() {
+		return eventList.size();
+	}
 }
