@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="event_count">%d events for this course</string>
+    <string name="reference_week">Currently viewing</string>
 </resources>
