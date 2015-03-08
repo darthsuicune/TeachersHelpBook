@@ -1,9 +1,10 @@
-package com.suicune.teachershelpbook.views.fragments.courses;
+package com.suicune.teachershelpbook.views.courses.fragments;
 
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.suicune.teachershelpbook.R;
-import com.suicune.teachershelpbook.activities.CourseOverviewActivity;
+import com.suicune.teachershelpbook.views.courses.activities.CourseOverviewActivity;
+import com.suicune.teachershelpbook.views.courses.fragments.CoursePanelFragment;
 
 public class CoursePanelFragmentTest
 		extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {

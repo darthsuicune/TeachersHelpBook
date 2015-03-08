@@ -6,6 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.suicune.teachershelpbook.model.courses.Course;
+
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 /**
@@ -14,32 +18,32 @@ import java.util.Date;
 public class EventListLoader extends AsyncTaskLoader<EventList> {
 	public static final String KEY_END = "end";
 	public static final String KEY_START = "start";
-	private boolean isStarted;
-	ContentResolver cr;
-	Date startDate;
-	Date endDate;
+    EventsProvider provider;
+    ContentResolver cr;
+    DateTime startDate;
+    DateTime endDate;
 
 	public EventListLoader(Context context, Bundle args) {
 		super(context);
 		cr = context.getContentResolver();
-		startDate = new Date(args.getLong(KEY_START));
-		endDate = new Date(args.getLong(KEY_END));
+		startDate = new DateTime(args.getLong(KEY_START));
+		endDate = new DateTime(args.getLong(KEY_END));
 	}
 
 	@Override protected void onStartLoading() {
 		super.onStartLoading();
-		if(!isStarted) {
+		if(provider == null) {
 			forceLoad();
 		}
 	}
 
 	@Override public EventList loadInBackground() {
-		isStarted = true;
+		provider = new EventsProvider();
 		Uri uri = null;
 		String[] projection = null;
 		String selection = null;
 		String[] selectionArgs = null;
 		//Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-		return EventsProvider.listFromCursor(null);
+		return provider.listFromCursor(null);
 	}
 }

@@ -1,4 +1,4 @@
-package com.suicune.teachershelpbook.views.fragments.courses;
+package com.suicune.teachershelpbook.views.courses.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.EventList;
 import com.suicune.teachershelpbook.model.events.EventListLoader;
+import com.suicune.teachershelpbook.utils.Dates;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -68,17 +69,23 @@ public class CoursePanelFragment extends Fragment {
 		});
 	}
 
-	public void updateDate(DateTime date) {
+    public void updateDate(DateTime date) {
+        showCurrentDate(date);
 		this.referenceDate = date;
 		Interval week = referenceDate.weekOfWeekyear().toInterval();
 		DateTime startOfWeek = week.getStart();
 		DateTime endOfWeek = week.getEnd();
 		if (referenceWeek != null) {
-			referenceWeek.setText(String.format("%d/%d/%d - %d/%d/%d", startOfWeek.getDayOfMonth(),
-					startOfWeek.getMonthOfYear(), startOfWeek.getYear(), endOfWeek.getDayOfMonth(),
-					endOfWeek.getMonthOfYear(), endOfWeek.getYear()));
+			referenceWeek.setText(Dates.formatRange(startOfWeek, endOfWeek));
 		}
 	}
+
+    private void showCurrentDate(DateTime date) {
+        if (currentDate == null) {
+            currentDate = date;
+            currentWeek.setText(Dates.formatDate(currentDate));
+        }
+    }
 
 	private void loadCourseData() {
 		Bundle args = new Bundle();
@@ -97,11 +104,15 @@ public class CoursePanelFragment extends Fragment {
 		}
 
 		@Override public void onLoadFinished(Loader<EventList> loader, EventList data) {
-			eventCounter.setText(getString(R.string.event_count, data.eventCount()));
+            updateEventCounter(data);
 		}
 
 		@Override public void onLoaderReset(Loader<EventList> loader) {
 
 		}
 	}
+
+    private void updateEventCounter(EventList data) {
+        eventCounter.setText(getString(R.string.event_count, data.eventCount()));
+    }
 }

@@ -7,7 +7,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activities.CourseOverviewActivity"
+            android:name=".views.courses.activities.CourseOverviewActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

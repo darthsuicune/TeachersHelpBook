@@ -1,33 +1,30 @@
 package com.suicune.teachershelpbook.model.events;
 
 import android.database.Cursor;
-import android.text.format.Time;
 
-import com.suicune.teachershelpbook.model.courses.Course;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-/**
- * Created by lapuente on 13.02.15.
- */
 public class EventsProvider {
-	public static final int DEFAULT_EVENT_DURATION = 1;
-	Course course;
+	public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
+    int defaultEventDurationInHours;
 
-	public EventsProvider(Course course) {
-		this.course = course;
-	}
+	public EventsProvider() {
+        this.defaultEventDurationInHours = DEFAULT_EVENT_DURATION_IN_HOURS;
+    }
+
+    public EventsProvider(int defaultEventDurationInHours) {
+        this.defaultEventDurationInHours = defaultEventDurationInHours;
+    }
 
 	/**
 	 * Create an empty event that starts right now and ends after one hour
 	 * @return new event that starts right now and ends after one hour
-	 * @param date
 	 */
-	public Event createEmpty(Date date) {
-		Time start = new Time();
-		start.setToNow();
+	public Event createEmpty() {
+		DateTime start = new DateTime();
 		return createEmpty(start);
 	}
 	/**
@@ -36,31 +33,37 @@ public class EventsProvider {
 	 * @param start time of the event start
 	 * @return new event that starts at the given time and ends after one hour
 	 */
-	public Event createEmpty(Time start) {
-		Time end = new Time(start);
-		end.hour += DEFAULT_EVENT_DURATION;
+	public Event createEmpty(DateTime start) {
+		DateTime end = new DateTime(start).plusHours(defaultEventDurationInHours);
 		return createEmpty(start, end);
 	}
 
-	public Event createEmpty(Time start, Time end) {
+	public Event createEmpty(DateTime start, DateTime end) {
 		return new Event(start, end) {};
 	}
 
-    public Event newEventAt(Time start, String title, String description) {
+    public Event newEvent(String title, String description) {
+        Event event = createEmpty();
+        event.title(title);
+        event.description(description);
+        return event;
+    }
+
+    public Event newEventAt(DateTime start, String title, String description) {
 		Event event = createEmpty(start);
 		event.title(title);
 		event.description(description);
 		return event;
     }
 
-    public Event newEventBetween(Time start, Time end, String title, String description) {
+    public Event newEventBetween(DateTime start, DateTime end, String title, String description) {
 		Event event = createEmpty(start, end);
 		event.title(title);
 		event.description(description);
 		return event;
     }
 
-	public static EventList listFromCursor(Cursor data) {
+	public EventList listFromCursor(Cursor data) {
 		List<Event> eventList = new ArrayList<>();
 		return new EventList(eventList);
 	}

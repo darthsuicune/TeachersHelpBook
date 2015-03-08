@@ -1,4 +1,4 @@
-package com.suicune.teachershelpbook.activities;
+package com.suicune.teachershelpbook.views.courses.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,14 +11,14 @@ import android.widget.Toast;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
-import com.suicune.teachershelpbook.views.fragments.courses.CoursePanelFragment;
-import com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment;
+import com.suicune.teachershelpbook.views.courses.fragments.CoursePanelFragment;
+import com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsFragment;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
-import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.WeeklyEventsListener;
-import static com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment.WeeklyPreviewListener;
+import static com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
+import static com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyPreviewListener;
 
 
 public class CourseOverviewActivity extends ActionBarActivity

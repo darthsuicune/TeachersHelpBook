@@ -2,9 +2,6 @@ package com.suicune.teachershelpbook.model.events;
 
 import java.util.List;
 
-/**
- * Created by lapuente on 04.03.15.
- */
 public class EventList {
 	List<Event> eventList;
 

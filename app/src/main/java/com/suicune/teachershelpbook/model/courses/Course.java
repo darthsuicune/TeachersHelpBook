@@ -4,23 +4,21 @@ import android.content.ContentResolver;
 
 import com.suicune.teachershelpbook.model.events.EventList;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
-/**
- * Created by lapuente on 03.03.15.
- */
+
 public class Course {
-	public Date start;
-	public Date end;
+	public DateTime start;
+	public DateTime end;
 	ContentResolver resolver;
 
-	public Course(Date start, Date end, ContentResolver resolver) {
+	public Course(DateTime start, DateTime end, ContentResolver resolver) {
 		this.start = start;
 		this.end = end;
 		this.resolver = resolver;
 	}
 
-	public EventList eventsBetween(Date start, Date end) {
+	public EventList eventsBetween(DateTime start, DateTime end) {
 		return null;
 	}
 }

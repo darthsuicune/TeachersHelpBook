@@ -1,9 +1,9 @@
-package com.suicune.teachershelpbook.activities;
+package com.suicune.teachershelpbook.views.courses.activities;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.suicune.teachershelpbook.views.fragments.courses.CoursePanelFragment;
-import com.suicune.teachershelpbook.views.fragments.courses.WeeklyEventsFragment;
+import com.suicune.teachershelpbook.views.courses.fragments.CoursePanelFragment;
+import com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsFragment;
 
 import org.joda.time.DateTime;
 

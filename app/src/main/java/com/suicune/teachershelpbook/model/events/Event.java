@@ -1,41 +1,34 @@
 package com.suicune.teachershelpbook.model.events;
 
-import android.text.TextUtils;
-import android.text.format.Time;
+import org.joda.time.DateTime;
 
-/**
- * Created by lapuente on 13.02.15.
- */
+
 public abstract class Event {
-	Time start;
-	Time end;
-	String title;
-	String description;
+    DateTime start;
+    DateTime end;
+    String title;
+    String description;
 
-	public Event(Time start, Time end) {
-		this.start = start;
-		this.end = end;
-	}
+    public Event(DateTime start, DateTime end) {
+        this.start = start;
+        this.end = end;
+    }
 
-	public boolean isValid() {
-		return TextUtils.isEmpty(title);
-	}
+    public boolean isAt(DateTime time) {
+        return time.compareTo(start) == 0 || (time.isAfter(start) && time.isBefore(end)) ||
+                time.compareTo(end) == 0;
+    }
 
-	public boolean isAt(Time date) {
-		return Time.compare(date, start) == 0 ||
-                (date.after(start) && date.before(end)) ||
-                Time.compare(date, end) == 0;
-	}
+    public boolean isBetween(DateTime start, DateTime end) {
+        return start.compareTo(start) == 0 || end.compareTo(end) == 0 ||
+                (this.start.isBefore(start) && this.end.isAfter(end));
+    }
 
-	public boolean isBetween(Time start, Time end) {
-		return isAt(start) || isAt(end) || this.start.before(start) || this.end.before(end);
-	}
+    public void title(String title) {
+        this.title = title;
+    }
 
-	public void title(String title) {
-		this.title = title;
-	}
-
-	public void description(String description) {
-		this.description = description;
-	}
+    public void description(String description) {
+        this.description = description;
+    }
 }
