@@ -53,7 +53,7 @@ public class CoursePanelFragment extends Fragment {
 	}
 
 	private void prepareViews(View v) {
-		currentWeek = (TextView) v.findViewById(R.id.current_week);
+		currentWeek = (TextView) v.findViewById(R.id.current_date);
 		referenceWeek = (TextView) v.findViewById(R.id.reference_week);
 		eventCounter = (TextView) v.findViewById(R.id.event_counter);
 
@@ -74,7 +74,8 @@ public class CoursePanelFragment extends Fragment {
 		this.referenceDate = date;
 		Interval week = referenceDate.weekOfWeekyear().toInterval();
 		DateTime startOfWeek = week.getStart();
-		DateTime endOfWeek = week.getEnd();
+		//week.getEnd() returns the first day of the next week.
+		DateTime endOfWeek = week.getEnd().minusDays(1);
 		if (referenceWeek != null) {
 			referenceWeek.setText(Dates.formatRange(startOfWeek, endOfWeek));
 		}
