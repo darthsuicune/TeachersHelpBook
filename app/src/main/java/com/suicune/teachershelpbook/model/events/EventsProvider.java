@@ -67,4 +67,8 @@ public class EventsProvider {
 		List<Event> eventList = new ArrayList<>();
 		return new EventList(eventList);
 	}
+
+	public EventList listFromList(List<Event> eventList) {
+		return new EventList(eventList);
+	}
 }

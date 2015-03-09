@@ -6,11 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.suicune.teachershelpbook.model.courses.Course;
-
 import org.joda.time.DateTime;
-
-import java.util.Date;
 
 /**
  * Created by lapuente on 06.03.15.
@@ -44,6 +40,8 @@ public class EventListLoader extends AsyncTaskLoader<EventList> {
 		String selection = null;
 		String[] selectionArgs = null;
 		//Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-		return provider.listFromCursor(null);
+		EventList list = provider.listFromCursor(null);
+		//cursor.close();
+		return list;
 	}
 }

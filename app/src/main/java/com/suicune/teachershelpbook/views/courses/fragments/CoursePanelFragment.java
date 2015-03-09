@@ -24,12 +24,13 @@ import org.joda.time.Interval;
  */
 public class CoursePanelFragment extends Fragment {
 	private static final int LOADER_COURSE = 1;
-	private DateTime currentDate;
-	private DateTime referenceDate;
+	DateTime currentDate;
+	DateTime referenceDate;
 	CoursePanelListener listener;
 	TextView currentWeek;
 	TextView referenceWeek;
 	TextView eventCounter;
+	EventList eventList;
 
 	public CoursePanelFragment() {
 	}
@@ -93,6 +94,11 @@ public class CoursePanelFragment extends Fragment {
 		getLoaderManager().restartLoader(LOADER_COURSE, args, new CourseDataLoaderHelper());
 	}
 
+	public void eventList(EventList eventList) {
+		this.eventList = eventList;
+		updateEventCounter();
+	}
+
 	public interface CoursePanelListener {
 		public void onCurrentWeekTapped();
 
@@ -105,7 +111,7 @@ public class CoursePanelFragment extends Fragment {
 		}
 
 		@Override public void onLoadFinished(Loader<EventList> loader, EventList data) {
-            updateEventCounter(data);
+            eventList(data);
 		}
 
 		@Override public void onLoaderReset(Loader<EventList> loader) {
@@ -113,7 +119,7 @@ public class CoursePanelFragment extends Fragment {
 		}
 	}
 
-    private void updateEventCounter(EventList data) {
-        eventCounter.setText(getString(R.string.event_count, data.eventCount()));
+    private void updateEventCounter() {
+        eventCounter.setText(getString(R.string.event_count, eventList.eventCount()));
     }
 }
