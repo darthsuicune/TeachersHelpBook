@@ -13,12 +13,12 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class WeeklyPreviewEventsFragmentTest
+public class WeeklyEventsPreviewFragmentTest
         extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
     CourseOverviewActivity activity;
-    WeeklyEventsFragment fragment;
+	WeeklyEventsFragment fragment;
 
-    public WeeklyPreviewEventsFragmentTest() {
+    public WeeklyEventsPreviewFragmentTest() {
         super(CourseOverviewActivity.class);
     }
 
@@ -26,8 +26,6 @@ public class WeeklyPreviewEventsFragmentTest
     public void setUp() throws Exception {
         super.setUp();
         activity = getActivity();
-		fragment = (WeeklyEventsFragment) activity.getSupportFragmentManager()
-				.findFragmentById(R.id.course_weekly_main_fragment);
 		try {
 			runTestOnUiThread(new Runnable() {
 				@Override public void run() {

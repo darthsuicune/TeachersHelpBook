@@ -1,5 +1,7 @@
 package com.suicune.teachershelpbook.model.events;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 public class EventList {
@@ -11,5 +13,17 @@ public class EventList {
 
 	public int eventCount() {
 		return eventList.size();
+	}
+
+	public List<Event> events() {
+		return eventList;
+	}
+
+	public EventList eventsOn(int weekDay, int weekNumber) {
+		return null;
+	}
+
+	public EventList eventsOn(DateTime date) {
+		return null;
 	}
 }

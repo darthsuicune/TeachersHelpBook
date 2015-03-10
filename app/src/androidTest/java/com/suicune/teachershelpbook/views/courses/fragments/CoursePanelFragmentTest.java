@@ -29,6 +29,7 @@ public class CoursePanelFragmentTest
 	CourseOverviewActivity activity;
 	CoursePanelFragment fragment;
 	DateTime date;
+	EventsProvider provider;
 
 	public CoursePanelFragmentTest() {
 		super(CourseOverviewActivity.class);
@@ -36,6 +37,7 @@ public class CoursePanelFragmentTest
 
 	@Override protected void setUp() throws Exception {
 		super.setUp();
+		provider = new EventsProvider();
 		activity = getActivity();
 		fragment = (CoursePanelFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_overview_panel);
@@ -82,6 +84,20 @@ public class CoursePanelFragmentTest
 		theEventCounterIsSetTo(1);
 	}
 
+	private void whenWeCreateAnEventListWithOneEvent() {
+		final List<Event> list = new ArrayList<>();
+		list.add(provider.createEmpty());
+		try {
+			runTestOnUiThread(new Runnable() {
+				@Override public void run() {
+					fragment.eventList(provider.listFromList(list));
+				}
+			});
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
+	}
+
 	private void theEventCounterIsSetTo(int count) {
 		onView(withId(R.id.event_counter)).check(matches(hasText(Integer.toString(count))));
 	}
@@ -100,20 +116,5 @@ public class CoursePanelFragmentTest
 				description.appendText("It should include the text: ").appendValue(s);
 			}
 		};
-	}
-
-	private void whenWeCreateAnEventListWithOneEvent() {
-		final EventsProvider provider = new EventsProvider();
-		final List<Event> list = new ArrayList<>();
-		list.add(provider.createEmpty());
-		try {
-			runTestOnUiThread(new Runnable() {
-				@Override public void run() {
-					fragment.eventList(provider.listFromList(list));
-				}
-			});
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
 	}
 }

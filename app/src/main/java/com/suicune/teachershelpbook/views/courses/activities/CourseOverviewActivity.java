@@ -13,6 +13,7 @@ import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
 import com.suicune.teachershelpbook.views.courses.fragments.CoursePanelFragment;
 import com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsFragment;
+import com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -27,9 +28,9 @@ public class CourseOverviewActivity extends ActionBarActivity
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
-	WeeklyEventsFragment previousWeekFragment;
-	WeeklyEventsFragment nextWeekFragment;
-	WeeklyEventsFragment secondNextWeekFragment;
+	WeeklyEventsPreviewFragment previousWeekFragment;
+	WeeklyEventsPreviewFragment nextWeekFragment;
+	WeeklyEventsPreviewFragment secondNextWeekFragment;
 	CoursePanelFragment coursePanelFragment;
 	DateTime currentDate;
 
@@ -60,10 +61,10 @@ public class CourseOverviewActivity extends ActionBarActivity
 		mainViewFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
 		previousWeekFragment =
-				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_previous);
-		nextWeekFragment = (WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_next);
+				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_previous);
+		nextWeekFragment = (WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_next);
 		secondNextWeekFragment =
-				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_second_next);
+				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
 		coursePanelFragment = (CoursePanelFragment) fm.findFragmentById(R.id.course_overview_panel);
 		reportDateToFragments();
 	}

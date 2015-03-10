@@ -31,4 +31,12 @@ public abstract class Event {
     public void description(String description) {
         this.description = description;
     }
+
+	public DateTime start() {
+		return start;
+	}
+
+	public DateTime end() {
+		return end;
+	}
 }
