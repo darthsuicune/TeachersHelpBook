@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.utils.Dates;
 
-import org.joda.time.DateTime;
-
 /**
  * Created by lapuente on 10.03.15.
  */
@@ -39,8 +37,7 @@ public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 		});
 	}
 
-	@Override public void updateDate(DateTime currentDate) {
-		super.updateDate(currentDate);
+	@Override protected void onDateUpdated() {
 		if(dateView != null) {
 			dateView.setText(Dates.formatRange(startOfWeek, endOfWeek));
 		}

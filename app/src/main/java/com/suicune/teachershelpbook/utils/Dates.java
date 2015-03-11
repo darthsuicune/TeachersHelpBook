@@ -16,4 +16,13 @@ public class Dates {
                 end.getDayOfMonth(), end.getMonthOfYear(),
                 end.getYear());
     }
+
+	public static String formatTimeRange(DateTime start, DateTime end) {
+		return String.format("%d:%d - %d:%d", start.getHourOfDay(), start.getMinuteOfHour(),
+				end.getHourOfDay(), end.getMinuteOfHour());
+	}
+
+	public static DateTime dateForDayOfWeek(int day, DateTime startOfWeek) {
+		return startOfWeek.plusDays(day - 1);
+	}
 }

@@ -39,4 +39,12 @@ public abstract class Event {
 	public DateTime end() {
 		return end;
 	}
+
+	public String title() {
+		return title;
+	}
+
+	public String description() {
+		return description;
+	}
 }

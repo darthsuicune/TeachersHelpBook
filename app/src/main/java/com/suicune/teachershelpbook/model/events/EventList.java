@@ -19,11 +19,7 @@ public class EventList {
 		return eventList;
 	}
 
-	public EventList eventsOn(int weekDay, int weekNumber) {
-		return null;
-	}
-
 	public EventList eventsOn(DateTime date) {
-		return null;
+		return this;
 	}
 }

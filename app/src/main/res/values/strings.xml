@@ -2,4 +2,6 @@
     <string name="app_name">TeachersHelpBook</string>
 
     <string name="action_settings">Settings</string>
+    <string name="add_new_event">Add new</string>
+    <string name="event_list_empty">Have a nice day!</string>
 </resources>

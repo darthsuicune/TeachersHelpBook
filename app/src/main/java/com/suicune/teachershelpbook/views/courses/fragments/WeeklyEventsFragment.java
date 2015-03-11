@@ -58,6 +58,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 		startOfWeek = week.getStart();
 		endOfWeek = week.getEnd().minusDays(1); //week.end returns the first day of the next week.
 		loadEvents();
+		onDateUpdated();
 	}
 
 	void loadEvents() {
@@ -66,6 +67,8 @@ public abstract class WeeklyEventsFragment extends Fragment {
 		args.putLong(EventListLoader.KEY_END, endOfWeek.getMillis());
 		getLoaderManager().restartLoader(LOADER_EVENTS, args, new EventLoaderHelper());
 	}
+
+	protected abstract void onDateUpdated();
 
 	public interface WeeklyPreviewListener {
 		public void onPreviewTapped(DateTime referenceDate);

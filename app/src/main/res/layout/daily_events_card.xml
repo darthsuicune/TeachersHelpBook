@@ -1,22 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.suicune.teachershelpbook.views.courses.DailyEventsCardView
+<com.suicune.teachershelpbook.views.events.DailyEventsCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/date"
+        <RelativeLayout
+            android:id="@+id/daily_event_card_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp">
 
-        <ListView
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/add_new"
+                android:text="@string/add_new_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@android:drawable/ic_input_add"
+                android:drawableRight="@android:drawable/ic_input_add"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/event_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/event_list_empty"
+            android:layout_gravity="center"
+            android:text="@string/event_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-</com.suicune.teachershelpbook.views.courses.DailyEventsCardView>
+</com.suicune.teachershelpbook.views.events.DailyEventsCardView>
