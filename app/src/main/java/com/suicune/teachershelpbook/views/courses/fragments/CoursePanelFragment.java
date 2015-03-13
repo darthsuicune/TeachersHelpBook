@@ -3,9 +3,9 @@ package com.suicune.teachershelpbook.views.courses.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +19,6 @@ import com.suicune.teachershelpbook.utils.Dates;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-/**
- * Created by lapuente on 05.03.15.
- */
 public class CoursePanelFragment extends Fragment {
 	private static final int LOADER_COURSE = 1;
 	DateTime currentDate;

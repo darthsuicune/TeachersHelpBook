@@ -4,13 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.AsyncTaskLoader;
+import android.content.AsyncTaskLoader;
 
 import org.joda.time.DateTime;
 
-/**
- * Created by lapuente on 06.03.15.
- */
 public class EventListLoader extends AsyncTaskLoader<EventList> {
 	public static final String KEY_END = "end";
 	public static final String KEY_START = "start";

@@ -3,7 +3,7 @@ package com.suicune.teachershelpbook.views.courses.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
+import android.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,7 +57,7 @@ public class CourseOverviewActivity extends ActionBarActivity
 	}
 
 	private void setupFragments() {
-		FragmentManager fm = getSupportFragmentManager();
+		FragmentManager fm = getFragmentManager();
 		mainViewFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
 		previousWeekFragment =

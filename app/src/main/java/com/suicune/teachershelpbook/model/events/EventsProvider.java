@@ -4,15 +4,15 @@ import android.database.Cursor;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventsProvider {
-	public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
+public class EventsProvider implements Serializable {
     int defaultEventDurationInHours;
 
 	public EventsProvider() {
-        this.defaultEventDurationInHours = DEFAULT_EVENT_DURATION_IN_HOURS;
+        this.defaultEventDurationInHours = Event.DEFAULT_EVENT_DURATION_IN_HOURS;
     }
 
     public EventsProvider(int defaultEventDurationInHours) {

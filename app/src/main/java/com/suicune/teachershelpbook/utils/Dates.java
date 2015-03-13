@@ -25,4 +25,8 @@ public class Dates {
 	public static DateTime dateForDayOfWeek(int day, DateTime startOfWeek) {
 		return startOfWeek.plusDays(day - 1);
 	}
+
+	public static String formatTime(DateTime time) {
+		return String.format("%d:%d", time.getHourOfDay(), time.getMinuteOfHour());
+	}
 }

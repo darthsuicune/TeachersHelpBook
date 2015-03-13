@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.suicune.teachershelpbook.R;
+import com.suicune.teachershelpbook.model.events.Event;
 import com.suicune.teachershelpbook.model.events.EventList;
 import com.suicune.teachershelpbook.utils.Dates;
 import com.suicune.teachershelpbook.views.events.DailyEventsCardView;
+import com.suicune.teachershelpbook.views.events.NewEventDialog;
 
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.suicune.teachershelpbook.views.events.DailyEventsCardView.NewEventsRequestedListener;
+import static com.suicune.teachershelpbook.views.events.NewEventDialog.NewEventDialogListener;
 import static org.joda.time.DateTimeConstants.FRIDAY;
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.joda.time.DateTimeConstants.SATURDAY;
@@ -26,9 +30,13 @@ import static org.joda.time.DateTimeConstants.TUESDAY;
 import static org.joda.time.DateTimeConstants.WEDNESDAY;
 
 public class WeeklyEventsMainFragment extends WeeklyEventsFragment
-		implements DailyEventsCardView.NewEventsRequestedListener {
+		implements NewEventsRequestedListener, NewEventDialogListener {
+	private static final String DIALOG_FRAGMENT_TAG = "dialog fragment";
+
 	View rootView;
 	Map<DateTime, DailyEventsCardView> dailyCards;
+	private static NewEventDialog newEventDialog;
+
 
 	public WeeklyEventsMainFragment() {
 	}
@@ -66,10 +74,6 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	private void updateViews() {
 		for (DateTime day : dailyCards.keySet()) {
 			DailyEventsCardView card = dailyCards.get(day);
-			if (day.dayOfYear().equals(new DateTime().dayOfYear())) {
-				int color = getResources().getColor(R.color.material_blue_grey_800);
-				card.setBackgroundColor(color);
-			}
 			card.setup(this, day);
 		}
 	}
@@ -82,6 +86,17 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onNewEventRequested(DateTime date) {
-		Toast.makeText(getActivity(), "You have requested a new event", Toast.LENGTH_LONG).show();
+		newEventDialog = new NewEventDialog();
+		newEventDialog.setup(date, this, eventsProvider, R.id.course_weekly_main_fragment);
+		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
+	}
+
+	@Override public void onNewEventCreated(Event event) {
+		this.eventList.add(event);
+		Toast.makeText(getActivity(), R.string.event_created, Toast.LENGTH_LONG).show();
+		updateEventList(eventList);
+	}
+
+	@Override public void onDialogCanceled() {
 	}
 }

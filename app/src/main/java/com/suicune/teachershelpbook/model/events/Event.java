@@ -2,8 +2,11 @@ package com.suicune.teachershelpbook.model.events;
 
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 
-public abstract class Event {
+
+public abstract class Event implements Serializable{
+	public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
     DateTime start;
     DateTime end;
     String title;
@@ -46,5 +49,20 @@ public abstract class Event {
 
 	public String description() {
 		return description;
+	}
+
+	public void start(DateTime date, DateTime newTime) {
+		start = new DateTime(newTime).withDate(date.toLocalDate());
+	}
+
+	public void end(DateTime date, DateTime newTime) {
+		end = new DateTime(newTime).withDate(date.toLocalDate());
+	}
+
+	public void startDate(DateTime date) {
+		start = start.withDate(date.toLocalDate());
+	}
+	public void endDate(DateTime date) {
+		end = end.withDate(date.toLocalDate());
 	}
 }

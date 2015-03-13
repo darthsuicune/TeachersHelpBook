@@ -43,6 +43,7 @@ public class DailyEventsCardView extends CardView {
 		this.date = newDate;
 		loadViews();
 		setupViewParameters();
+		setBackground();
 	}
 
 	private void loadViews() {
@@ -59,9 +60,23 @@ public class DailyEventsCardView extends CardView {
 		dateView.setText(Dates.formatDate(date));
 		addNewView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
-				listener.onNewEventRequested(date);
+				newEventRequested();
 			}
 		});
+	}
+
+	private void setBackground() {
+		int color;
+		if (date.dayOfYear().equals(new DateTime().dayOfYear())) {
+			color = getResources().getColor(R.color.material_deep_teal_200);
+		} else {
+			color = getResources().getColor(R.color.background_material_light);
+		}
+		setBackgroundColor(color);
+	}
+
+	private void newEventRequested() {
+		listener.onNewEventRequested(date);
 	}
 
 	public void updateEvents(EventList eventList) {

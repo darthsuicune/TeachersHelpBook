@@ -1,8 +1,6 @@
 package com.suicune.teachershelpbook.views.courses.fragments;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
-import android.widget.TextView;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
@@ -10,9 +8,6 @@ import com.suicune.teachershelpbook.model.events.EventsProvider;
 import com.suicune.teachershelpbook.utils.Dates;
 import com.suicune.teachershelpbook.views.courses.activities.CourseOverviewActivity;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -23,6 +18,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.suicune.teachershelpbook.views.MoreViewMatchers.hasText;
 
 public class CoursePanelFragmentTest
 		extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
@@ -39,7 +35,7 @@ public class CoursePanelFragmentTest
 		super.setUp();
 		provider = new EventsProvider();
 		activity = getActivity();
-		fragment = (CoursePanelFragment) activity.getSupportFragmentManager()
+		fragment = (CoursePanelFragment) activity.getFragmentManager()
 				.findFragmentById(R.id.course_overview_panel);
 		date = fragment.currentDate;
 	}
@@ -57,64 +53,40 @@ public class CoursePanelFragmentTest
 		onView(withId(R.id.current_date)).check(matches(withText(Dates.formatDate(date))));
 	}
 
-	public void testUpdateDateModifiesCurrentlyViewing() throws Exception {
+	public void testUpdateDateModifiesCurrentlyViewing() throws Throwable {
 		withTheCurrentlySelectedDateSetTo(new DateTime(2015, 3, 5, 0, 0));
 		whenWeClickOnTheNextWeekPanel();
 		theCurrentReferenceWeekIsUpdatedTo("9/3/2015 - 15/3/2015");
 	}
 
-	private void withTheCurrentlySelectedDateSetTo(final DateTime dateTime) {
-		try {
+	private void withTheCurrentlySelectedDateSetTo(final DateTime dateTime) throws Throwable {
 			runTestOnUiThread(new Runnable() {
 				@Override public void run() {
 					activity.onNewDaySelected(dateTime);
 				}
 			});
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
 	}
 
 	private void theCurrentReferenceWeekIsUpdatedTo(String s) {
 		onView(withId(R.id.reference_week)).check(matches(withText(s)));
 	}
 
-	public void testUpdateEventListUpdatesTheCounter() throws Exception {
+	public void testUpdateEventListUpdatesTheCounter() throws Throwable {
 		whenWeCreateAnEventListWithOneEvent();
 		theEventCounterIsSetTo(1);
 	}
 
-	private void whenWeCreateAnEventListWithOneEvent() {
+	private void whenWeCreateAnEventListWithOneEvent() throws Throwable {
 		final List<Event> list = new ArrayList<>();
 		list.add(provider.createEmpty());
-		try {
-			runTestOnUiThread(new Runnable() {
-				@Override public void run() {
-					fragment.eventList(provider.listFromList(list));
-				}
-			});
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
+		runTestOnUiThread(new Runnable() {
+			@Override public void run() {
+				fragment.eventList(provider.listFromList(list));
+			}
+		});
 	}
 
 	private void theEventCounterIsSetTo(int count) {
 		onView(withId(R.id.event_counter)).check(matches(hasText(Integer.toString(count))));
-	}
-
-	private Matcher<View> hasText(final String s) {
-		return new TypeSafeMatcher<View>() {
-			@Override public boolean matchesSafely(View view) {
-				if(view == null) {
-					return false;
-				}
-				TextView tv = (TextView) view;
-				return tv.getText().toString().contains(s);
-			}
-
-			@Override public void describeTo(Description description) {
-				description.appendText("It should include the text: ").appendValue(s);
-			}
-		};
 	}
 }

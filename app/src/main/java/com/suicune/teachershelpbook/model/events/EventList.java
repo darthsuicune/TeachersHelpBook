@@ -22,4 +22,8 @@ public class EventList {
 	public EventList eventsOn(DateTime date) {
 		return this;
 	}
+
+	public void add(Event event) {
+		eventList.add(event);
+	}
 }
