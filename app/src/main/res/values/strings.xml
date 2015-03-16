@@ -13,4 +13,5 @@
     <string name="end_time_title">End time</string>
     <string name="end_date_title">End date</string>
     <string name="start_date_title">Start date</string>
+    <string name="full_day_event_checkbox">Is full day?</string>
 </resources>

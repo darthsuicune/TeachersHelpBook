@@ -51,18 +51,17 @@ public abstract class Event implements Serializable{
 		return description;
 	}
 
-	public void start(DateTime date, DateTime newTime) {
-		start = new DateTime(newTime).withDate(date.toLocalDate());
+	public void start(DateTime newDateTime) {
+        if(newDateTime.isAfter(end)) {
+            throw new InvalidTimeException();
+        }
+		start = newDateTime;
 	}
 
-	public void end(DateTime date, DateTime newTime) {
-		end = new DateTime(newTime).withDate(date.toLocalDate());
-	}
-
-	public void startDate(DateTime date) {
-		start = start.withDate(date.toLocalDate());
-	}
-	public void endDate(DateTime date) {
-		end = end.withDate(date.toLocalDate());
+	public void end(DateTime newDateTime) {
+        if(newDateTime.isBefore(start)) {
+            throw new InvalidTimeException();
+        }
+		end = newDateTime;
 	}
 }

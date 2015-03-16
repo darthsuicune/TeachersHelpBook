@@ -21,6 +21,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <RelativeLayout
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -48,9 +49,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/end_time"
-            android:layout_below="@id/end_date"/>
+            android:layout_below="@id/end_date"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/full_day_event_checkbox"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,22 +1,23 @@
 package com.suicune.teachershelpbook.views.events;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
+import com.suicune.teachershelpbook.model.events.InvalidTimeException;
 import com.suicune.teachershelpbook.utils.Dates;
 
 import org.joda.time.DateTime;
 
-import static com.suicune.teachershelpbook.views.TimePickerDialog.TimePickerListener;
-
-public class NewEventView extends LinearLayout implements TimePickerListener {
+public class NewEventView extends LinearLayout {
 
 	EditText titleView;
 	EditText descriptionView;
@@ -29,9 +30,18 @@ public class NewEventView extends LinearLayout implements TimePickerListener {
 	DateTime start;
 	DateTime end;
 	Event event;
+	OnPickersRequestedListener listener;
 
-	public NewEventView(Context context) {
-		super(context);
+	public NewEventView(Context context, AttributeSet attributeSet) {
+		super(context, attributeSet);
+	}
+
+	public void setup(Event event, OnPickersRequestedListener listener) {
+		this.event = event;
+		this.start = event.start();
+		this.end = event.end();
+		this.listener = listener;
+
 		loadViews();
 		prepareViews();
 	}
@@ -52,75 +62,81 @@ public class NewEventView extends LinearLayout implements TimePickerListener {
 		startDateView.setText(Dates.formatDate(start));
 		endDateView.setText(Dates.formatDate(end));
 
-		startTimeView.setOnClickListener(requestTimePicker(R.string.start_time_title));
-		endTimeView.setOnClickListener(requestTimePicker(R.string.start_time_title));
-		startDateView.setOnClickListener(requestDatePicker(R.string.start_date_title));
-		endDateView.setOnClickListener(requestDatePicker(R.string.end_date_title));
+		startTimeView.setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onStartTimeRequested();
+			}
+		});
+		endTimeView.setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onEndTimeRequested();
+			}
+		});
 		startDateView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
-
+				listener.onStartDateRequested();
+			}
+		});
+		endDateView.setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onEndDateRequested();
 			}
 		});
 
 		fullDayCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton button, boolean checked) {
-				startTimeView.setVisibility((checked) ? View.GONE : View.VISIBLE);
-				endTimeView.setVisibility((checked) ? View.GONE : View.VISIBLE);
 				onFullDayChanged(checked);
 			}
 		});
 	}
 
-	private OnClickListener requestDatePicker(int title) {
-		return new OnClickListener() {
-			@Override public void onClick(View view) {
-
-			}
-		};
-	}
-
-	private OnClickListener requestTimePicker(int title) {
-		return new OnClickListener() {
-			@Override public void onClick(View view) {
-
-			}
-		};
-	}
-
-	public void setup(Event event) {
-		this.event = event;
-		this.start = event.start();
-		this.end = event.end();
-	}
-
-	public void onStartTimeChanged(DateTime newTime) {
-		event.start(start, newTime);
+	public void changeStartTime(DateTime newTime) {
+		event.start(newTime);
 		startTimeView.setText(Dates.formatTime(newTime));
 	}
 
-	public void onEndTimeChanged(DateTime newTime) {
-		event.end(end, newTime);
+	public void changeEndTime(DateTime newTime) {
+		event.end(newTime);
 		endTimeView.setText(Dates.formatTime(newTime));
 	}
 
-	public void onStartDateChanged(DateTime newDate) {
-		event.startDate(start);
-		startDateView.setText(Dates.formatDate(newDate));
-	}
-
-	public void onEndDateChanged(DateTime newDate) {
-		event.endDate(end);
-		endDateView.setText(Dates.formatDate(newDate));
-	}
-
 	public void onFullDayChanged(boolean isFullDay) {
-		if(isFullDay) {
-			onStartTimeChanged(start.withTime(0, 0, 0, 0));
-			onEndTimeChanged(end.withTime(23, 59, 59, 999));
+		endDateView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
+		endTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
+		if (isFullDay) {
+			changeStartTime(start.withTime(0, 0, 0, 0));
+			changeEndTime(end.withTime(23, 59, 59, 999));
+		} else {
+			changeStartTime(start);
+			changeEndTime(end);
 		}
 	}
 
-	@Override public void onNewTimePicked(DateTime time) {
+	public void start(int year, int month, int day) {
+		try {
+			event.start(start.withYear(year).withMonthOfYear(month).withDayOfMonth(day));
+			startDateView.setText(Dates.formatDate(event.start()));
+		} catch (InvalidTimeException e) {
+			Toast.makeText(getContext(), R.string.invalid_start_date, Toast.LENGTH_LONG).show();
+		}
+	}
 
+	public void end(int year, int month, int day) {
+		try {
+			event.end(end.withYear(year).withMonthOfYear(month).withDayOfMonth(day));
+			endDateView.setText(Dates.formatDate(event.end()));
+		} catch (InvalidTimeException e) {
+			Toast.makeText(getContext(), R.string.invalid_end_date, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	public interface OnPickersRequestedListener {
+		void onStartDateRequested();
+
+		void onEndDateRequested();
+
+		void onStartTimeRequested();
+
+		void onEndTimeRequested();
 	}
 }

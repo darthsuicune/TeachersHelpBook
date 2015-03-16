@@ -3,9 +3,9 @@ package com.suicune.teachershelpbook.views.courses.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.Loader;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +75,7 @@ public class CoursePanelFragment extends Fragment {
 		//week.getEnd() returns the first day of the next week.
 		DateTime endOfWeek = week.getEnd().minusDays(1);
 		if (referenceWeek != null) {
-			referenceWeek.setText(Dates.formatRange(startOfWeek, endOfWeek));
+			referenceWeek.setText(Dates.formatDateRange(startOfWeek, endOfWeek));
 		}
 	}
 

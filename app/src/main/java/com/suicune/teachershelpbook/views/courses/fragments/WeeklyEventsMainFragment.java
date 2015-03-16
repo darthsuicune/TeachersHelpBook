@@ -86,8 +86,9 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onNewEventRequested(DateTime date) {
+		Event event = eventsProvider.createEmpty();
 		newEventDialog = new NewEventDialog();
-		newEventDialog.setup(date, this, eventsProvider, R.id.course_weekly_main_fragment);
+		newEventDialog.setup(this, event, R.id.course_weekly_main_fragment);
 		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
 	}
 

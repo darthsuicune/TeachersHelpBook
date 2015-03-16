@@ -10,9 +10,6 @@ import android.widget.TextView;
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.utils.Dates;
 
-/**
- * Created by lapuente on 10.03.15.
- */
 public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 	TextView dateView;
 
@@ -39,7 +36,7 @@ public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 
 	@Override protected void onDateUpdated() {
 		if(dateView != null) {
-			dateView.setText(Dates.formatRange(startOfWeek, endOfWeek));
+			dateView.setText(Dates.formatDateRange(startOfWeek, endOfWeek));
 		}
 	}
 
