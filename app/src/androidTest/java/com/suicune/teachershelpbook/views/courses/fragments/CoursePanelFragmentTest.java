@@ -35,7 +35,7 @@ public class CoursePanelFragmentTest
 		super.setUp();
 		provider = new EventsProvider();
 		activity = getActivity();
-		fragment = (CoursePanelFragment) activity.getFragmentManager()
+		fragment = (CoursePanelFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_overview_panel);
 		date = fragment.currentDate;
 	}
@@ -56,7 +56,7 @@ public class CoursePanelFragmentTest
 	public void testUpdateDateModifiesCurrentlyViewing() throws Throwable {
 		withTheCurrentlySelectedDateSetTo(new DateTime(2015, 3, 5, 0, 0));
 		whenWeClickOnTheNextWeekPanel();
-		theCurrentReferenceWeekIsUpdatedTo("9/3/2015 - 15/3/2015");
+		theCurrentReferenceWeekIsUpdatedTo("9/03/2015 - 15/03/2015");
 	}
 
 	private void withTheCurrentlySelectedDateSetTo(final DateTime dateTime) throws Throwable {

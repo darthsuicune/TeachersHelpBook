@@ -26,7 +26,7 @@ public class WeeklyEventsMainFragmentTest
 	public void setUp() throws Exception {
 		super.setUp();
 		activity = getActivity();
-		fragment = (WeeklyEventsMainFragment) activity.getFragmentManager()
+		fragment = (WeeklyEventsMainFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_weekly_main_fragment);
 		currentDate = new DateTime(2015, 3, 5, 0, 0);
 		try {

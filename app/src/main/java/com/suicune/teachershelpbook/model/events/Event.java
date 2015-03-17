@@ -1,5 +1,7 @@
 package com.suicune.teachershelpbook.model.events;
 
+import com.suicune.teachershelpbook.R;
+
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -53,14 +55,14 @@ public abstract class Event implements Serializable{
 
 	public void start(DateTime newDateTime) {
         if(newDateTime.isAfter(end)) {
-            throw new InvalidTimeException();
+            throw new InvalidDateTimeException(R.string.start_cannot_be_after_end);
         }
 		start = newDateTime;
 	}
 
 	public void end(DateTime newDateTime) {
         if(newDateTime.isBefore(start)) {
-            throw new InvalidTimeException();
+            throw new InvalidDateTimeException(R.string.start_cannot_be_after_end);
         }
 		end = newDateTime;
 	}

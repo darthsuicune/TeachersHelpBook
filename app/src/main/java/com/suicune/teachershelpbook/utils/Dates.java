@@ -1,6 +1,11 @@
 package com.suicune.teachershelpbook.utils;
 
+import com.suicune.teachershelpbook.R;
+import com.suicune.teachershelpbook.model.events.InvalidDateTimeException;
+
 import org.joda.time.DateTime;
+
+import java.util.StringTokenizer;
 
 /**
  * Created by denis on 08.03.15.
@@ -11,8 +16,9 @@ public class Dates {
 	}
 
 	public static String formatDateRange(DateTime start, DateTime end) {
-		return String.format("%d/%s/%d - %d/%s/%d", start.getDayOfMonth(), month(start),
-				start.getYear(), end.getDayOfMonth(), month(end), end.getYear());
+		return String
+				.format("%d/%s/%d - %d/%s/%d", start.getDayOfMonth(), month(start), start.getYear(),
+						end.getDayOfMonth(), month(end), end.getYear());
 	}
 
 	public static String formatTime(DateTime time) {
@@ -20,8 +26,9 @@ public class Dates {
 	}
 
 	public static String formatTimeRange(DateTime start, DateTime end) {
-		return String.format("%d:%s - %d:%s", start.getHourOfDay(), minute(start),
-				end.getHourOfDay(), minute(end));
+		return String
+				.format("%d:%s - %d:%s", start.getHourOfDay(), minute(start), end.getHourOfDay(),
+						minute(end));
 	}
 
 	public static DateTime dateForDayOfWeek(int day, DateTime startOfWeek) {
@@ -36,5 +43,46 @@ public class Dates {
 	private static String minute(DateTime time) {
 		int minute = time.getMinuteOfHour();
 		return (minute < 10) ? "0" + minute : Integer.toString(minute);
+	}
+
+	public static DateTime parseDate(String date) {
+		StringTokenizer tokenizer = dateTokenizer(date);
+		try {
+			int day = Integer.parseInt(tokenizer.nextToken());
+			int month = Integer.parseInt(tokenizer.nextToken());
+			int year = Integer.parseInt(tokenizer.nextToken());
+			return new DateTime(year, month, day, 0, 0);
+		} catch (NumberFormatException e) {
+			throw new InvalidDateTimeException(R.string.invalid_date_format);
+		}
+	}
+
+	private static StringTokenizer dateTokenizer(String date) {
+		StringTokenizer tokenizer;
+		if (date.contains("/")) {
+			tokenizer = new StringTokenizer(date, "/");
+		} else if (date.contains("-")) {
+			tokenizer = new StringTokenizer(date, "-");
+		} else {
+			tokenizer = new StringTokenizer(date, ".");
+		}
+		return tokenizer;
+	}
+
+	public static DateTime parseTime(String time) {
+		StringTokenizer tokenizer = new StringTokenizer(time, ":");
+		try {
+			int hour;
+			int minute = 0;
+			if(time.contains(":")) {
+				hour = Integer.parseInt(tokenizer.nextToken());
+				minute = Integer.parseInt(tokenizer.nextToken());
+			} else {
+				hour = Integer.parseInt(tokenizer.nextToken());
+			}
+			return new DateTime(0, 1, 1, hour, minute);
+		} catch (NumberFormatException e) {
+			throw new InvalidDateTimeException(R.string.invalid_time_format);
+		}
 	}
 }

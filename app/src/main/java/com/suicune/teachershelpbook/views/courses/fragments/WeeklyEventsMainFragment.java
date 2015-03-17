@@ -35,7 +35,6 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 
 	View rootView;
 	Map<DateTime, DailyEventsCardView> dailyCards;
-	private static NewEventDialog newEventDialog;
 
 
 	public WeeklyEventsMainFragment() {
@@ -87,7 +86,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 
 	@Override public void onNewEventRequested(DateTime date) {
 		Event event = eventsProvider.createEmpty();
-		newEventDialog = new NewEventDialog();
+		NewEventDialog newEventDialog = new NewEventDialog();
 		newEventDialog.setup(this, event, R.id.course_weekly_main_fragment);
 		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
 	}
@@ -98,6 +97,6 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		updateEventList(eventList);
 	}
 
-	@Override public void onDialogCanceled() {
+	@Override public void onDialogCancelled() {
 	}
 }

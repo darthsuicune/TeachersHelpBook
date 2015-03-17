@@ -16,7 +16,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class WeeklyEventsPreviewFragmentTest
         extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
     CourseOverviewActivity activity;
-	WeeklyEventsFragment fragment;
 
     public WeeklyEventsPreviewFragmentTest() {
         super(CourseOverviewActivity.class);
@@ -39,7 +38,7 @@ public class WeeklyEventsPreviewFragmentTest
 
 	public void testClickingNextWeekFragmentViewShowsFollowingWeekInOwnPanel() throws Exception {
 		whenWeClickOnThePanel(R.id.course_weekly_next);
-		weFindAPanelWithTextBeing("16/3/2015 - 22/3/2015"); //2 weeks from current
+		weFindAPanelWithTextBeing("16/03/2015 - 22/03/2015"); //2 weeks from current
 	}
 
 	private void whenWeClickOnThePanel(int panel) {
@@ -52,11 +51,11 @@ public class WeeklyEventsPreviewFragmentTest
 
 	public void testClickingSecondNextWeekFragmentViewShowsSecondNextWeekInMain() throws Exception {
 		whenWeClickOnThePanel(R.id.course_weekly_second_next);
-		weFindAPanelWithTextBeing("30/3/2015 - 5/4/2015"); // 4 weeks from current
+		weFindAPanelWithTextBeing("30/03/2015 - 5/04/2015"); // 4 weeks from current
     }
 
     public void testClickingPreviousWeekFragmentViewShowsPreviousWeekInMain() throws Exception {
         whenWeClickOnThePanel(R.id.course_weekly_previous);
-		weFindAPanelWithTextBeing("16/2/2015 - 22/2/2015"); //2 weeks before current
+		weFindAPanelWithTextBeing("16/02/2015 - 22/02/2015"); //2 weeks before current
     }
 }

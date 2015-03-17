@@ -1,30 +1,36 @@
 package com.suicune.teachershelpbook.views.events;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
-import com.suicune.teachershelpbook.model.events.InvalidTimeException;
+import com.suicune.teachershelpbook.model.events.InvalidDateTimeException;
 import com.suicune.teachershelpbook.utils.Dates;
 
 import org.joda.time.DateTime;
 
 public class NewEventView extends LinearLayout {
 
+	ImageView startDateIconView;
+	ImageView endDateIconView;
+	ImageView startTimeIconView;
+	ImageView endTimeIconView;
 	EditText titleView;
 	EditText descriptionView;
-	TextView startDateView;
-	TextView endDateView;
-	TextView startTimeView;
-	TextView endTimeView;
+	EditText startDateView;
+	EditText endDateView;
+	EditText startTimeView;
+	EditText endTimeView;
 	CheckBox fullDayCheckBox;
 
 	DateTime start;
@@ -49,11 +55,15 @@ public class NewEventView extends LinearLayout {
 	private void loadViews() {
 		titleView = (EditText) findViewById(R.id.title);
 		descriptionView = (EditText) findViewById(R.id.description);
-		startTimeView = (TextView) findViewById(R.id.start_time);
-		endTimeView = (TextView) findViewById(R.id.end_time);
+		startDateView = (EditText) findViewById(R.id.start_date);
+		endDateView = (EditText) findViewById(R.id.end_date);
+		startTimeView = (EditText) findViewById(R.id.start_time);
+		endTimeView = (EditText) findViewById(R.id.end_time);
 		fullDayCheckBox = (CheckBox) findViewById(R.id.full_day_checkbox);
-		startDateView = (TextView) findViewById(R.id.start_date);
-		endDateView = (TextView) findViewById(R.id.end_date);
+		startDateIconView = (ImageView) findViewById(R.id.start_date_icon);
+		endDateIconView = (ImageView) findViewById(R.id.end_date_icon);
+		startTimeIconView = (ImageView) findViewById(R.id.start_time_icon);
+		endTimeIconView = (ImageView) findViewById(R.id.end_time_icon);
 	}
 
 	private void prepareViews() {
@@ -62,22 +72,43 @@ public class NewEventView extends LinearLayout {
 		startDateView.setText(Dates.formatDate(start));
 		endDateView.setText(Dates.formatDate(end));
 
-		startTimeView.setOnClickListener(new OnClickListener() {
+		startDateView.addTextChangedListener(new EventTextWatcher() {
+			@Override public void afterTextChanged(Editable editable) {
+				onStartDateTextChanged(editable);
+			}
+		});
+		endDateView.addTextChangedListener(new EventTextWatcher() {
+			@Override public void afterTextChanged(Editable editable) {
+				onEndDateTextChanged(editable);
+			}
+		});
+		startTimeView.addTextChangedListener(new EventTextWatcher() {
+			@Override public void afterTextChanged(Editable editable) {
+				onStartTimeTextChanged(editable);
+			}
+		});
+		endTimeView.addTextChangedListener(new EventTextWatcher() {
+			@Override public void afterTextChanged(Editable editable) {
+				onEndTimeTextChanged(editable);
+			}
+		});
+
+		startTimeIconView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
 				listener.onStartTimeRequested();
 			}
 		});
-		endTimeView.setOnClickListener(new OnClickListener() {
+		endTimeIconView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
 				listener.onEndTimeRequested();
 			}
 		});
-		startDateView.setOnClickListener(new OnClickListener() {
+		startDateIconView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
 				listener.onStartDateRequested();
 			}
 		});
-		endDateView.setOnClickListener(new OnClickListener() {
+		endDateIconView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
 				listener.onEndDateRequested();
 			}
@@ -90,17 +121,85 @@ public class NewEventView extends LinearLayout {
 		});
 	}
 
-	public void changeStartTime(DateTime newTime) {
-		event.start(newTime);
-		startTimeView.setText(Dates.formatTime(newTime));
+	private void onStartDateTextChanged(Editable editable) {
+		try {
+			DateTime date =
+					Dates.parseDate(editable.toString()).withTime(event.start().toLocalTime());
+			changeStartDate(date);
+		} catch (InvalidDateTimeException e) {
+
+		}
 	}
 
-	public void changeEndTime(DateTime newTime) {
-		event.end(newTime);
-		endTimeView.setText(Dates.formatTime(newTime));
+	void changeStartDate(DateTime newDate) {
+		try {
+			event.start(newDate);
+			startDateView.setText(Dates.formatDate(newDate));
+		} catch (InvalidDateTimeException e) {
+			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+		}
 	}
 
-	public void onFullDayChanged(boolean isFullDay) {
+	private void onEndDateTextChanged(Editable editable) {
+		try {
+			DateTime date =
+					Dates.parseDate(editable.toString()).withTime(event.end().toLocalTime());
+			changeEndDate(date);
+		} catch (InvalidDateTimeException e) {
+
+		}
+	}
+
+	void changeEndDate(DateTime newDate) {
+		try {
+			event.end(newDate);
+			endDateView.setText(Dates.formatDate(newDate));
+		} catch (InvalidDateTimeException e) {
+			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+		}
+
+	}
+
+	private void onStartTimeTextChanged(Editable editable) {
+		try {
+			DateTime time =
+					Dates.parseTime(editable.toString()).withDate(event.start().toLocalDate());
+			changeStartTime(time);
+		} catch (InvalidDateTimeException e) {
+
+		}
+	}
+
+	void changeStartTime(DateTime newTime) {
+		try {
+			event.start(newTime);
+			startTimeView.setText(Dates.formatTime(newTime));
+		} catch (InvalidDateTimeException e) {
+			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void onEndTimeTextChanged(Editable editable) {
+		try {
+			DateTime time =
+					Dates.parseTime(editable.toString()).withDate(event.start().toLocalDate());
+			changeStartTime(time);
+		} catch (InvalidDateTimeException e) {
+
+		}
+	}
+
+	void changeEndTime(DateTime newTime) {
+		try {
+			event.end(newTime);
+			endTimeView.setText(Dates.formatTime(newTime));
+		} catch (InvalidDateTimeException e) {
+			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void onFullDayChanged(boolean isFullDay) {
+		startTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endDateView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		if (isFullDay) {
@@ -112,24 +211,9 @@ public class NewEventView extends LinearLayout {
 		}
 	}
 
-	public void start(int year, int month, int day) {
-		try {
-			event.start(start.withYear(year).withMonthOfYear(month).withDayOfMonth(day));
-			startDateView.setText(Dates.formatDate(event.start()));
-		} catch (InvalidTimeException e) {
-			Toast.makeText(getContext(), R.string.invalid_start_date, Toast.LENGTH_LONG).show();
-		}
-	}
-
-	public void end(int year, int month, int day) {
-		try {
-			event.end(end.withYear(year).withMonthOfYear(month).withDayOfMonth(day));
-			endDateView.setText(Dates.formatDate(event.end()));
-		} catch (InvalidTimeException e) {
-			Toast.makeText(getContext(), R.string.invalid_end_date, Toast.LENGTH_LONG).show();
-		}
-	}
-
+	/**
+	 * Users of this view are expected to implement this interface for communication of requests
+	 */
 	public interface OnPickersRequestedListener {
 		void onStartDateRequested();
 
@@ -138,5 +222,19 @@ public class NewEventView extends LinearLayout {
 		void onStartTimeRequested();
 
 		void onEndTimeRequested();
+	}
+
+	/**
+	 * Created exclusively for convenience to cut the 2 useless calls from everywhere I have
+	 * to add it. I haven't been able to figure out how to properly export it.
+	 */
+	private abstract class EventTextWatcher implements TextWatcher {
+		@Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+		}
+
+		@Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+		}
 	}
 }
