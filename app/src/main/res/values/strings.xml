@@ -20,4 +20,6 @@
     <string name="invalid_date_format">Invalid date format. It must be DD/MM/YYYY</string>
     <string name="invalid_time_format">Invalid time format, it must be hh:mm</string>
     <string name="start_cannot_be_after_end">Start cannot occur after the end</string>
+    <string name="error_invalid_start_date">Invalid start date</string>
+    <string name="error_invalid_end_date">Invalid end date</string>
 </resources>

@@ -96,6 +96,7 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 		assertTrue(mockListener.dialogCancelled);
 	}
 
+
 	private class MockDialogListener implements NewEventDialog.NewEventDialogListener {
 		Event event;
 		boolean dialogCancelled = false;

@@ -33,8 +33,6 @@ public class NewEventView extends LinearLayout {
 	EditText endTimeView;
 	CheckBox fullDayCheckBox;
 
-	DateTime start;
-	DateTime end;
 	Event event;
 	OnPickersRequestedListener listener;
 
@@ -44,8 +42,6 @@ public class NewEventView extends LinearLayout {
 
 	public void setup(Event event, OnPickersRequestedListener listener) {
 		this.event = event;
-		this.start = event.start();
-		this.end = event.end();
 		this.listener = listener;
 
 		loadViews();
@@ -67,10 +63,10 @@ public class NewEventView extends LinearLayout {
 	}
 
 	private void prepareViews() {
-		startTimeView.setText(Dates.formatTime(start));
-		endTimeView.setText(Dates.formatTime(end));
-		startDateView.setText(Dates.formatDate(start));
-		endDateView.setText(Dates.formatDate(end));
+		startTimeView.setText(Dates.formatTime(event.start()));
+		endTimeView.setText(Dates.formatTime(event.end()));
+		startDateView.setText(Dates.formatDate(event.start()));
+		endDateView.setText(Dates.formatDate(event.end()));
 
 		startDateView.addTextChangedListener(new EventTextWatcher() {
 			@Override public void afterTextChanged(Editable editable) {
@@ -125,9 +121,9 @@ public class NewEventView extends LinearLayout {
 		try {
 			DateTime date =
 					Dates.parseDate(editable.toString()).withTime(event.start().toLocalTime());
-			changeStartDate(date);
+			event.start(date);
 		} catch (InvalidDateTimeException e) {
-
+			startDateView.setError(getContext().getString(R.string.error_invalid_start_date));
 		}
 	}
 
@@ -137,6 +133,7 @@ public class NewEventView extends LinearLayout {
 			startDateView.setText(Dates.formatDate(newDate));
 		} catch (InvalidDateTimeException e) {
 			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+			startDateView.setError(getContext().getString(R.string.error_invalid_start_date));
 		}
 	}
 
@@ -144,9 +141,9 @@ public class NewEventView extends LinearLayout {
 		try {
 			DateTime date =
 					Dates.parseDate(editable.toString()).withTime(event.end().toLocalTime());
-			changeEndDate(date);
+			event.end(date);
 		} catch (InvalidDateTimeException e) {
-
+			endDateView.setError(getContext().getString(R.string.error_invalid_end_date));
 		}
 	}
 
@@ -155,7 +152,7 @@ public class NewEventView extends LinearLayout {
 			event.end(newDate);
 			endDateView.setText(Dates.formatDate(newDate));
 		} catch (InvalidDateTimeException e) {
-			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+			endDateView.setError(getContext().getString(R.string.error_invalid_end_date));
 		}
 
 	}
@@ -164,7 +161,7 @@ public class NewEventView extends LinearLayout {
 		try {
 			DateTime time =
 					Dates.parseTime(editable.toString()).withDate(event.start().toLocalDate());
-			changeStartTime(time);
+			event.start(time);
 		} catch (InvalidDateTimeException e) {
 
 		}
@@ -183,7 +180,7 @@ public class NewEventView extends LinearLayout {
 		try {
 			DateTime time =
 					Dates.parseTime(editable.toString()).withDate(event.start().toLocalDate());
-			changeStartTime(time);
+			event.end(time);
 		} catch (InvalidDateTimeException e) {
 
 		}
@@ -203,11 +200,8 @@ public class NewEventView extends LinearLayout {
 		endDateView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		if (isFullDay) {
-			changeStartTime(start.withTime(0, 0, 0, 0));
-			changeEndTime(end.withTime(23, 59, 59, 999));
-		} else {
-			changeStartTime(start);
-			changeEndTime(end);
+			changeStartTime(event.start().withTime(0, 0, 0, 0));
+			changeEndTime(event.end().withTime(23, 59, 59, 999));
 		}
 	}
 
@@ -226,7 +220,7 @@ public class NewEventView extends LinearLayout {
 
 	/**
 	 * Created exclusively for convenience to cut the 2 useless calls from everywhere I have
-	 * to add it. I haven't been able to figure out how to properly export it.
+	 * to add it. I haven't been able to figure out how to properly create a generic one.
 	 */
 	private abstract class EventTextWatcher implements TextWatcher {
 		@Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
