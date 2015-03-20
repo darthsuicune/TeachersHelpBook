@@ -7,10 +7,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.suicune.teachershelpbook.R;
 import com.suicune.teachershelpbook.model.events.Event;
@@ -110,7 +110,7 @@ public class NewEventView extends LinearLayout {
 			}
 		});
 
-		fullDayCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		fullDayCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton button, boolean checked) {
 				onFullDayChanged(checked);
 			}
@@ -122,17 +122,8 @@ public class NewEventView extends LinearLayout {
 			DateTime date =
 					Dates.parseDate(editable.toString()).withTime(event.start().toLocalTime());
 			event.start(date);
+			startDateView.setError(null);
 		} catch (InvalidDateTimeException e) {
-			startDateView.setError(getContext().getString(R.string.error_invalid_start_date));
-		}
-	}
-
-	void changeStartDate(DateTime newDate) {
-		try {
-			event.start(newDate);
-			startDateView.setText(Dates.formatDate(newDate));
-		} catch (InvalidDateTimeException e) {
-			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
 			startDateView.setError(getContext().getString(R.string.error_invalid_start_date));
 		}
 	}
@@ -142,19 +133,10 @@ public class NewEventView extends LinearLayout {
 			DateTime date =
 					Dates.parseDate(editable.toString()).withTime(event.end().toLocalTime());
 			event.end(date);
+			endDateView.setError(null);
 		} catch (InvalidDateTimeException e) {
 			endDateView.setError(getContext().getString(R.string.error_invalid_end_date));
 		}
-	}
-
-	void changeEndDate(DateTime newDate) {
-		try {
-			event.end(newDate);
-			endDateView.setText(Dates.formatDate(newDate));
-		} catch (InvalidDateTimeException e) {
-			endDateView.setError(getContext().getString(R.string.error_invalid_end_date));
-		}
-
 	}
 
 	private void onStartTimeTextChanged(Editable editable) {
@@ -162,17 +144,9 @@ public class NewEventView extends LinearLayout {
 			DateTime time =
 					Dates.parseTime(editable.toString()).withDate(event.start().toLocalDate());
 			event.start(time);
+			startTimeView.setError(null);
 		} catch (InvalidDateTimeException e) {
-
-		}
-	}
-
-	void changeStartTime(DateTime newTime) {
-		try {
-			event.start(newTime);
-			startTimeView.setText(Dates.formatTime(newTime));
-		} catch (InvalidDateTimeException e) {
-			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+			startTimeView.setError(getContext().getString(R.string.error_invalid_start_time));
 		}
 	}
 
@@ -181,17 +155,9 @@ public class NewEventView extends LinearLayout {
 			DateTime time =
 					Dates.parseTime(editable.toString()).withDate(event.start().toLocalDate());
 			event.end(time);
+			endTimeView.setError(null);
 		} catch (InvalidDateTimeException e) {
-
-		}
-	}
-
-	void changeEndTime(DateTime newTime) {
-		try {
-			event.end(newTime);
-			endTimeView.setText(Dates.formatTime(newTime));
-		} catch (InvalidDateTimeException e) {
-			Toast.makeText(getContext(), e.reason(), Toast.LENGTH_LONG).show();
+			endTimeView.setError(getContext().getString(R.string.error_invalid_end_time));
 		}
 	}
 
@@ -199,23 +165,29 @@ public class NewEventView extends LinearLayout {
 		startTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endDateView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
+		startTimeIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
+		endDateIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
+		endTimeIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		if (isFullDay) {
 			changeStartTime(event.start().withTime(0, 0, 0, 0));
 			changeEndTime(event.end().withTime(23, 59, 59, 999));
 		}
 	}
 
-	/**
-	 * Users of this view are expected to implement this interface for communication of requests
-	 */
-	public interface OnPickersRequestedListener {
-		void onStartDateRequested();
+	void changeStartDate(DateTime newDate) {
+		startDateView.setText(Dates.formatDate(newDate));
+	}
 
-		void onEndDateRequested();
+	void changeEndDate(DateTime newDate) {
+		endDateView.setText(Dates.formatDate(newDate));
+	}
 
-		void onStartTimeRequested();
+	void changeStartTime(DateTime newTime) {
+		startTimeView.setText(Dates.formatTime(newTime));
+	}
 
-		void onEndTimeRequested();
+	void changeEndTime(DateTime newTime) {
+		endTimeView.setText(Dates.formatTime(newTime));
 	}
 
 	/**

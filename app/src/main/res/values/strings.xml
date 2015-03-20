@@ -22,4 +22,6 @@
     <string name="start_cannot_be_after_end">Start cannot occur after the end</string>
     <string name="error_invalid_start_date">Invalid start date</string>
     <string name="error_invalid_end_date">Invalid end date</string>
+    <string name="error_invalid_start_time">Invalid start time</string>
+    <string name="error_invalid_end_time">Invalid end time</string>
 </resources>

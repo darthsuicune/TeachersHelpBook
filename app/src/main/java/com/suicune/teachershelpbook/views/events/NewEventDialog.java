@@ -20,8 +20,7 @@ import com.suicune.teachershelpbook.utils.Dates;
 
 import org.joda.time.DateTime;
 
-public class NewEventDialog extends DialogFragment
-		implements NewEventView.OnPickersRequestedListener {
+public class NewEventDialog extends DialogFragment implements OnPickersRequestedListener {
 	private static final String ARG_PARENT_ID = "parent id";
 	private static final String ARG_EVENT = "event";
 	private static final String START_DATE_DIALOG_TAG = "start date dialog";
