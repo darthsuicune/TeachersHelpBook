@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.suicune.teachershelpbook.views.events.NewEventView
+<com.dlgdev.teachers.helpbook.views.events.NewEventView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/new_event_dialog"
     android:orientation="vertical"
@@ -126,4 +126,4 @@
             android:layout_below="@id/start_time"/>
     </RelativeLayout>
 
-</com.suicune.teachershelpbook.views.events.NewEventView>
+</com.dlgdev.teachers.helpbook.views.events.NewEventView>

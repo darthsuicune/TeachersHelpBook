@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.0"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.suicune.teachershelpbook"
+        applicationId "com.dlgdev.teachers.helpbook"
         minSdkVersion 9
         targetSdkVersion 22
         versionCode 1
@@ -25,13 +25,16 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.0'
+    compile 'com.android.support:cardview-v7:22.1.0'
+    compile 'com.android.support:recyclerview-v7:22.1.0'
     compile 'joda-time:joda-time:2.7'
-    compile 'com.android.support:cardview-v7:22.0.0'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-    androidTestCompile 'org.mockito:mockito-core:2.0.5-beta'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    androidTestCompile 'com.android.support:support-annotations:22.1.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
+    androidTestCompile 'com.android.support.test:runner:0.2'
+    androidTestCompile 'com.android.support.test:rules:0.2'
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+    androidTestCompile 'org.mockito:mockito-core:2.0.7-beta'
 }

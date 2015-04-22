@@ -21,13 +21,13 @@
         android:layout_height="match_parent">
 
         <fragment
-            android:name="com.suicune.teachershelpbook.views.courses.fragments.CoursePanelFragment"
+            android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment"
             android:id="@+id/course_overview_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <fragment
-            android:name="com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+            android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
             android:id="@+id/course_weekly_previous"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
     </LinearLayout>
 
     <fragment
-        android:name="com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsMainFragment"
+        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment"
         android:id="@+id/course_weekly_main_fragment"
         android:layout_margin="4dp"
         android:layout_width="0dp"
@@ -51,13 +51,13 @@
         android:layout_height="match_parent">
 
         <fragment
-            android:name="com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+            android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
             android:id="@+id/course_weekly_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <fragment
-            android:name="com.suicune.teachershelpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+            android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
             android:id="@+id/course_weekly_second_next"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
