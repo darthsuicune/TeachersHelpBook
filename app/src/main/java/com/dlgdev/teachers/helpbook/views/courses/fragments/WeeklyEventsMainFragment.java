@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
+import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog;
@@ -48,8 +49,10 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override protected void onDateUpdated() {
-		prepareMainLayout();
-		updateViews();
+		if(isAdded()) {
+			prepareMainLayout();
+			updateViews();
+		}
 	}
 
 	private void prepareMainLayout() {
@@ -85,7 +88,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onNewEventRequested(DateTime date) {
-		Event event = eventsProvider.createEmpty();
+		Event event = new EventsProvider().createEmpty();
 		NewEventDialog newEventDialog = new NewEventDialog();
 		newEventDialog.setup(this, event, R.id.course_weekly_main_fragment);
 		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);

@@ -61,7 +61,7 @@ public class NewEventDialogTest {
 		assertNotNull(dialog.event);
 	}
 
-	@Test public void testRotationHoldsTheData() throws Throwable {
+	@Test public void testDestructionCycleHoldsTheData() throws Throwable {
 		whenWeEnterSomeData(someData);
 		andDestroyRestoreTheState();
 		theDataIsHeld(someData);

@@ -16,9 +16,8 @@ import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
 
-import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.*;
+import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyPreviewListener;
 
@@ -85,7 +84,7 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 		}
 	}
 
-	@Override public void onNewEventRequested(Period time) {
+	@Override public void onNewEventRequested(DateTime time) {
 		//TODO: Do something
 	}
 

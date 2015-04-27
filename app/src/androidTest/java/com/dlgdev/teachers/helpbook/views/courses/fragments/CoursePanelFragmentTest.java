@@ -23,6 +23,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.dlgdev.teachers.helpbook.utils.Dates.formatDate;
 import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.hasText;
 
 @RunWith(AndroidJUnit4.class)
@@ -46,8 +47,7 @@ public class CoursePanelFragmentTest {
 	}
 
 	private void theCurrentDateIsntModified() {
-		onView(withId(R.id.current_date))
-				.check(matches(withText(Dates.formatDate(new DateTime()))));
+		onView(withId(R.id.current_date)).check(matches(withText(formatDate(DateTime.now()))));
 	}
 
 	@Test public void testUpdateDateModifiesCurrentlyViewing() throws Throwable {
@@ -77,10 +77,14 @@ public class CoursePanelFragmentTest {
 		final List<Event> list = new ArrayList<>();
 		list.add(provider.createEmpty());
 
-		CoursePanelFragment fragment =
+		final CoursePanelFragment fragment =
 				(CoursePanelFragment) rule.getActivity().getSupportFragmentManager()
 						.findFragmentById(R.id.course_overview_panel);
-		fragment.eventList(provider.listFromList(list));
+		rule.runOnUiThread(new Runnable() {
+			@Override public void run() {
+				fragment.eventList(provider.listFromList(list));
+			}
+		});
 	}
 
 	private void theEventCounterIsSetTo(int count) {

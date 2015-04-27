@@ -1,40 +1,35 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
-import android.support.test.rule.ActivityTestRule;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.UiThreadTest;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
 import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
-import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.backgroundIs;
-import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.hasChildren;
-import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.instance;
 import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.NewEventsRequestedListener;
-import static org.hamcrest.core.IsNot.not;
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -44,29 +39,26 @@ public class DailyEventsCardViewTest {
 	DailyEventsCardView card;
 	NewEventsRequestedListener listener;
 	DateTime date;
-	CourseOverviewActivity activity;
 	EventList eventList;
 	EventsProvider provider;
 
-	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
-			new ActivityTestRule<>(CourseOverviewActivity.class);
-
 	@Before public void setUp() throws Exception {
 		provider = new EventsProvider();
-		activity = rule.getActivity();
-
-		card = (DailyEventsCardView) activity.findViewById(R.id.monday_card);
+		LayoutInflater inflater = (LayoutInflater) InstrumentationRegistry.getTargetContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		card = (DailyEventsCardView) inflater.inflate(R.layout.daily_events_card, null);
 		listener = mock(NewEventsRequestedListener.class);
-		date = Dates.dateForDayOfWeek(MONDAY, new DateTime());
+		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
+		setupCard(date);
 	}
 
-	@UiThreadTest @Test public void testSetupPreparesTheViewFieldsCorrectly() throws Throwable {
-		whenWeSetupTheView(date);
-		theFieldsAreCorrectlySetup();
-	}
-
-	private void whenWeSetupTheView(final DateTime date) throws Throwable {
+	private void setupCard(DateTime date) {
 		card.setup(listener, date);
+	}
+
+
+	@Test public void testSetupPreparesTheViewFieldsCorrectly() throws Exception {
+		theFieldsAreCorrectlySetup();
 	}
 
 	private void theFieldsAreCorrectlySetup() {
@@ -79,14 +71,12 @@ public class DailyEventsCardViewTest {
 		assertEquals(card.dateView.getText(), Dates.formatDate(date));
 	}
 
-	@UiThreadTest @Test public void testSetupPreparesTheAddNewViewSoItCallsTheListener()
-			throws Throwable {
-		whenWeSetupTheView(date);
-		andClickOnAddNew();
+	@Test public void testSetupPreparesTheAddNewViewSoItCallsTheListener() throws Exception {
+		whenWeClickOnAddNew();
 		theListenerGetsCalled();
 	}
 
-	private void andClickOnAddNew() throws Throwable {
+	private void whenWeClickOnAddNew() throws Exception {
 		card.addNewView.performClick();
 	}
 
@@ -112,26 +102,25 @@ public class DailyEventsCardViewTest {
 	}
 
 	private void theDateSubviewDisplaysTheProperText() {
-		onView(instance(card.dateView)).check(matches(withText(Dates.formatDate(card.date))));
+		assertTrue(card.dateView.getText().toString().equals(Dates.formatDate(card.date)));
 	}
 
 	@Test public void testAfterLaunchHighlightsTheCurrentDayInTheList() throws Throwable {
-		whenWeSetupTheView(new DateTime());
 		weGetAListWithTheExpectedEventsWithTodayHighlighted();
 	}
 
 	private void weGetAListWithTheExpectedEventsWithTodayHighlighted() {
-		onView(instance(card)).check(matches(
-				backgroundIs(activity.getResources().getColor(R.color.material_deep_teal_200))));
+		assertTrue(backgroundIs(InstrumentationRegistry.getTargetContext().getResources()
+				.getColor(R.color.material_deep_teal_200)).matches(card));
 	}
 
 	@Test public void testAfterLaunchAnotherDayIsntHighlighted() throws Exception {
-		onView(instance(card)).check(matches(not(backgroundIs(
-				activity.getResources().getColor(R.color.material_deep_teal_200)))));
+		setupCard(DateTime.now().plusDays(1));
+		assertFalse(backgroundIs(InstrumentationRegistry.getTargetContext().getResources()
+				.getColor(R.color.material_deep_teal_200)).matches(card));
 	}
 
-	@UiThreadTest @Test public void testUpdateEventsWithoutEventsShowsAnEmptyListMessage()
-			throws Throwable {
+	@Test public void testUpdateEventsWithoutEventsShowsAnEmptyListMessage() throws Throwable {
 		whenWeSendAnUpdatedEventListWithXEvents(0);
 		theUserCanSeeAnEmptyListMessage();
 	}
@@ -146,8 +135,12 @@ public class DailyEventsCardViewTest {
 	}
 
 	private void theUserCanSeeAnEmptyListMessage() {
-		onView(instance(card.emptyEventListView)).check(matches(isDisplayed()));
-		onView(instance(card.eventListView)).check(matches(not(isDisplayed())));
+		assertTrue(hasVisibility(card.emptyEventListView, View.VISIBLE));
+		assertTrue(hasVisibility(card.eventListView, View.GONE));
+	}
+
+	private boolean hasVisibility(View v, int visibility) {
+		return v.getVisibility() == visibility;
 	}
 
 	@Test public void testUpdateEventsWithEventsMakesTheMessageDisappear() throws Throwable {
@@ -156,8 +149,8 @@ public class DailyEventsCardViewTest {
 	}
 
 	private void theUserCannotSeeTheEmptyListMessage() {
-		onView(instance(card.emptyEventListView)).check(matches(not(isDisplayed())));
-		onView(instance(card.eventListView)).check(matches(isDisplayed()));
+		assertTrue(hasVisibility(card.emptyEventListView, View.GONE));
+		assertTrue(hasVisibility(card.eventListView, View.VISIBLE));
 	}
 
 	@Test public void testUpdateEventsWithEventsPopulatesTheEventList() throws Throwable {
@@ -166,6 +159,6 @@ public class DailyEventsCardViewTest {
 	}
 
 	private void theListIsPopulatedWithTheEventInfo(int count) {
-		onView(instance(card.eventListView)).check(matches(hasChildren(count)));
+		assertEquals(card.eventListView.getAdapter().getItemCount(), count);
 	}
 }

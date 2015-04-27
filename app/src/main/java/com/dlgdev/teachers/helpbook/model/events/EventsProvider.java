@@ -25,7 +25,7 @@ public class EventsProvider implements Serializable {
 	 * @return new event that starts right now and ends after one hour
 	 */
 	public Event createEmpty() {
-		DateTime start = new DateTime();
+		DateTime start = DateTime.now();
 		return createEmpty(start);
 	}
 
@@ -41,8 +41,7 @@ public class EventsProvider implements Serializable {
 	}
 
 	public Event createEmpty(DateTime start, DateTime end) {
-		Event event = new Event(start, end);
-		return event;
+		return new Event(start, end);
 	}
 
 	public Event newEvent(String title, String description) {

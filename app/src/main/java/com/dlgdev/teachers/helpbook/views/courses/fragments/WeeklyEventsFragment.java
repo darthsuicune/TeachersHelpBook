@@ -11,12 +11,10 @@ import android.support.v4.content.Loader;
 import com.dlgdev.teachers.helpbook.Settings;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
+import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.EventListLoader;
-import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.Period;
 
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.joda.time.DateTimeConstants.SATURDAY;
@@ -24,8 +22,6 @@ import static org.joda.time.DateTimeConstants.SUNDAY;
 
 public abstract class WeeklyEventsFragment extends Fragment {
 	static final int LOADER_EVENTS = 1;
-
-	EventsProvider eventsProvider;
 	WeeklyEventsListener eventsListener;
 	WeeklyPreviewListener previewListener;
 	DateTime referenceDate;
@@ -46,7 +42,6 @@ public abstract class WeeklyEventsFragment extends Fragment {
 			throw new ClassCastException(
 					activity.getLocalClassName() + " should implement the callback interfaces");
 		}
-		eventsProvider = new EventsProvider();
 		prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		startingDayOfWeek = prefs.getInt(Settings.FIRST_DAY_OF_WEEK, MONDAY);
 		endingDayOfWeek = (startingDayOfWeek == MONDAY) ? SUNDAY : SATURDAY;
@@ -54,32 +49,33 @@ public abstract class WeeklyEventsFragment extends Fragment {
 
 	public void updateDate(DateTime currentDate) {
 		this.referenceDate = currentDate;
-		Interval week = referenceDate.weekOfWeekyear().toInterval();
-		startOfWeek = week.getStart();
-		endOfWeek = week.getEnd().minusDays(1); //week.end returns the first day of the next week.
-		loadEvents();
+		startOfWeek = Dates.startOfWeek(referenceDate);
+		endOfWeek = Dates.endOfWeek(referenceDate);
 		onDateUpdated();
+		if(isAdded()) {
+			loadEvents();
+		}
 	}
 
-	void loadEvents() {
+	protected abstract void onDateUpdated();
+
+	private void loadEvents() {
 		Bundle args = new Bundle();
 		args.putLong(EventListLoader.KEY_START, startOfWeek.getMillis());
 		args.putLong(EventListLoader.KEY_END, endOfWeek.getMillis());
 		getLoaderManager().restartLoader(LOADER_EVENTS, args, new EventLoaderHelper());
 	}
 
-	protected abstract void onDateUpdated();
-
 	public interface WeeklyPreviewListener {
-		public void onPreviewTapped(DateTime referenceDate);
+		void onPreviewTapped(DateTime referenceDate);
 	}
 
 	public interface WeeklyEventsListener {
-		public void onNewEventRequested(Period period);
+		void onNewEventRequested(DateTime startDate);
 
-		public void onExistingEventSelected(Event event);
+		void onExistingEventSelected(Event event);
 
-		public void onNewDaySelected(DateTime newDate);
+		void onNewDaySelected(DateTime newDate);
 	}
 
 	class EventLoaderHelper implements LoaderManager.LoaderCallbacks<EventList> {
