@@ -1,16 +1,25 @@
 package com.dlgdev.teachers.helpbook.model.courses;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import com.activeandroid.query.Select;
 
-import junit.framework.TestCase;
-
 import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class CourseTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(AndroidJUnit4.class)
+public class CourseTest {
 	Course course;
 	int count;
 
-	@Override public void setUp() throws Exception {
+	@Before public void setUp() throws Exception {
 		DateTime start = new DateTime();
 		DateTime end = new DateTime();
 		count = new Select().from(Course.class).count();
@@ -18,15 +27,14 @@ public class CourseTest extends TestCase {
 		course.save();
 	}
 
-	@Override protected void tearDown() throws Exception {
-		super.tearDown();
+	@After public void tearDown() throws Exception {
 		course.delete();
 	}
 
-	public void testModelGetsAnIdAfterSaving() throws Exception {
+	@Test public void testModelGetsAnIdAfterSaving() throws Exception {
 		assertTrue(course.getId() > 0);
 	}
-	public void testModelIsStoredInTheDb() throws Exception {
+	@Test public void testModelIsStoredInTheDb() throws Exception {
 		Course course = whenWeQueryTheDatabaseForOne();
 		assertNotNull(course);
 	}
@@ -35,7 +43,7 @@ public class CourseTest extends TestCase {
 		return new Select().from(Course.class).orderBy("_ID DESC").limit(1).executeSingle();
 	}
 
-	public void testModelEqualsTheStoredObject() throws Exception {
+	@Test public void testModelEqualsTheStoredObject() throws Exception {
 		Course course = whenWeQueryTheDatabaseForOne();
 		assertEquals(course, this.course);
 	}

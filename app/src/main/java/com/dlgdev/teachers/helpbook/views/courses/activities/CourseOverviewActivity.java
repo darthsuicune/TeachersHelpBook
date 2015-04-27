@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,13 +18,13 @@ import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewF
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.*;
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyPreviewListener;
 
 
-public class CourseOverviewActivity extends ActionBarActivity
-		implements WeeklyEventsListener, WeeklyPreviewListener,
-		CoursePanelFragment.CoursePanelListener {
+public class CourseOverviewActivity extends AppCompatActivity implements WeeklyEventsListener,
+		WeeklyPreviewListener, CoursePanelListener {
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;

@@ -1,49 +1,55 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class CourseOverviewActivityTest
-		extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(AndroidJUnit4.class)
+public class CourseOverviewActivityTest {
 	CourseOverviewActivity activity;
 
-	public CourseOverviewActivityTest() {
-		super(CourseOverviewActivity.class);
-	}
+	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
+			new ActivityTestRule<>(CourseOverviewActivity.class);
 
-	public void setUp() throws Exception {
-		super.setUp();
-		activity = getActivity();
+	@Before public void setUp() throws Exception {
+		activity = rule.getActivity();
 		activity.currentDate = new DateTime(2015, 3, 6, 0, 0);
 	}
 
-	public void testPreConditionsMainFragmentIsntNull() throws Exception {
+	@Test public void testPreConditionsMainFragmentIsntNull() throws Exception {
 		assertNotNull(activity.mainViewFragment);
 	}
 
-	public void testPreConditionsPreviewsArentNull() throws Exception {
+	@Test public void testPreConditionsPreviewsArentNull() throws Exception {
 		assertNotNull(activity.nextWeekFragment);
 		assertNotNull(activity.previousWeekFragment);
 		assertNotNull(activity.secondNextWeekFragment);
 	}
 
-	public void testPreConditionsPanelIsntNull() throws Exception {
+	@Test public void testPreConditionsPanelIsntNull() throws Exception {
 		assertNotNull(activity.coursePanelFragment);
 	}
 
-	public void testPreConditionsImplementsWeeklyPreviewListener() throws Exception {
+	@Test public void testPreConditionsImplementsWeeklyPreviewListener() throws Exception {
 		assertTrue(activity instanceof WeeklyEventsFragment.WeeklyPreviewListener);
 	}
 
-	public void testPreConditionsImplementsWeeklyEventsListener() throws Exception {
+	@Test public void testPreConditionsImplementsWeeklyEventsListener() throws Exception {
 		assertTrue(activity instanceof WeeklyEventsFragment.WeeklyEventsListener);
 	}
 
-	public void testPreConditionsImplementsCoursePanelListener() throws Exception {
+	@Test public void testPreConditionsImplementsCoursePanelListener() throws Exception {
 		assertTrue(activity instanceof CoursePanelFragment.CoursePanelListener);
 	}
 }

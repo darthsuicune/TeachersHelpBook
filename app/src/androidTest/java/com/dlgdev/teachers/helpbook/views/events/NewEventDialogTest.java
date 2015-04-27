@@ -1,33 +1,49 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
 import android.support.test.espresso.Espresso;
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
+import com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogListener;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.verify;
 
-public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
+@RunWith(AndroidJUnit4.class)
+public class NewEventDialogTest {
 	private static final String TAG = "dialog";
+
+	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
+			new ActivityTestRule<>(CourseOverviewActivity.class);
 	NewEventDialog dialog;
 	CourseOverviewActivity activity;
-	MockDialogListener mockListener;
+	NewEventDialogListener mockListener;
 	EventsProvider provider;
 
-	public NewEventDialogTest() {
-		super(CourseOverviewActivity.class);
-	}
+	String someData = "someData";
 
-	public void setUp() throws Exception {
-		super.setUp();
-		activity = getActivity();
-		mockListener = new MockDialogListener();
+	@Before public void setUp() throws Exception {
+		activity = rule.getActivity();
+		mockListener = Mockito.mock(NewEventDialogListener.class);
 		dialog = new NewEventDialog();
 		provider = new EventsProvider();
 		Event event = provider.createEmpty();
@@ -35,7 +51,7 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 		dialog.show(activity.getSupportFragmentManager(), TAG);
 	}
 
-	public void testSetup() throws Exception {
+	@Test public void testSetup() throws Exception {
 		allParametersAreSetInPlaceAfterCreation();
 	}
 
@@ -45,14 +61,13 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 		assertNotNull(dialog.event);
 	}
 
-	public void testRotationHoldsTheData() throws Throwable {
-		String someData = "someData";
+	@Test public void testRotationHoldsTheData() throws Throwable {
 		whenWeEnterSomeData(someData);
 		andDestroyRestoreTheState();
 		theDataIsHeld(someData);
 	}
 
-	private void whenWeEnterSomeData(String s) throws Throwable{
+	private void whenWeEnterSomeData(String s) throws Throwable {
 		onView(withId(R.id.title)).perform(typeText(s));
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(1000); //Delay needed because espresso doesn't wait until the kb is gone
@@ -60,7 +75,7 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 
 	private void andDestroyRestoreTheState() throws InterruptedException {
 		activity.finish();
-		activity = getActivity();
+		activity = rule.getActivity();
 		dialog = (NewEventDialog) activity.getSupportFragmentManager().findFragmentByTag(TAG);
 	}
 
@@ -68,8 +83,7 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 		assertEquals(s, dialog.newEventView.titleView.getText().toString());
 	}
 
-	public void testClickingOnCreateSavesTheEvent() throws Throwable {
-		String someData = "someData";
+	@Test public void testClickingOnCreateSavesTheEvent() throws Throwable {
 		whenWeEnterSomeData(someData);
 		andWeClickOnCreate();
 		anEventWithTheCorrectDataIsCreated(someData);
@@ -80,10 +94,26 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 	}
 
 	private void anEventWithTheCorrectDataIsCreated(String data) {
-		assertEquals(data, mockListener.event.title());
+		verify(mockListener).onNewEventCreated(argThat(matchesEventWithTitle(data)));
 	}
 
-	public void testClickingOnCancelTriggersTheCallback() throws Exception {
+	private Matcher<Event> matchesEventWithTitle(final String data) {
+		return new BaseMatcher<Event>() {
+			@Override public boolean matches(Object o) {
+				if(o != null) {
+					Event event = (Event) o;
+					return event.title().equals(data);
+				}
+				return false;
+			}
+
+			@Override public void describeTo(Description description) {
+
+			}
+		};
+	}
+
+	@Test public void testClickingOnCancelTriggersTheCallback() throws Exception {
 		whenWeClickOnCancel();
 		theCallbackGetsTheEvent();
 	}
@@ -93,20 +123,6 @@ public class NewEventDialogTest extends ActivityInstrumentationTestCase2<CourseO
 	}
 
 	private void theCallbackGetsTheEvent() {
-		assertTrue(mockListener.dialogCancelled);
-	}
-
-
-	private class MockDialogListener implements NewEventDialog.NewEventDialogListener {
-		Event event;
-		boolean dialogCancelled = false;
-
-		@Override public void onNewEventCreated(Event event) {
-			this.event = event;
-		}
-
-		@Override public void onDialogCancelled() {
-			dialogCancelled = true;
-		}
+		verify(mockListener).onDialogCancelled();
 	}
 }

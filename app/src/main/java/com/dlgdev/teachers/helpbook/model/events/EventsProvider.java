@@ -41,14 +41,15 @@ public class EventsProvider implements Serializable {
 	}
 
 	public Event createEmpty(DateTime start, DateTime end) {
-		return new Event(start, end) {
-		};
+		Event event = new Event(start, end);
+		return event;
 	}
 
 	public Event newEvent(String title, String description) {
 		Event event = createEmpty();
 		event.title(title);
 		event.description(description);
+		event.save();
 		return event;
 	}
 
@@ -56,6 +57,7 @@ public class EventsProvider implements Serializable {
 		Event event = createEmpty(start);
 		event.title(title);
 		event.description(description);
+		event.save();
 		return event;
 	}
 
@@ -63,6 +65,7 @@ public class EventsProvider implements Serializable {
 		Event event = createEmpty(start, end);
 		event.title(title);
 		event.description(description);
+		event.save();
 		return event;
 	}
 

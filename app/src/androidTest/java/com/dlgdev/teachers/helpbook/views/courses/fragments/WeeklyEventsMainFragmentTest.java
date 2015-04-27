@@ -1,46 +1,43 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertEquals;
 
-public class WeeklyEventsMainFragmentTest
-		extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
+@RunWith(AndroidJUnit4.class)
+public class WeeklyEventsMainFragmentTest {
 	CourseOverviewActivity activity;
 	WeeklyEventsMainFragment fragment;
 	DateTime currentDate;
 
-	public WeeklyEventsMainFragmentTest() {
-		super(CourseOverviewActivity.class);
-	}
+	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
+			new ActivityTestRule<>(CourseOverviewActivity.class);
 
-	public void setUp() throws Exception {
-		super.setUp();
-		activity = getActivity();
+	@Before public void setUp() throws Exception {
+		activity = rule.getActivity();
 		fragment = (WeeklyEventsMainFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_weekly_main_fragment);
 		currentDate = new DateTime(2015, 3, 5, 0, 0);
-		try {
-			runTestOnUiThread(new Runnable() {
-				@Override public void run() {
-					activity.onNewDaySelected(currentDate);
-				}
-			});
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
+		activity.onNewDaySelected(currentDate);
 	}
 
-	public void testClickingNextWeekFragmentViewUpdatesTheMainFragmentsDate() throws Exception {
+	@Test public void testClickingNextWeekFragmentViewUpdatesTheMainFragmentsDate()
+			throws Exception {
 		whenWeClickOnThePanel(R.id.course_weekly_next);
 		theMainFragmentIsUpdatedWithTheNewDate(currentDate.plusWeeks(1));
 	}
@@ -53,7 +50,7 @@ public class WeeklyEventsMainFragmentTest
 		assertEquals(fragment.referenceDate, date);
 	}
 
-	public void testOnNewEventRequestedOpensADialogToCreateAnEvent() throws Exception {
+	@Test public void testOnNewEventRequestedOpensADialogToCreateAnEvent() throws Exception {
 		whenWeGetANewEventRequest();
 		aNewEventDialogIsOpened();
 	}

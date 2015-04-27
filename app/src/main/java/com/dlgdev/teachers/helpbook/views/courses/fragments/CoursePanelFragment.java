@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventListLoader;
+import com.dlgdev.teachers.helpbook.views.events.EventListLoader;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;

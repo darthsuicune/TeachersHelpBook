@@ -1,8 +1,9 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
-import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,16 +11,23 @@ import android.widget.TextView;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
-import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
+@RunWith(AndroidJUnit4.class)
+public class NewEventViewTest {
 	private static final String VALID_START_DATE = "12/12/2012";
 	private static final String VALID_DATE = "12/12/2012";
 	private static final String VALID_START_TIME = "11:00";
@@ -31,20 +39,16 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 	NewEventView view;
 	OnPickersRequestedListener mockListener;
 
-	public NewEventViewTest() {
-		super(CourseOverviewActivity.class);
-	}
-
-	public void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		mockListener = mock(OnPickersRequestedListener.class);
 		Event event = new EventsProvider().createEmpty();
-		view = (NewEventView) getActivity().getLayoutInflater()
+
+		view = (NewEventView) LayoutInflater.from(InstrumentationRegistry.getTargetContext())
 				.inflate(R.layout.create_event_dialog, null);
 		view.setup(event, mockListener);
 	}
 
-	public void testSetup() throws Exception {
+	@Test public void testSetup() throws Exception {
 		afterSetupEverythingIsInPlace();
 	}
 
@@ -64,7 +68,7 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		assertNotNull(view.fullDayCheckBox);
 	}
 
-	public void testStartDateIconCallsTheCallback() throws Exception {
+	@Test public void testStartDateIconCallsTheCallback() throws Exception {
 		ifWeClickOnTheIcon(view.startDateIconView);
 		onStartDateRequestedIsCalled();
 	}
@@ -77,7 +81,7 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		verify(mockListener).onStartDateRequested();
 	}
 
-	public void testEndDateIconCallsTheCallback() throws Exception {
+	@Test public void testEndDateIconCallsTheCallback() throws Exception {
 		ifWeClickOnTheIcon(view.endDateIconView);
 		onEndDateRequestedIsCalled();
 	}
@@ -86,7 +90,7 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		verify(mockListener).onEndDateRequested();
 	}
 
-	public void testStartTimeIconCallsTheCallback() throws Exception {
+	@Test public void testStartTimeIconCallsTheCallback() throws Exception {
 		ifWeClickOnTheIcon(view.startTimeIconView);
 		onStartTimeRequestedIsCalled();
 	}
@@ -95,7 +99,7 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		verify(mockListener).onStartTimeRequested();
 	}
 
-	public void testClickingTheEndTimeIconCallsTheCallback() throws Exception {
+	@Test public void testClickingTheEndTimeIconCallsTheCallback() throws Exception {
 		ifWeClickOnTheIcon(view.endTimeIconView);
 		onEndTimeRequestedIsCalled();
 	}
@@ -104,13 +108,21 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		verify(mockListener).onEndTimeRequested();
 	}
 
-	@UiThreadTest public void testFullDayCheckBoxHidesEndDateTimeWhenActivated() throws Exception {
+	@Test public void testFullDayCheckBoxHidesEndDateTimeWhenActivated() throws Exception {
 		whenWeToggleTheFullDayCheckBox(true);
 		theEndDateTimeViewsAre(GONE);
 	}
 
-	private void whenWeToggleTheFullDayCheckBox(boolean checked) {
-		view.fullDayCheckBox.setChecked(checked);
+	private void whenWeToggleTheFullDayCheckBox(final boolean checked) {
+		InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+			@Override public void run() {
+				//If the box is in the state we want it, we change it first to the other one.
+				if (view.fullDayCheckBox.isChecked() == checked) {
+					view.fullDayCheckBox.setChecked(!checked);
+				}
+				view.fullDayCheckBox.setChecked(checked);
+			}
+		});
 	}
 
 	private void theEndDateTimeViewsAre(int visibility) {
@@ -122,14 +134,12 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		assertEquals(view.endTimeIconView.getVisibility(), visibility);
 	}
 
-	@UiThreadTest public void testFullDayCheckBoxShowsEndDateTimeWhenDeactivated()
-			throws Exception {
+	@Test public void testFullDayCheckBoxShowsEndDateTimeWhenDeactivated() throws Exception {
 		whenWeToggleTheFullDayCheckBox(false);
 		theEndDateTimeViewsAre(VISIBLE);
 	}
 
-	@UiThreadTest public void testOnStartDateTextChangedWithValidDateDoesntDisplayError()
-			throws Exception {
+	@Test public void testOnStartDateTextChangedWithValidDateDoesntDisplayError() throws Exception {
 		whenWeWriteAValueInTheEditTextViews(view.startDateView, VALID_DATE);
 		itsParsedWithoutError(view.startDateView);
 	}
@@ -142,8 +152,7 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		assertTrue(TextUtils.isEmpty(view.getError()));
 	}
 
-	@UiThreadTest public void testOnStartDateTextChangedWithValidDateUpdatesTheEvent()
-			throws Exception {
+	@Test public void testOnStartDateTextChangedWithValidDateUpdatesTheEvent() throws Exception {
 		whenWeWriteAValueInTheEditTextViews(view.startDateView, VALID_DATE);
 		theEventDateAndTimeAreUpdated(view.event.start());
 	}
@@ -152,8 +161,7 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		assertTrue(date.isAfter(VALID_START) && date.isBefore(VALID_END));
 	}
 
-	@UiThreadTest public void testOnEndDateTextChangedWithValidDateDoesntDisplayError()
-			throws Exception {
+	@Test public void testOnEndDateTextChangedWithValidDateDoesntDisplayError() throws Exception {
 		givenTheStartDateIsPreviousToTheNewEndDate();
 		whenWeWriteAValueInTheEditTextViews(view.endDateView, VALID_DATE);
 		itsParsedWithoutError(view.endDateView);
@@ -165,26 +173,25 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		view.startTimeView.setText(VALID_START_TIME);
 	}
 
-	@UiThreadTest public void testOnEndDateTextChangedWithValidDateUpdatesTheEvent()
-			throws Exception {
+	@Test public void testOnEndDateTextChangedWithValidDateUpdatesTheEvent() throws Exception {
 		givenTheStartDateIsPreviousToTheNewEndDate();
 		whenWeWriteAValueInTheEditTextViews(view.endDateView, VALID_DATE);
 		theEventDateAndTimeAreUpdated(view.event.end());
 	}
 
-	@UiThreadTest public void testOnStartTimeTextChangedWithValidTime() throws Exception {
+	@Test public void testOnStartTimeTextChangedWithValidTime() throws Exception {
 		givenTheStartDateIsPreviousToTheNewEndDate();
 		whenWeWriteAValueInTheEditTextViews(view.startTimeView, VALID_TIME);
 		theEventDateAndTimeAreUpdated(view.event.start());
 	}
 
-	@UiThreadTest public void testOnEndTimeTextChangedWithValidTime() throws Exception {
+	@Test public void testOnEndTimeTextChangedWithValidTime() throws Exception {
 		givenTheStartDateIsPreviousToTheNewEndDate();
 		whenWeWriteAValueInTheEditTextViews(view.endTimeView, VALID_TIME);
 		theEventDateAndTimeAreUpdated(view.event.end());
 	}
 
-	@UiThreadTest public void testWhenAnInvalidDateIsInputAnErrorIsSet() throws Exception {
+	@Test public void testWhenAnInvalidDateIsInputAnErrorIsSet() throws Exception {
 		whenWeWriteAValueInTheEditTextViews(view.startDateView, INVALID_VALUE);
 		theEditTextViewShowsAnError(view.startDateView);
 	}
@@ -193,17 +200,17 @@ public class NewEventViewTest extends ActivityInstrumentationTestCase2<CourseOve
 		assertFalse(TextUtils.isEmpty(v.getError()));
 	}
 
-	@UiThreadTest public void testWhenAnInvalidEndDateIsInputAnErrorIsSet() throws Exception {
+	@Test public void testWhenAnInvalidEndDateIsInputAnErrorIsSet() throws Exception {
 		whenWeWriteAValueInTheEditTextViews(view.endDateView, INVALID_VALUE);
 		theEditTextViewShowsAnError(view.endDateView);
 	}
 
-	@UiThreadTest public void testWhenAnInvalidTimeIsInputAnErrorIsSet() throws Exception {
+	@Test public void testWhenAnInvalidTimeIsInputAnErrorIsSet() throws Exception {
 		whenWeWriteAValueInTheEditTextViews(view.startTimeView, INVALID_VALUE);
 		theEditTextViewShowsAnError(view.startTimeView);
 	}
 
-	@UiThreadTest public void testWhenAnInvalidEndTimeIsInputAnErrorIsSet() throws Exception {
+	@Test public void testWhenAnInvalidEndTimeIsInputAnErrorIsSet() throws Exception {
 		whenWeWriteAValueInTheEditTextViews(view.endTimeView, INVALID_VALUE);
 		theEditTextViewShowsAnError(view.endTimeView);
 	}

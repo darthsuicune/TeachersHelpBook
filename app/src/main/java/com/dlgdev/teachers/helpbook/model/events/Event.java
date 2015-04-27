@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 @Table(name = TeachersDBContract.Events.TABLE_NAME, id = TeachersDBContract.Events._ID)
-public abstract class Event extends Model implements Serializable {
+public class Event extends Model implements Serializable {
 	public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
 	@Column(name = TeachersDBContract.Events.START) DateTime start;
 	@Column(name = TeachersDBContract.Events.END) DateTime end;

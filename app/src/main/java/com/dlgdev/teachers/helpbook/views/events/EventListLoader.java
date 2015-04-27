@@ -1,10 +1,13 @@
-package com.dlgdev.teachers.helpbook.model.events;
+package com.dlgdev.teachers.helpbook.views.events;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
+
+import com.dlgdev.teachers.helpbook.model.events.EventList;
+import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 
 import org.joda.time.DateTime;
 

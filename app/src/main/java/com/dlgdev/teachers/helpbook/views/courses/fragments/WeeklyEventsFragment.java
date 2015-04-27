@@ -11,7 +11,7 @@ import android.support.v4.content.Loader;
 import com.dlgdev.teachers.helpbook.Settings;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventListLoader;
+import com.dlgdev.teachers.helpbook.views.events.EventListLoader;
 import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 
 import org.joda.time.DateTime;

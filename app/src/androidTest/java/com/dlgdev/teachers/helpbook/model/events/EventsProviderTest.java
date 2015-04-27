@@ -1,46 +1,59 @@
 package com.dlgdev.teachers.helpbook.model.events;
 
-import android.test.InstrumentationTestCase;
+import android.support.test.runner.AndroidJUnit4;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class EventsProviderTest extends InstrumentationTestCase {
-    EventsProvider provider;
-    EventList list;
-    Event event;
+import static junit.framework.Assert.assertTrue;
 
-    public void setUp() throws Exception {
-        super.setUp();
-        provider = new EventsProvider();
-    }
+@RunWith(AndroidJUnit4.class)
+public class EventsProviderTest {
+	EventsProvider provider;
+	EventList list;
+	Event event;
 
-    public void testCreateEmptyCreatesAnEventThatStartsNowAndLastsForAnHour() throws Exception {
-        event = provider.createEmpty();
-    }
+	@Before public void setUp() throws Exception {
+		provider = new EventsProvider();
+	}
 
-    public void testCreateEmptyCreatesAnEventAtTheGivenTimeThatLastsForAnHour() throws Exception {
-        DateTime time = new DateTime();
-        event = provider.createEmpty(time);
-    }
+	@Test public void testCreateEmptyCreatesAnEventThatStartsNowAndLastsForAnHour()
+			throws Exception {
+		event = provider.createEmpty();
+		eventStarsAnEndsWithin(event, new DateTime());
+	}
 
-    public void testCreateEmptyWithStartAndEndCreatesAnEvent() throws Exception {
-        DateTime start = new DateTime();
-        event = provider.createEmpty(start, start.plusHours(2));
-    }
+	private void eventStarsAnEndsWithin(Event event, DateTime dateTime) {
+		assertTrue(dateTime.isAfter(event.start().minusSeconds(5)));
+		assertTrue(dateTime.isBefore(event.end().plusSeconds(5)));
+	}
 
-    public void testNewEvent() throws Exception {
+	@Test public void testCreateEmptyCreatesAnEventAtTheGivenTimeThatLastsForAnHour()
+			throws Exception {
+		DateTime time = new DateTime();
+		event = provider.createEmpty(time);
+	}
 
-    }
+	@Test public void testCreateEmptyWithStartAndEndCreatesAnEvent() throws Exception {
+		DateTime start = new DateTime();
+		event = provider.createEmpty(start, start.plusHours(2));
+	}
 
-    public void testNewEventAt() throws Exception {
+	@Test public void testNewEvent() throws Exception {
 
-    }
+	}
 
-    public void testNewEventBetween() throws Exception {
+	@Test public void testNewEventAt() throws Exception {
 
-    }
+	}
 
-    public void testListFromCursor() throws Exception {
+	@Test public void testNewEventBetween() throws Exception {
 
-    }
+	}
+
+	@Test public void testListFromCursor() throws Exception {
+
+	}
 }
