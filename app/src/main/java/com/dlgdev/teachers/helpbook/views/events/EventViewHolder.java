@@ -15,8 +15,8 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
 
 		public EventViewHolder(View itemView) {
 			super(itemView);
-			name = (TextView) itemView.findViewById(R.id.name);
-			time = (TextView) itemView.findViewById(R.id.time);
+			name = (TextView) itemView.findViewById(R.id.event_entry_name);
+			time = (TextView) itemView.findViewById(R.id.event_entry_time);
 		}
 
 		public void name(String newName) {

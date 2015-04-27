@@ -68,7 +68,7 @@ public class NewEventDialogTest {
 	}
 
 	private void whenWeEnterSomeData(String s) throws Throwable {
-		onView(withId(R.id.title)).perform(typeText(s));
+		onView(withId(R.id.create_event_dialog_title)).perform(typeText(s));
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(1000); //Delay needed because espresso doesn't wait until the kb is gone
 	}

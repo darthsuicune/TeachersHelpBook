@@ -11,17 +11,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 @RunWith(AndroidJUnit4.class)
 public class WeeklyEventsMainFragmentTest {
 	WeeklyEventsMainFragment fragment;
 	DateTime currentDate = DateTime.now();
+	WeeklyEventsFragment.WeeklyEventsListener listener;
 
 	@Before public void setup() throws Exception {
 		Context context = InstrumentationRegistry.getTargetContext();
 		fragment = (WeeklyEventsMainFragment) Fragment.instantiate(context,
 				WeeklyEventsMainFragment.class.getName());
 		fragment.updateDate(currentDate);
+		listener = mock(WeeklyEventsFragment.WeeklyEventsListener.class);
 	}
 
 	@Test public void testClickingNextWeekFragmentViewUpdatesTheMainFragmentsDate()
@@ -37,5 +40,9 @@ public class WeeklyEventsMainFragmentTest {
 
 	private void theMainFragmentIsUpdatedWithTheNewDate(DateTime date) {
 		assertEquals(fragment.referenceDate, date);
+	}
+
+	@Test public void creatingAnEventCallsTheEventCreatedCallback() throws Exception {
+		
 	}
 }

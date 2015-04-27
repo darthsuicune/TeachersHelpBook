@@ -11,7 +11,6 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
 import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
-import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog;
 
@@ -35,7 +34,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	private static final String DIALOG_FRAGMENT_TAG = "dialog fragment";
 
 	View rootView;
-	Map<DateTime, DailyEventsCardView> dailyCards;
+	Map<Integer, DailyEventsCardView> dailyCards;
 
 
 	public WeeklyEventsMainFragment() {
@@ -57,33 +56,27 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 
 	private void prepareMainLayout() {
 		dailyCards = new HashMap<>();
-		dailyCards.put(Dates.dateForDayOfWeek(MONDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.monday_card));
-		dailyCards.put(Dates.dateForDayOfWeek(TUESDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.tuesday_card));
-		dailyCards.put(Dates.dateForDayOfWeek(WEDNESDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.wednesday_card));
-		dailyCards.put(Dates.dateForDayOfWeek(THURSDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.thursday_card));
-		dailyCards.put(Dates.dateForDayOfWeek(FRIDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.friday_card));
-		dailyCards.put(Dates.dateForDayOfWeek(SATURDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.saturday_card));
-		dailyCards.put(Dates.dateForDayOfWeek(SUNDAY, startOfWeek),
-				(DailyEventsCardView) rootView.findViewById(R.id.sunday_card));
+		dailyCards.put(MONDAY, (DailyEventsCardView) rootView.findViewById(R.id.monday_card));
+		dailyCards.put(TUESDAY, (DailyEventsCardView) rootView.findViewById(R.id.tuesday_card));
+		dailyCards.put(WEDNESDAY, (DailyEventsCardView) rootView.findViewById(R.id.wednesday_card));
+		dailyCards.put(THURSDAY, (DailyEventsCardView) rootView.findViewById(R.id.thursday_card));
+		dailyCards.put(FRIDAY, (DailyEventsCardView) rootView.findViewById(R.id.friday_card));
+		dailyCards.put(SATURDAY, (DailyEventsCardView) rootView.findViewById(R.id.saturday_card));
+		dailyCards.put(SUNDAY, (DailyEventsCardView) rootView.findViewById(R.id.sunday_card));
 	}
 
 	private void updateViews() {
-		for (DateTime day : dailyCards.keySet()) {
+		for (Integer day : dailyCards.keySet()) {
 			DailyEventsCardView card = dailyCards.get(day);
-			card.setup(this, day);
+			card.setup(this, referenceDate.withDayOfWeek(day));
 		}
 	}
 
 	@Override void onEventListUpdated() {
-		for (DateTime date : dailyCards.keySet()) {
+		for (Integer day : dailyCards.keySet()) {
+			DateTime date = referenceDate.withDayOfWeek(day);
 			EventList events = eventList.eventsOn(date);
-			dailyCards.get(date).updateEvents(events);
+			dailyCards.get(day).updateEvents(events);
 		}
 	}
 

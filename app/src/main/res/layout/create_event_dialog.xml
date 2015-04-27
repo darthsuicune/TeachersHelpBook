@@ -10,14 +10,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/title"
+        android:id="@+id/create_event_dialog_title"
         android:hint="@string/new_event_name_hint"
         android:layout_gravity="center_horizontal"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/description"
+        android:id="@+id/create_event_dialog_description"
         android:hint="@string/new_event_description_hint"
         android:layout_gravity="center_horizontal"/>
 
@@ -42,88 +42,81 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/start_date"
+            android:id="@+id/create_event_dialog_start_date"
             android:inputType="date"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/start_tag"/>
         <ImageView
-            android:id="@+id/start_date_icon"
+            android:id="@+id/create_event_dialog_start_date_icon"
             android:src="@android:drawable/ic_menu_my_calendar"
             android:contentDescription="@string/choose_date_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/start_date"
-            android:layout_toEndOf="@+id/start_date"
+            android:layout_toRightOf="@+id/create_event_dialog_start_date"
+            android:layout_toEndOf="@+id/create_event_dialog_start_date"
             android:layout_below="@id/start_tag" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/end_date"
+            android:id="@+id/create_event_dialog_end_date"
             android:inputType="date"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/end_tag"/>
         <ImageView
-            android:id="@+id/end_date_icon"
+            android:id="@+id/create_event_dialog_end_date_icon"
             android:src="@android:drawable/ic_menu_my_calendar"
             android:contentDescription="@string/choose_date_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/end_date"
-            android:layout_toStartOf="@+id/end_date"
+            android:layout_toLeftOf="@+id/create_event_dialog_end_date"
+            android:layout_toStartOf="@+id/create_event_dialog_end_date"
             android:layout_below="@id/end_tag"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/start_time"
+            android:id="@+id/create_event_dialog_start_time"
             android:inputType="time"
-            android:layout_below="@id/start_date"/>
+            android:layout_below="@id/create_event_dialog_start_date"/>
         <ImageView
-            android:id="@+id/start_time_icon"
+            android:id="@+id/create_event_dialog_start_time_icon"
             android:src="@android:drawable/ic_menu_my_calendar"
             android:contentDescription="@string/choose_date_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/start_time"
-            android:layout_toEndOf="@+id/start_time"
-            android:layout_below="@id/start_date"/>
+            android:layout_toRightOf="@+id/create_event_dialog_start_time"
+            android:layout_toEndOf="@+id/create_event_dialog_start_time"
+            android:layout_below="@id/create_event_dialog_start_date"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/end_time"
+            android:id="@+id/create_event_dialog_end_time"
             android:inputType="time"
-            android:layout_below="@id/end_date"
+            android:layout_below="@id/create_event_dialog_end_date"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"/>
         <ImageView
-            android:id="@+id/end_time_icon"
+            android:id="@+id/create_event_dialog_end_time_icon"
             android:src="@android:drawable/ic_menu_my_calendar"
             android:contentDescription="@string/choose_date_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/end_time"
-            android:layout_toStartOf="@+id/end_time"
-            android:layout_below="@id/end_date"/>
+            android:layout_toLeftOf="@+id/create_event_dialog_end_time"
+            android:layout_toStartOf="@+id/create_event_dialog_end_time"
+            android:layout_below="@id/create_event_dialog_end_date"/>
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/full_day_checkbox"
+            android:id="@+id/create_event_dialog_full_day_checkbox"
+            android:text="@string/full_day_event_checkbox"
             android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal"
-            android:layout_below="@id/start_time"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/full_day_event_checkbox"
-            android:layout_toRightOf="@id/full_day_checkbox"
-            android:layout_toEndOf="@id/full_day_checkbox"
-            android:layout_below="@id/start_time"/>
+            android:layout_below="@id/create_event_dialog_start_time"/>
     </RelativeLayout>
 
 </com.dlgdev.teachers.helpbook.views.events.NewEventView>

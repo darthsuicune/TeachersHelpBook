@@ -49,17 +49,17 @@ public class NewEventView extends LinearLayout {
 	}
 
 	private void loadViews() {
-		titleView = (EditText) findViewById(R.id.title);
-		descriptionView = (EditText) findViewById(R.id.description);
-		startDateView = (EditText) findViewById(R.id.start_date);
-		endDateView = (EditText) findViewById(R.id.end_date);
-		startTimeView = (EditText) findViewById(R.id.start_time);
-		endTimeView = (EditText) findViewById(R.id.end_time);
-		fullDayCheckBox = (CheckBox) findViewById(R.id.full_day_checkbox);
-		startDateIconView = (ImageView) findViewById(R.id.start_date_icon);
-		endDateIconView = (ImageView) findViewById(R.id.end_date_icon);
-		startTimeIconView = (ImageView) findViewById(R.id.start_time_icon);
-		endTimeIconView = (ImageView) findViewById(R.id.end_time_icon);
+		titleView = (EditText) findViewById(R.id.create_event_dialog_title);
+		descriptionView = (EditText) findViewById(R.id.create_event_dialog_description);
+		startDateView = (EditText) findViewById(R.id.create_event_dialog_start_date);
+		endDateView = (EditText) findViewById(R.id.create_event_dialog_end_date);
+		startTimeView = (EditText) findViewById(R.id.create_event_dialog_start_time);
+		endTimeView = (EditText) findViewById(R.id.create_event_dialog_end_time);
+		fullDayCheckBox = (CheckBox) findViewById(R.id.create_event_dialog_full_day_checkbox);
+		startDateIconView = (ImageView) findViewById(R.id.create_event_dialog_start_date_icon);
+		endDateIconView = (ImageView) findViewById(R.id.create_event_dialog_end_date_icon);
+		startTimeIconView = (ImageView) findViewById(R.id.create_event_dialog_start_time_icon);
+		endTimeIconView = (ImageView) findViewById(R.id.create_event_dialog_end_time_icon);
 	}
 
 	private void prepareViews() {

@@ -47,8 +47,8 @@ public class DailyEventsCardView extends CardView {
 	}
 
 	private void loadViews() {
-		this.dateView = (TextView) findViewById(R.id.date);
-		this.addNewView = (TextView) findViewById(R.id.add_new);
+		this.dateView = (TextView) findViewById(R.id.daily_event_card_date);
+		this.addNewView = (TextView) findViewById(R.id.daily_event_card_add_new);
 		this.eventListView = (RecyclerView) findViewById(R.id.event_list);
 		this.emptyEventListView = (TextView) findViewById(R.id.event_list_empty);
 	}
