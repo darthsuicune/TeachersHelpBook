@@ -14,12 +14,12 @@ import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 
 import org.joda.time.DateTime;
 
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
-import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyPreviewListener;
 
 
 public class CourseOverviewActivity extends AppCompatActivity implements WeeklyEventsListener,
@@ -84,8 +84,8 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 		}
 	}
 
-	@Override public void onNewEventRequested(DateTime time) {
-		//TODO: Do something
+	@Override public void onNewEventCreated(Event event) {
+		Toast.makeText(this, R.string.event_created, Toast.LENGTH_LONG).show();
 	}
 
 	@Override public void onExistingEventSelected(Event event) {

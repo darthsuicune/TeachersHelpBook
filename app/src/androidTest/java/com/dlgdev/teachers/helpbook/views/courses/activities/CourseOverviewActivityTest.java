@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class CourseOverviewActivityTest {
 	}
 
 	@Test public void testPreConditionsImplementsWeeklyPreviewListener() throws Exception {
-		assertTrue(activity instanceof WeeklyEventsFragment.WeeklyPreviewListener);
+		assertTrue(activity instanceof WeeklyEventsPreviewFragment.WeeklyPreviewListener);
 	}
 
 	@Test public void testPreConditionsImplementsWeeklyEventsListener() throws Exception {

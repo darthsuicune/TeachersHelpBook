@@ -12,6 +12,7 @@ import com.dlgdev.teachers.helpbook.Settings;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
 import com.dlgdev.teachers.helpbook.utils.Dates;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 import com.dlgdev.teachers.helpbook.views.events.EventListLoader;
 
 import org.joda.time.DateTime;
@@ -66,12 +67,8 @@ public abstract class WeeklyEventsFragment extends Fragment {
 		getLoaderManager().restartLoader(LOADER_EVENTS, args, new EventLoaderHelper());
 	}
 
-	public interface WeeklyPreviewListener {
-		void onPreviewTapped(DateTime referenceDate);
-	}
-
 	public interface WeeklyEventsListener {
-		void onNewEventRequested(DateTime startDate);
+		void onNewEventCreated(Event event);
 
 		void onExistingEventSelected(Event event);
 

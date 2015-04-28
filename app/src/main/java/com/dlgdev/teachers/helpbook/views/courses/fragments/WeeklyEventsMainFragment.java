@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
@@ -88,9 +87,9 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onNewEventCreated(Event event) {
-		this.eventList.add(event);
-		Toast.makeText(getActivity(), R.string.event_created, Toast.LENGTH_LONG).show();
+		event.save();
 		updateEventList(eventList);
+		eventsListener.onNewEventCreated(event);
 	}
 
 	@Override public void onDialogCancelled() {
