@@ -19,7 +19,9 @@ public class Event extends Model implements Serializable {
 	@Column(name = TeachersDBContract.Events.DESCRIPTION) String description;
 
 	// For use only through ActiveAndroid
-	public Event() {}
+	public Event() {
+		super();
+	}
 
 	public Event(DateTime start, DateTime end) {
 		this.start = start;

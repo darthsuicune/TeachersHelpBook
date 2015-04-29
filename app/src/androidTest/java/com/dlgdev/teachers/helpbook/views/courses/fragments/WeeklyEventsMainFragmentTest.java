@@ -5,8 +5,9 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 
-import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.model.events.Event;
+import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -23,22 +24,24 @@ public class WeeklyEventsMainFragmentTest {
 	WeeklyEventsMainFragment fragment;
 	DateTime currentDate = DateTime.now();
 	WeeklyEventsFragment.WeeklyEventsListener listener;
-	Event event = mock(Event.class);
+	Event event;
 
 	@Before public void setup() throws Exception {
-		ActiveAndroid.initialize(InstrumentationRegistry.getContext());
 		Context context = InstrumentationRegistry.getTargetContext();
 		fragment = (WeeklyEventsMainFragment) Fragment.instantiate(context,
 				WeeklyEventsMainFragment.class.getName());
 		fragment.updateDate(currentDate);
 		listener = mock(WeeklyEventsFragment.WeeklyEventsListener.class);
+		fragment.eventsListener = listener;
 	}
 
-	@After public void teardown() throws Exception {
-		//ActiveAndroid.dispose();
+	@After public void tearDown() throws Exception {
+		if(event != null && event.getId() != null) {
+			event.delete();
+		}
 	}
 
-	@Test public void testClickingNextWeekFragmentViewUpdatesTheMainFragmentsDate()
+	@Test public void testPassingANewDateUpdatesTheMainFragmentsDate()
 			throws Exception {
 		DateTime currentDate = new DateTime(fragment.referenceDate);
 		whenWePassANewDate(currentDate.plusWeeks(1));
@@ -59,6 +62,7 @@ public class WeeklyEventsMainFragmentTest {
 	}
 
 	private void whenWeCreateAnEvent() {
+		event = new EventsProvider().createEmpty();
 		fragment.onNewEventCreated(event);
 	}
 
@@ -68,10 +72,11 @@ public class WeeklyEventsMainFragmentTest {
 
 	@Test public void creatingAnEventCallsTheEventSaveMethod() throws Exception {
 		whenWeCreateAnEvent();
-		theEventSaveIsCalled();
+		theEventWasCreated();
 	}
 
-	private void theEventSaveIsCalled() {
-		verify(event).save();
+	private void theEventWasCreated() {
+		Event event = new Select().from(Event.class).orderBy("_ID ASC").limit(1).executeSingle();
+		assertEquals(event.getId(), this.event.getId());
 	}
 }

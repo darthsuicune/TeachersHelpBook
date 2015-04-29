@@ -33,28 +33,26 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	private static final String DIALOG_FRAGMENT_TAG = "dialog fragment";
 
 	View rootView;
-	Map<Integer, DailyEventsCardView> dailyCards;
+	Map<Integer, DailyEventsCardView> dailyCards = new HashMap<>();
 
 
 	public WeeklyEventsMainFragment() {
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-							 @Nullable Bundle savedInstanceState) {
+	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+									   @Nullable Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.weekly_events_main_fragment, container, false);
 		return rootView;
 	}
 
 	@Override protected void onDateUpdated() {
-		if(isAdded()) {
+		if (isAdded()) {
 			prepareMainLayout();
 			updateViews();
 		}
 	}
 
 	private void prepareMainLayout() {
-		dailyCards = new HashMap<>();
 		dailyCards.put(MONDAY, (DailyEventsCardView) rootView.findViewById(R.id.monday_card));
 		dailyCards.put(TUESDAY, (DailyEventsCardView) rootView.findViewById(R.id.tuesday_card));
 		dailyCards.put(WEDNESDAY, (DailyEventsCardView) rootView.findViewById(R.id.wednesday_card));

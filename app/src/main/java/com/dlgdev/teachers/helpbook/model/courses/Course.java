@@ -19,7 +19,9 @@ public class Course extends Model {
 	@Column(name = TeachersDBContract.Courses.DESCRIPTION) public String description;
 
 	//For use only through ActiveAndroid
-	public Course() {}
+	public Course() {
+		super();
+	}
 
 	public Course(DateTime start, DateTime end) {
 		this.start = start;
