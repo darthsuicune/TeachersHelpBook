@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.backgroundIs;
-import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.NewEventsRequestedListener;
+import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4.class)
 public class DailyEventsCardViewTest {
 	DailyEventsCardView card;
-	NewEventsRequestedListener listener;
+	DailyEventsCardListener listener;
 	DateTime date;
 	EventList eventList;
 	EventsProvider provider;
@@ -47,7 +47,7 @@ public class DailyEventsCardViewTest {
 		LayoutInflater inflater = (LayoutInflater) InstrumentationRegistry.getTargetContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		card = (DailyEventsCardView) inflater.inflate(R.layout.daily_events_card, null);
-		listener = mock(NewEventsRequestedListener.class);
+		listener = mock(DailyEventsCardListener.class);
 		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
 		setupCard(date);
 	}

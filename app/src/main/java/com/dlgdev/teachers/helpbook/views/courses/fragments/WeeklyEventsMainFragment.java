@@ -10,6 +10,7 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.model.events.Event;
 import com.dlgdev.teachers.helpbook.model.events.EventList;
 import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog;
 
@@ -18,7 +19,7 @@ import org.joda.time.DateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.NewEventsRequestedListener;
+import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 import static com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogListener;
 import static org.joda.time.DateTimeConstants.FRIDAY;
 import static org.joda.time.DateTimeConstants.MONDAY;
@@ -29,7 +30,7 @@ import static org.joda.time.DateTimeConstants.TUESDAY;
 import static org.joda.time.DateTimeConstants.WEDNESDAY;
 
 public class WeeklyEventsMainFragment extends WeeklyEventsFragment
-		implements NewEventsRequestedListener, NewEventDialogListener {
+		implements DailyEventsCardListener, NewEventDialogListener {
 	private static final String DIALOG_FRAGMENT_TAG = "dialog fragment";
 
 	View rootView;
@@ -60,6 +61,15 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		dailyCards.put(FRIDAY, (DailyEventsCardView) rootView.findViewById(R.id.friday_card));
 		dailyCards.put(SATURDAY, (DailyEventsCardView) rootView.findViewById(R.id.saturday_card));
 		dailyCards.put(SUNDAY, (DailyEventsCardView) rootView.findViewById(R.id.sunday_card));
+
+		for(final int day : dailyCards.keySet()) {
+			View v = dailyCards.get(day);
+			v.setOnClickListener(new View.OnClickListener() {
+				@Override public void onClick(View view) {
+					eventsListener.onNewDaySelected(Dates.dateForDayOfWeek(day, referenceDate));
+				}
+			});
+		}
 	}
 
 	private void updateViews() {
@@ -82,6 +92,10 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		NewEventDialog newEventDialog = new NewEventDialog();
 		newEventDialog.setup(this, event, R.id.course_weekly_main_fragment);
 		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
+	}
+
+	@Override public void onEventSelected(Event event) {
+		eventsListener.onExistingEventSelected(event);
 	}
 
 	@Override public void onNewEventCreated(Event event) {
