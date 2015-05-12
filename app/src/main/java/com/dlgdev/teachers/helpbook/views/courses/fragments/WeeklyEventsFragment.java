@@ -12,10 +12,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.dlgdev.teachers.helpbook.Settings;
-import com.dlgdev.teachers.helpbook.model.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.model.events.Event;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 
@@ -78,13 +78,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 	class EventLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			Uri uri = TeachersDBContract.Events.URI;
-			String[] projection = new String[]{ TeachersDBContract.Events.TABLE_NAME };
-			String selection =
-					TeachersDBContract.Events.START + " > ? AND " +
-					TeachersDBContract.Events.END + " < ?";
-			String[] selectionArgs = new String[]{Long.toString(startOfWeek.getMillis()),
-												  Long.toString(endOfWeek.getMillis())};
-			return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, null);
+			return new CursorLoader(getActivity(), uri, null, null, null, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

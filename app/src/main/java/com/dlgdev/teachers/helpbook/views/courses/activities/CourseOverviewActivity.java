@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.Event;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
@@ -27,9 +27,9 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
-	WeeklyEventsPreviewFragment previousWeekFragment;
-	WeeklyEventsPreviewFragment nextWeekFragment;
-	WeeklyEventsPreviewFragment secondNextWeekFragment;
+	WeeklyEventsFragment previousWeekFragment;
+	WeeklyEventsFragment nextWeekFragment;
+	WeeklyEventsFragment secondNextWeekFragment;
 	CoursePanelFragment coursePanelFragment;
 	DateTime currentDate;
 

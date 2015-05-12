@@ -4,10 +4,13 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.events.Event;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +32,10 @@ public class UIWeeklyEventsMainFragmentTest {
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class);
+
+	@After public void tearDown() throws Exception {
+		new Delete().from(Event.class).execute();
+	}
 
 	@Test public void testOnNewEventRequestedOpensADialogToCreateAnEvent() throws Exception {
 		whenWeRequestANewEvent();
@@ -63,9 +70,12 @@ public class UIWeeklyEventsMainFragmentTest {
 	}
 
 	private void theEventDataIsDisplayedInTheProperDay() {
-		onView(allOf(withId(R.id.event_entry_name),
-				isDescendantOfA(
-						withId(fragment.dailyCards.get(DateTime.now().getDayOfWeek()).getId()))))
+		int parentId = fragment.dailyCards.get(DateTime.now().getDayOfWeek()).getId();
+		onView(allOf(withId(R.id.event_entry_name), isDescendantOfA(withId(parentId))))
 				.check(matches(withText(text)));
+	}
+
+	@Test public void clickingAnEventOnTheListPassesTheEventToTheListener() throws Exception {
+
 	}
 }

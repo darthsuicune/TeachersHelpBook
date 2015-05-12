@@ -5,8 +5,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.Event;
-import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogListener;
 

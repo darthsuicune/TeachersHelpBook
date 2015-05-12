@@ -6,9 +6,6 @@ import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 
-/**
- * Created by lapuente on 11.03.15.
- */
 public class EventViewHolder extends RecyclerView.ViewHolder {
 	View.OnClickListener listener;
 	TextView name;

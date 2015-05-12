@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.Event;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog;
@@ -36,9 +36,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	View rootView;
 	Map<Integer, DailyEventsCardView> dailyCards = new HashMap<>();
 
-
-	public WeeklyEventsMainFragment() {
-	}
+	public WeeklyEventsMainFragment() {}
 
 	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 									   @Nullable Bundle savedInstanceState) {
@@ -100,7 +98,6 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 
 	@Override public void onNewEventCreated(Event event) {
 		event.save();
-		updateEventList(eventList);
 		eventsListener.onNewEventCreated(event);
 	}
 

@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.model.courses;
+package com.dlgdev.teachers.helpbook.models.courses;
 
 import android.support.test.runner.AndroidJUnit4;
 

@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.model.db;
+package com.dlgdev.teachers.helpbook.models.db;
 
 import com.activeandroid.serializer.TypeSerializer;
 

@@ -1,5 +1,4 @@
 <manifest
-    package="com.dlgdev.teachers.helpbook"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,5 +10,6 @@
             android:name="AA_DB_NAME"
             android:value="Helpbook-tests.db"
             tools:replace="android:value"/>
+
     </application>
 </manifest>

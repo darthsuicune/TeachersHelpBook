@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.model.events;
+package com.dlgdev.teachers.helpbook.models.events;
 
 import org.joda.time.DateTime;
 

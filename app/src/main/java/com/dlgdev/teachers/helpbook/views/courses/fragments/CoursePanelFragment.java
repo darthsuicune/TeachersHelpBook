@@ -2,7 +2,6 @@ package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,9 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;
@@ -70,8 +69,8 @@ public class CoursePanelFragment extends Fragment {
 		});
 	}
 
-    public void updateDate(DateTime date) {
-        showCurrentDate(date);
+	public void updateDate(DateTime date) {
+		showCurrentDate(date);
 		this.referenceDate = date;
 		DateTime startOfWeek = Dates.startOfWeek(date);
 		DateTime endOfWeek = Dates.endOfWeek(date);
@@ -80,16 +79,15 @@ public class CoursePanelFragment extends Fragment {
 		}
 	}
 
-    private void showCurrentDate(DateTime date) {
-        if (currentDate == null) {
-            currentDate = date;
-            currentWeek.setText(Dates.formatDate(currentDate));
-        }
-    }
+	private void showCurrentDate(DateTime date) {
+		if (currentDate == null) {
+			currentDate = date;
+			currentWeek.setText(Dates.formatDate(currentDate));
+		}
+	}
 
-	private void loadCourseData() {
-		Bundle args = new Bundle();
-		getLoaderManager().restartLoader(LOADER_COURSE, args, new CourseDataLoaderHelper());
+	public void loadCourseData() {
+		getLoaderManager().initLoader(LOADER_COURSE, null, new CourseDataLoaderHelper());
 	}
 
 	public void eventList(EventList eventList) {
@@ -105,11 +103,8 @@ public class CoursePanelFragment extends Fragment {
 
 	class CourseDataLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-			Uri uri = TeachersDBContract.Events.URI;
-			String[] projection = new String[]{ TeachersDBContract.Events.TABLE_NAME };
-			String selection = null;
-			String[] selectionArgs = null;
-			return new CursorLoader(getActivity(), uri, projection, selection, selectionArgs, null);
+			return new CursorLoader(getActivity(), TeachersDBContract.Events.URI, null, null, null,
+					null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

@@ -1,7 +1,7 @@
 package com.dlgdev.teachers.helpbook.utils;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.InvalidDateTimeException;
+import com.dlgdev.teachers.helpbook.models.events.InvalidDateTimeException;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
