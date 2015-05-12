@@ -3,6 +3,7 @@ package com.dlgdev.teachers.helpbook.views.courses.fragments;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -82,6 +83,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+			System.out.format("Cursor: %s\n", DatabaseUtils.dumpCursorToString(data));
 			updateEventList(new EventsProvider().listFromCursor(data));
 		}
 

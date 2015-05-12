@@ -6,11 +6,9 @@ import com.dlgdev.teachers.helpbook.models.events.InvalidDateTimeException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-/**
- * Created by denis on 08.03.15.
- */
 public class Dates {
 
 	public static DateTime startOfWeek(DateTime date) {
@@ -65,7 +63,7 @@ public class Dates {
 			int month = Integer.parseInt(tokenizer.nextToken());
 			int year = Integer.parseInt(tokenizer.nextToken());
 			return new DateTime(year, month, day, 0, 0);
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException | NoSuchElementException e) {
 			throw new InvalidDateTimeException(R.string.invalid_date_format);
 		}
 	}

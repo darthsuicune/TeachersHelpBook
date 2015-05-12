@@ -32,6 +32,8 @@ public class NewEventView extends LinearLayout {
 	EditText startTimeView;
 	EditText endTimeView;
 	CheckBox fullDayCheckBox;
+	DateTime oldStart;
+	DateTime oldEnd;
 
 	Event event;
 	OnPickersRequestedListener listener;
@@ -169,8 +171,13 @@ public class NewEventView extends LinearLayout {
 		endDateIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endTimeIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		if (isFullDay) {
-			changeStartTime(event.start().withTime(0, 0, 0, 0));
+			oldStart = event.start();
+			oldEnd = event.end();
+			changeStartTime(event.start().withTimeAtStartOfDay());
 			changeEndTime(event.end().withTime(23, 59, 59, 999));
+		} else {
+			changeStartTime(oldStart);
+			changeEndTime(oldEnd);
 		}
 	}
 

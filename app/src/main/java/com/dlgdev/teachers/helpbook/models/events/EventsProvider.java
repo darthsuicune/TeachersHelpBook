@@ -70,6 +70,13 @@ public class EventsProvider implements Serializable {
 
 	public EventList listFromCursor(Cursor data) {
 		List<Event> eventList = new ArrayList<>();
+		if(data.moveToFirst()) {
+			do {
+				Event event = new Event();
+				event.loadFromCursor(data);
+				eventList.add(event);
+			} while(data.moveToNext());
+		}
 		return new EventList(eventList);
 	}
 
