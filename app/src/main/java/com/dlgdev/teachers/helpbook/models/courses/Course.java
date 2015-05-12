@@ -1,11 +1,11 @@
-package com.dlgdev.teachers.helpbook.model.courses;
+package com.dlgdev.teachers.helpbook.models.courses;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.dlgdev.teachers.helpbook.model.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.model.events.Event;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
 
 import org.joda.time.DateTime;
 
@@ -19,7 +19,9 @@ public class Course extends Model {
 	@Column(name = TeachersDBContract.Courses.DESCRIPTION) public String description;
 
 	//For use only through ActiveAndroid
-	public Course() {}
+	public Course() {
+		super();
+	}
 
 	public Course(DateTime start, DateTime end) {
 		this.start = start;

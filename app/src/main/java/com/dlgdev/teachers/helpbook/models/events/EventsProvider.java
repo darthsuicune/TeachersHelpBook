@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.model.events;
+package com.dlgdev.teachers.helpbook.models.events;
 
 import android.database.Cursor;
 
@@ -25,7 +25,7 @@ public class EventsProvider implements Serializable {
 	 * @return new event that starts right now and ends after one hour
 	 */
 	public Event createEmpty() {
-		DateTime start = new DateTime();
+		DateTime start = DateTime.now();
 		return createEmpty(start);
 	}
 
@@ -41,14 +41,14 @@ public class EventsProvider implements Serializable {
 	}
 
 	public Event createEmpty(DateTime start, DateTime end) {
-		return new Event(start, end) {
-		};
+		return new Event(start, end);
 	}
 
 	public Event newEvent(String title, String description) {
 		Event event = createEmpty();
 		event.title(title);
 		event.description(description);
+		event.save();
 		return event;
 	}
 
@@ -56,6 +56,7 @@ public class EventsProvider implements Serializable {
 		Event event = createEmpty(start);
 		event.title(title);
 		event.description(description);
+		event.save();
 		return event;
 	}
 
@@ -63,6 +64,7 @@ public class EventsProvider implements Serializable {
 		Event event = createEmpty(start, end);
 		event.title(title);
 		event.description(description);
+		event.save();
 		return event;
 	}
 

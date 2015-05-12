@@ -4,33 +4,32 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.Event;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
 
+import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
-import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyPreviewListener;
 
 
-public class CourseOverviewActivity extends ActionBarActivity
-		implements WeeklyEventsListener, WeeklyPreviewListener,
-		CoursePanelFragment.CoursePanelListener {
+public class CourseOverviewActivity extends AppCompatActivity implements WeeklyEventsListener,
+		WeeklyPreviewListener, CoursePanelListener {
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
-	WeeklyEventsPreviewFragment previousWeekFragment;
-	WeeklyEventsPreviewFragment nextWeekFragment;
-	WeeklyEventsPreviewFragment secondNextWeekFragment;
+	WeeklyEventsFragment previousWeekFragment;
+	WeeklyEventsFragment nextWeekFragment;
+	WeeklyEventsFragment secondNextWeekFragment;
 	CoursePanelFragment coursePanelFragment;
 	DateTime currentDate;
 
@@ -85,8 +84,8 @@ public class CourseOverviewActivity extends ActionBarActivity
 		}
 	}
 
-	@Override public void onNewEventRequested(Period time) {
-		//TODO: Do something
+	@Override public void onNewEventCreated(Event event) {
+		Toast.makeText(this, R.string.event_created, Toast.LENGTH_LONG).show();
 	}
 
 	@Override public void onExistingEventSelected(Event event) {

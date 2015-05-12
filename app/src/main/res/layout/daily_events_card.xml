@@ -17,14 +17,14 @@
             android:layout_marginBottom="4dp">
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/daily_event_card_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"/>
 
             <TextView
-                android:id="@+id/add_new"
+                android:id="@+id/daily_event_card_add_new"
                 android:text="@string/add_new_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

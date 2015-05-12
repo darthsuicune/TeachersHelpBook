@@ -1,68 +1,81 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.app.Fragment;
 
-import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
+import com.activeandroid.query.Select;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 
 import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-public class WeeklyEventsMainFragmentTest
-		extends ActivityInstrumentationTestCase2<CourseOverviewActivity> {
-	CourseOverviewActivity activity;
+@RunWith(AndroidJUnit4.class)
+public class WeeklyEventsMainFragmentTest {
 	WeeklyEventsMainFragment fragment;
-	DateTime currentDate;
+	DateTime currentDate = DateTime.now();
+	WeeklyEventsFragment.WeeklyEventsListener listener;
+	Event event;
 
-	public WeeklyEventsMainFragmentTest() {
-		super(CourseOverviewActivity.class);
+	@Before public void setup() throws Exception {
+		Context context = InstrumentationRegistry.getTargetContext();
+		fragment = (WeeklyEventsMainFragment) Fragment
+				.instantiate(context, WeeklyEventsMainFragment.class.getName());
+		fragment.updateDate(currentDate);
+		listener = mock(WeeklyEventsFragment.WeeklyEventsListener.class);
+		fragment.eventsListener = listener;
 	}
 
-	public void setUp() throws Exception {
-		super.setUp();
-		activity = getActivity();
-		fragment = (WeeklyEventsMainFragment) activity.getSupportFragmentManager()
-				.findFragmentById(R.id.course_weekly_main_fragment);
-		currentDate = new DateTime(2015, 3, 5, 0, 0);
-		try {
-			runTestOnUiThread(new Runnable() {
-				@Override public void run() {
-					activity.onNewDaySelected(currentDate);
-				}
-			});
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
+	@After public void tearDown() throws Exception {
+		if (event != null && event.getId() != null) {
+			event.delete();
 		}
 	}
 
-	public void testClickingNextWeekFragmentViewUpdatesTheMainFragmentsDate() throws Exception {
-		whenWeClickOnThePanel(R.id.course_weekly_next);
+	@Test public void testPassingANewDateUpdatesTheMainFragmentsDate() throws Exception {
+		DateTime currentDate = new DateTime(fragment.referenceDate);
+		whenWePassANewDate(currentDate.plusWeeks(1));
 		theMainFragmentIsUpdatedWithTheNewDate(currentDate.plusWeeks(1));
 	}
 
-	private void whenWeClickOnThePanel(int panel) {
-		onView(withId(panel)).perform(click());
+	private void whenWePassANewDate(DateTime date) {
+		fragment.updateDate(date);
 	}
 
 	private void theMainFragmentIsUpdatedWithTheNewDate(DateTime date) {
 		assertEquals(fragment.referenceDate, date);
 	}
 
-	public void testOnNewEventRequestedOpensADialogToCreateAnEvent() throws Exception {
-		whenWeGetANewEventRequest();
-		aNewEventDialogIsOpened();
+	@Test public void creatingAnEventCallsTheEventCreatedCallback() throws Exception {
+		whenWeCreateAnEvent();
+		theCallbackMethodIsCalled();
 	}
 
-	private void whenWeGetANewEventRequest() {
-		fragment.onNewEventRequested(currentDate.plusHours(1));
+	private void whenWeCreateAnEvent() {
+		event = new EventsProvider().createEmpty();
+		fragment.onNewEventCreated(event);
 	}
 
-	private void aNewEventDialogIsOpened() {
-		onView(withId(R.id.new_event_dialog)).check(matches(isDisplayed()));
+	private void theCallbackMethodIsCalled() {
+		verify(listener).onNewEventCreated(event);
+	}
+
+	@Test public void creatingAnEventCallsTheEventSaveMethod() throws Exception {
+		whenWeCreateAnEvent();
+		theEventWasCreated();
+	}
+
+	private void theEventWasCreated() {
+		Event event = new Select().from(Event.class).orderBy("_ID ASC").limit(1).executeSingle();
+		assertEquals(event.getId(), this.event.getId());
 	}
 }

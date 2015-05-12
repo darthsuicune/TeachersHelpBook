@@ -1,17 +1,17 @@
-package com.dlgdev.teachers.helpbook.model.events;
+package com.dlgdev.teachers.helpbook.models.events;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
 
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
 @Table(name = TeachersDBContract.Events.TABLE_NAME, id = TeachersDBContract.Events._ID)
-public abstract class Event extends Model implements Serializable {
+public class Event extends Model implements Serializable {
 	public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
 	@Column(name = TeachersDBContract.Events.START) DateTime start;
 	@Column(name = TeachersDBContract.Events.END) DateTime end;
@@ -19,7 +19,9 @@ public abstract class Event extends Model implements Serializable {
 	@Column(name = TeachersDBContract.Events.DESCRIPTION) String description;
 
 	// For use only through ActiveAndroid
-	public Event() {}
+	public Event() {
+		super();
+	}
 
 	public Event(DateTime start, DateTime end) {
 		this.start = start;

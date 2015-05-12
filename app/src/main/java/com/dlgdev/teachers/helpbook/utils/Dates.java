@@ -1,7 +1,7 @@
 package com.dlgdev.teachers.helpbook.utils;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.InvalidDateTimeException;
+import com.dlgdev.teachers.helpbook.models.events.InvalidDateTimeException;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -12,6 +12,15 @@ import java.util.StringTokenizer;
  * Created by denis on 08.03.15.
  */
 public class Dates {
+
+	public static DateTime startOfWeek(DateTime date) {
+		return date.withDayOfWeek(DateTimeConstants.MONDAY).withHourOfDay(0).withMinuteOfHour(0);
+	}
+
+	public static DateTime endOfWeek(DateTime date) {
+		return date.withDayOfWeek(DateTimeConstants.SUNDAY).withHourOfDay(0).withMinuteOfHour(0);
+	}
+
 	public static String formatDate(DateTime date) {
 		return String.format("%d/%s/%d", date.getDayOfMonth(), month(date), date.getYear());
 	}

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
+import org.joda.time.DateTime;
+
 public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 	TextView dateView;
 
@@ -42,6 +44,10 @@ public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 
 	@Override void onEventListUpdated() {
 
+	}
+
+	public interface WeeklyPreviewListener {
+		void onPreviewTapped(DateTime referenceDate);
 	}
 
 }

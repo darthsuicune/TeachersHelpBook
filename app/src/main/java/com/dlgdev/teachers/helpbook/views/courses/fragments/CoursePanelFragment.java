@@ -1,10 +1,12 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventListLoader;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
 
 public class CoursePanelFragment extends Fragment {
 	private static final int LOADER_COURSE = 1;
@@ -67,56 +69,50 @@ public class CoursePanelFragment extends Fragment {
 		});
 	}
 
-    public void updateDate(DateTime date) {
-        showCurrentDate(date);
+	public void updateDate(DateTime date) {
+		showCurrentDate(date);
 		this.referenceDate = date;
-		Interval week = referenceDate.weekOfWeekyear().toInterval();
-		DateTime startOfWeek = week.getStart();
-		//week.getEnd() returns the first day of the next week.
-		DateTime endOfWeek = week.getEnd().minusDays(1);
+		DateTime startOfWeek = Dates.startOfWeek(date);
+		DateTime endOfWeek = Dates.endOfWeek(date);
 		if (referenceWeek != null) {
 			referenceWeek.setText(Dates.formatDateRange(startOfWeek, endOfWeek));
 		}
 	}
 
-    private void showCurrentDate(DateTime date) {
-        if (currentDate == null) {
-            currentDate = date;
-            currentWeek.setText(Dates.formatDate(currentDate));
-        }
-    }
+	private void showCurrentDate(DateTime date) {
+		if (currentDate == null) {
+			currentDate = date;
+			currentWeek.setText(Dates.formatDate(currentDate));
+		}
+	}
 
-	private void loadCourseData() {
-		Bundle args = new Bundle();
-		getLoaderManager().restartLoader(LOADER_COURSE, args, new CourseDataLoaderHelper());
+	public void loadCourseData() {
+		getLoaderManager().initLoader(LOADER_COURSE, null, new CourseDataLoaderHelper());
 	}
 
 	public void eventList(EventList eventList) {
 		this.eventList = eventList;
-		updateEventCounter();
+		eventCounter.setText(getString(R.string.event_count, eventList.eventCount()));
 	}
 
 	public interface CoursePanelListener {
-		public void onCurrentWeekTapped();
+		void onCurrentWeekTapped();
 
-		public void onEventCounterTapped();
+		void onEventCounterTapped();
 	}
 
-	private class CourseDataLoaderHelper implements LoaderManager.LoaderCallbacks<EventList> {
-		@Override public Loader<EventList> onCreateLoader(int id, Bundle args) {
-			return new EventListLoader(getActivity(), args);
+	class CourseDataLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
+		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+			return new CursorLoader(getActivity(), TeachersDBContract.Events.URI, null, null, null,
+					null);
 		}
 
-		@Override public void onLoadFinished(Loader<EventList> loader, EventList data) {
-            eventList(data);
+		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+			eventList(new EventsProvider().listFromCursor(data));
 		}
 
-		@Override public void onLoaderReset(Loader<EventList> loader) {
+		@Override public void onLoaderReset(Loader<Cursor> loader) {
 
 		}
 	}
-
-    private void updateEventCounter() {
-        eventCounter.setText(getString(R.string.event_count, eventList.eventCount()));
-    }
 }

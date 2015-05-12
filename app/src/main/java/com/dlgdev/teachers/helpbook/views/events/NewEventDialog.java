@@ -15,7 +15,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;

@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dlgdev.teachers.helpbook" >
+<manifest package="com.dlgdev.teachers.helpbook"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <meta-data android:name="AA_DB_NAME" android:value="Helpbook.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
-        <meta-data android:name="AA_SERIALIZERS"
-                   android:value="com.dlgdev.teachers.helpbook.model.db.DateTimeTypeSerializer" />
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Helpbook.db"/>
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1"/>
+        <meta-data
+            android:name="AA_SERIALIZERS"
+            android:value="com.dlgdev.teachers.helpbook.model.db.DateTimeTypeSerializer"/>
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.dlgdev.teachers.helpbook.model.courses.Course,com.dlgdev.teachers.helpbook.model.events.Event,com.dlgdev.teachers.helpbook.model.subjects.Subject" />
+            android:value="com.dlgdev.teachers.helpbook.model.courses.Course,com.dlgdev.teachers.helpbook.model.events.Event,com.dlgdev.teachers.helpbook.model.subjects.Subject"/>
+
         <activity
             android:name="com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <provider
-            android:name=".model.db.TeachersContentProvider"
+            android:name="com.activeandroid.content.ContentProvider"
             android:authorities="com.dlgdev.teachers.helpbook"
-            android:enabled="true" >
-        </provider>
+            android:exported="false"/>
     </application>
 
 </manifest>

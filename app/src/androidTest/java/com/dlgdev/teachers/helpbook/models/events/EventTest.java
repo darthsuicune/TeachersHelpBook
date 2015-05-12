@@ -1,19 +1,24 @@
-package com.dlgdev.teachers.helpbook.model.events;
+package com.dlgdev.teachers.helpbook.models.events;
 
-import android.test.InstrumentationTestCase;
+import android.support.test.runner.AndroidJUnit4;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class EventTest extends InstrumentationTestCase {
+import static org.junit.Assert.assertTrue;
+
+@RunWith(AndroidJUnit4.class)
+public class EventTest {
 	Event event;
 	EventsProvider factory;
 
-	public void setUp() throws Exception {
-		super.setUp();
+	@Before public void setUp() throws Exception {
 		factory = new EventsProvider();
     }
 
-	public void testIsAtPresentDateTime() throws Exception {
+	@Test public void testIsAtPresentDateTime() throws Exception {
 		DateTime time = new DateTime();
 		anEventAt(time);
 		isAtIn30Minutes(time);
@@ -27,7 +32,7 @@ public class EventTest extends InstrumentationTestCase {
 		assertTrue(event.isAt(dateTime.plusMinutes(30)));
 	}
 
-	public void testIsBetween() throws Exception {
+	@Test public void testIsBetween() throws Exception {
 		DateTime time = new DateTime();
 		anEventAt(time);
 		isBetween(time.minusHours(1), time.plusHours(1));

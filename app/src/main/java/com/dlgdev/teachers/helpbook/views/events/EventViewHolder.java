@@ -6,25 +6,27 @@ import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 
-/**
- * Created by lapuente on 11.03.15.
- */
 public class EventViewHolder extends RecyclerView.ViewHolder {
-		TextView name;
-		TextView time;
+	View.OnClickListener listener;
+	TextView name;
+	TextView time;
 
-		public EventViewHolder(View itemView) {
-			super(itemView);
-			name = (TextView) itemView.findViewById(R.id.name);
-			time = (TextView) itemView.findViewById(R.id.time);
-		}
+	public EventViewHolder(View itemView) {
+		super(itemView);
+		name = (TextView) itemView.findViewById(R.id.event_entry_name);
+		time = (TextView) itemView.findViewById(R.id.event_entry_time);
+	}
 
-		public void name(String newName) {
-			name.setText(newName);
-		}
+	public void name(String newName) {
+		name.setText(newName);
+	}
 
-		public void time(String newTime) {
-			time.setText(newTime);
-		}
+	public void time(String newTime) {
+		time.setText(newTime);
+	}
+
+	public void listener(View.OnClickListener listener) {
+		this.listener = listener;
+	}
 
 }

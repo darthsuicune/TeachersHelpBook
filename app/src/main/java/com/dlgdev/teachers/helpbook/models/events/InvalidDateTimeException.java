@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.model.events;
+package com.dlgdev.teachers.helpbook.models.events;
 
 /**
  * Created by lapuente on 16.03.15.

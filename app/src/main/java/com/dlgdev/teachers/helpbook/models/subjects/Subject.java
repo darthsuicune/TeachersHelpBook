@@ -1,9 +1,9 @@
-package com.dlgdev.teachers.helpbook.model.subjects;
+package com.dlgdev.teachers.helpbook.models.subjects;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.dlgdev.teachers.helpbook.model.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
 
 @Table(name = TeachersDBContract.Subjects.TABLE_NAME, id = TeachersDBContract.Subjects._ID)
 public class Subject extends Model {

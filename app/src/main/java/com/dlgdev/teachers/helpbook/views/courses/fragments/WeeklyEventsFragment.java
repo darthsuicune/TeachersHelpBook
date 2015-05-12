@@ -2,21 +2,24 @@ package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.dlgdev.teachers.helpbook.Settings;
-import com.dlgdev.teachers.helpbook.model.events.Event;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
-import com.dlgdev.teachers.helpbook.model.events.EventListLoader;
-import com.dlgdev.teachers.helpbook.model.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.utils.Dates;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.Period;
 
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.joda.time.DateTimeConstants.SATURDAY;
@@ -24,8 +27,6 @@ import static org.joda.time.DateTimeConstants.SUNDAY;
 
 public abstract class WeeklyEventsFragment extends Fragment {
 	static final int LOADER_EVENTS = 1;
-
-	EventsProvider eventsProvider;
 	WeeklyEventsListener eventsListener;
 	WeeklyPreviewListener previewListener;
 	DateTime referenceDate;
@@ -36,8 +37,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 	EventList eventList;
 	SharedPreferences prefs;
 
-	@Override
-	public void onAttach(Activity activity) {
+	@Override public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
 			eventsListener = (WeeklyEventsListener) activity;
@@ -46,7 +46,6 @@ public abstract class WeeklyEventsFragment extends Fragment {
 			throw new ClassCastException(
 					activity.getLocalClassName() + " should implement the callback interfaces");
 		}
-		eventsProvider = new EventsProvider();
 		prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		startingDayOfWeek = prefs.getInt(Settings.FIRST_DAY_OF_WEEK, MONDAY);
 		endingDayOfWeek = (startingDayOfWeek == MONDAY) ? SUNDAY : SATURDAY;
@@ -54,47 +53,39 @@ public abstract class WeeklyEventsFragment extends Fragment {
 
 	public void updateDate(DateTime currentDate) {
 		this.referenceDate = currentDate;
-		Interval week = referenceDate.weekOfWeekyear().toInterval();
-		startOfWeek = week.getStart();
-		endOfWeek = week.getEnd().minusDays(1); //week.end returns the first day of the next week.
-		loadEvents();
+		startOfWeek = Dates.startOfWeek(referenceDate);
+		endOfWeek = Dates.endOfWeek(referenceDate);
 		onDateUpdated();
-	}
-
-	void loadEvents() {
-		Bundle args = new Bundle();
-		args.putLong(EventListLoader.KEY_START, startOfWeek.getMillis());
-		args.putLong(EventListLoader.KEY_END, endOfWeek.getMillis());
-		getLoaderManager().restartLoader(LOADER_EVENTS, args, new EventLoaderHelper());
+		if (isAdded()) {
+			loadEvents();
+		}
 	}
 
 	protected abstract void onDateUpdated();
 
-	public interface WeeklyPreviewListener {
-		public void onPreviewTapped(DateTime referenceDate);
+	private void loadEvents() {
+		getLoaderManager().restartLoader(LOADER_EVENTS, null, new EventLoaderHelper());
 	}
 
 	public interface WeeklyEventsListener {
-		public void onNewEventRequested(Period period);
+		void onNewEventCreated(Event event);
 
-		public void onExistingEventSelected(Event event);
+		void onExistingEventSelected(Event event);
 
-		public void onNewDaySelected(DateTime newDate);
+		void onNewDaySelected(DateTime newDate);
 	}
 
-	class EventLoaderHelper implements LoaderManager.LoaderCallbacks<EventList> {
-		@Override
-		public Loader<EventList> onCreateLoader(int id, Bundle args) {
-			return new EventListLoader(getActivity(), args);
+	class EventLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
+		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+			Uri uri = TeachersDBContract.Events.URI;
+			return new CursorLoader(getActivity(), uri, null, null, null, null);
 		}
 
-		@Override
-		public void onLoadFinished(Loader<EventList> loader, EventList data) {
-			updateEventList(data);
+		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+			updateEventList(new EventsProvider().listFromCursor(data));
 		}
 
-		@Override
-		public void onLoaderReset(Loader<EventList> loader) {
+		@Override public void onLoaderReset(Loader<Cursor> loader) {
 
 		}
 	}

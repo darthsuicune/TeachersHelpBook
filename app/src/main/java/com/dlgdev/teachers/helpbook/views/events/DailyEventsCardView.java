@@ -2,7 +2,6 @@ package com.dlgdev.teachers.helpbook.views.events;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,20 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.model.events.Event;
-import com.dlgdev.teachers.helpbook.model.events.EventList;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventList;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.WrappedLayoutManager;
+import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
 import org.joda.time.DateTime;
 
 import java.util.List;
 
+import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
+
 
 public class DailyEventsCardView extends CardView {
-	NewEventsRequestedListener listener;
+	DailyEventsCardListener listener;
 	EventList events;
 	DateTime date;
 
@@ -38,7 +39,7 @@ public class DailyEventsCardView extends CardView {
 		super(context, attrs);
 	}
 
-	public void setup(NewEventsRequestedListener fragment, DateTime newDate) {
+	public void setup(DailyEventsCardListener fragment, DateTime newDate) {
 		this.listener = fragment;
 		this.date = newDate;
 		loadViews();
@@ -47,15 +48,14 @@ public class DailyEventsCardView extends CardView {
 	}
 
 	private void loadViews() {
-		this.dateView = (TextView) findViewById(R.id.date);
-		this.addNewView = (TextView) findViewById(R.id.add_new);
+		this.dateView = (TextView) findViewById(R.id.daily_event_card_date);
+		this.addNewView = (TextView) findViewById(R.id.daily_event_card_add_new);
 		this.eventListView = (RecyclerView) findViewById(R.id.event_list);
 		this.emptyEventListView = (TextView) findViewById(R.id.event_list_empty);
 	}
 
 	private void setupViewParameters() {
-		eventListView.addItemDecoration(
-				new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+		eventListView.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
 		eventListView.setLayoutManager(new WrappedLayoutManager(getContext()));
 		dateView.setText(Dates.formatDate(date));
 		addNewView.setOnClickListener(new OnClickListener() {
@@ -99,8 +99,10 @@ public class DailyEventsCardView extends CardView {
 		adapter.swapItems(events);
 	}
 
-	public interface NewEventsRequestedListener {
+	public interface DailyEventsCardListener {
 		void onNewEventRequested(DateTime date);
+
+		void onEventSelected(Event event);
 	}
 
 	private class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
@@ -117,9 +119,14 @@ public class DailyEventsCardView extends CardView {
 		}
 
 		@Override public void onBindViewHolder(EventViewHolder holder, int position) {
-			Event event = events.get(position);
+			final Event event = events.get(position);
 			holder.name(event.title());
 			holder.time(Dates.formatTimeRange(event.start(), event.end()));
+			holder.listener(new OnClickListener() {
+				@Override public void onClick(View view) {
+					listener.onEventSelected(event);
+				}
+			});
 		}
 
 		@Override public int getItemCount() {
