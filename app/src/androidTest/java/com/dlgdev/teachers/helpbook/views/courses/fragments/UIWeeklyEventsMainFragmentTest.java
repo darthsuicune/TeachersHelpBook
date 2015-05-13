@@ -7,7 +7,9 @@ import android.support.test.runner.AndroidJUnit4;
 import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -24,10 +26,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class UIWeeklyEventsMainFragmentTest {
 	WeeklyEventsMainFragment fragment;
+	WeeklyEventsListener listener = mock(WeeklyEventsListener.class);
 	String text = "someText";
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
@@ -76,6 +81,18 @@ public class UIWeeklyEventsMainFragmentTest {
 	}
 
 	@Test public void clickingAnEventOnTheListPassesTheEventToTheListener() throws Exception {
+		getFragment();
+		fragment.eventsListener = listener;
+		Event event = afterAddingAnEvent();
+		int parentId = fragment.dailyCards.get(DateTime.now().getDayOfWeek()).getId();
+		onView(allOf(withId(R.id.event_entry_name), isDescendantOfA(withId(parentId))))
+				.perform(click());
+		verify(listener).onExistingEventSelected(event);
+	}
 
+	private Event afterAddingAnEvent() {
+		Event event = new EventsProvider().newEvent("sometext", "somedesc");
+		event.save();
+		return event;
 	}
 }
