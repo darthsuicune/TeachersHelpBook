@@ -39,11 +39,11 @@ public class Dates {
 						minute(end));
 	}
 
-	public static DateTime dateForDayOfWeek(int day, DateTime startOfWeek) {
+	public static DateTime dateForDayOfWeek(int day, DateTime referenceDate) {
 		if (day > DateTimeConstants.SUNDAY) {
 			throw new InvalidDateTimeException(R.string.invalid_day);
 		}
-		return startOfWeek.plusDays(day - 1);
+		return referenceDate.withDayOfWeek(DateTimeConstants.MONDAY).plusDays(day - 1);
 	}
 
 	private static String month(DateTime date) {

@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.models.events.Event;
 import com.dlgdev.teachers.helpbook.models.events.EventList;
+import com.dlgdev.teachers.helpbook.models.subjects.Subject;
 
 import org.joda.time.DateTime;
 
@@ -33,6 +34,10 @@ public class Course extends Model {
 	}
 
 	public List<Event> events() {
-		return getMany(Event.class, TeachersDBContract.Courses.TABLE_NAME);
+		return getMany(Event.class, TeachersDBContract.Events.COURSE);
+	}
+
+	public List<Subject> subjects() {
+		return getMany(Subject.class, TeachersDBContract.Subjects.COURSE);
 	}
 }

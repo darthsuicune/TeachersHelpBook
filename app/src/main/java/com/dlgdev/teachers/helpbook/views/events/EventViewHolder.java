@@ -5,28 +5,29 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.utils.Dates;
 
-public class EventViewHolder extends RecyclerView.ViewHolder {
-	View.OnClickListener listener;
+public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+	DailyEventsCardView.DailyEventsCardListener listener;
+	Event event;
 	TextView name;
 	TextView time;
 
-	public EventViewHolder(View itemView) {
+	public EventViewHolder(View itemView, DailyEventsCardView.DailyEventsCardListener listener) {
 		super(itemView);
 		name = (TextView) itemView.findViewById(R.id.event_entry_name);
 		time = (TextView) itemView.findViewById(R.id.event_entry_time);
-	}
-
-	public void name(String newName) {
-		name.setText(newName);
-	}
-
-	public void time(String newTime) {
-		time.setText(newTime);
-	}
-
-	public void listener(View.OnClickListener listener) {
 		this.listener = listener;
 	}
 
+	public void event(Event event) {
+		this.event = event;
+		name.setText(event.title());
+		time.setText(Dates.formatTimeRange(event.start(), event.end()));
+	}
+
+	@Override public void onClick(View view) {
+		listener.onEventSelected(event);
+	}
 }

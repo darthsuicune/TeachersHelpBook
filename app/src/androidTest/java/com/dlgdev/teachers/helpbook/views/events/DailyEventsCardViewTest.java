@@ -12,9 +12,6 @@ import com.dlgdev.teachers.helpbook.models.events.EventList;
 import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +20,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dlgdev.teachers.helpbook.views.Matchers.matchesAnyDateTime;
 import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.backgroundIs;
 import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 import static org.joda.time.DateTimeConstants.MONDAY;
@@ -41,21 +39,22 @@ public class DailyEventsCardViewTest {
 	DateTime date;
 	EventList eventList;
 	EventsProvider provider;
+	LayoutInflater inflater;
+	Context context;
 
 	@Before public void setUp() throws Exception {
 		provider = new EventsProvider();
-		LayoutInflater inflater = (LayoutInflater) InstrumentationRegistry.getTargetContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		card = (DailyEventsCardView) inflater.inflate(R.layout.daily_events_card, null);
 		listener = mock(DailyEventsCardListener.class);
 		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
+		context = InstrumentationRegistry.getTargetContext();
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		card = (DailyEventsCardView) inflater.inflate(R.layout.daily_events_card, null);
 		setupCard(date);
 	}
 
 	private void setupCard(DateTime date) {
 		card.setup(listener, date);
 	}
-
 
 	@Test public void testSetupPreparesTheViewFieldsCorrectly() throws Exception {
 		theFieldsAreCorrectlySetup();
@@ -84,18 +83,6 @@ public class DailyEventsCardViewTest {
 		verify(listener).onNewEventRequested(argThat(matchesAnyDateTime()));
 	}
 
-	private Matcher<DateTime> matchesAnyDateTime() {
-		return new BaseMatcher<DateTime>() {
-			@Override public void describeTo(Description description) {
-
-			}
-
-			@Override public boolean matches(Object o) {
-				return o instanceof DateTime;
-			}
-		};
-	}
-
 	@Test public void testAfterLaunchDisplaysTheDateRelatedToTheCard() throws Exception {
 		//After launching the activity, done in setUp with getActivity();
 		theDateSubviewDisplaysTheProperText();
@@ -105,27 +92,27 @@ public class DailyEventsCardViewTest {
 		assertTrue(card.dateView.getText().toString().equals(Dates.formatDate(card.date)));
 	}
 
-	@Test public void testAfterLaunchHighlightsTheCurrentDayInTheList() throws Throwable {
+	@Test public void testAfterLaunchHighlightsTheCurrentDayInTheList() throws Exception {
 		weGetAListWithTheExpectedEventsWithTodayHighlighted();
 	}
 
 	private void weGetAListWithTheExpectedEventsWithTodayHighlighted() {
-		assertTrue(backgroundIs(InstrumentationRegistry.getTargetContext().getResources()
+		assertTrue(backgroundIs(context.getResources()
 				.getColor(R.color.material_deep_teal_200)).matches(card));
 	}
 
 	@Test public void testAfterLaunchAnotherDayIsntHighlighted() throws Exception {
 		setupCard(DateTime.now().plusDays(1));
-		assertFalse(backgroundIs(InstrumentationRegistry.getTargetContext().getResources()
+		assertFalse(backgroundIs(context.getResources()
 				.getColor(R.color.material_deep_teal_200)).matches(card));
 	}
 
-	@Test public void testUpdateEventsWithoutEventsShowsAnEmptyListMessage() throws Throwable {
+	@Test public void testUpdateEventsWithoutEventsShowsAnEmptyListMessage() {
 		whenWeSendAnUpdatedEventListWithXEvents(0);
 		theUserCanSeeAnEmptyListMessage();
 	}
 
-	private void whenWeSendAnUpdatedEventListWithXEvents(int eventCount) throws Throwable {
+	private void whenWeSendAnUpdatedEventListWithXEvents(int eventCount) {
 		List<Event> events = new ArrayList<>();
 		for (int i = 0; i < eventCount; i++) {
 			events.add(provider.createEmpty(date.plusHours(i)));

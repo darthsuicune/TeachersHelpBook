@@ -4,6 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.courses.Course;
 import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
 
 import org.joda.time.DateTime;
@@ -13,14 +14,20 @@ import java.io.Serializable;
 @Table(name = TeachersDBContract.Events.TABLE_NAME, id = TeachersDBContract.Events._ID)
 public class Event extends Model implements Serializable {
     public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
-    @Column(name = TeachersDBContract.Events.START)
+    @Column(name = TeachersDBContract.Events.START, index = true)
     DateTime start;
-    @Column(name = TeachersDBContract.Events.END)
+    @Column(name = TeachersDBContract.Events.END, index = true)
     DateTime end;
     @Column(name = TeachersDBContract.Events.TITLE)
     String title;
     @Column(name = TeachersDBContract.Events.DESCRIPTION)
     String description;
+    @Column(name = TeachersDBContract.Events.COURSE, index = true)
+    Course course;
+    @Column(name = TeachersDBContract.Events.SUBJECT, index = true)
+    Course subject;
+    @Column(name = TeachersDBContract.Events.TYPE, index = true)
+    String type;
 
     // For use only through ActiveAndroid
     public Event() {
@@ -55,6 +62,14 @@ public class Event extends Model implements Serializable {
         this.description = description;
     }
 
+    public void course(Course course) {
+        this.course = course;
+    }
+
+    public void type(String type) {
+        this.type = type;
+    }
+
     public DateTime start() {
         return start;
     }
@@ -69,6 +84,14 @@ public class Event extends Model implements Serializable {
 
     public String description() {
         return description;
+    }
+
+    public Course course() {
+        return course;
+    }
+
+    public String type() {
+        return type;
     }
 
     public void start(DateTime newDateTime) {

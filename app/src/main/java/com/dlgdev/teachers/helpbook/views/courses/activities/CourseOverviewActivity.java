@@ -89,7 +89,7 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 	}
 
 	@Override public void onExistingEventSelected(Event event) {
-		//TODO: Do something
+		Toast.makeText(this, "Something!!!!" + event.title(), Toast.LENGTH_LONG).show();
 	}
 
 	@Override public void onNewDaySelected(DateTime newDate) {

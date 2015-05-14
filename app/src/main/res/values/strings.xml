@@ -25,4 +25,5 @@
     <string name="error_invalid_start_time">Invalid start time</string>
     <string name="error_invalid_end_time">Invalid end time</string>
     <string name="invalid_day">Invalid day selected</string>
+    <string name="course_administration_title">Administer Course</string>
 </resources>

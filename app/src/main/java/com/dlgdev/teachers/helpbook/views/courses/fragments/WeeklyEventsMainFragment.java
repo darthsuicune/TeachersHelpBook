@@ -61,7 +61,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		dailyCards.put(SUNDAY, (DailyEventsCardView) rootView.findViewById(R.id.sunday_card));
 
 		for(final int day : dailyCards.keySet()) {
-			View v = dailyCards.get(day);
+			DailyEventsCardView v = dailyCards.get(day);
 			v.setOnClickListener(new View.OnClickListener() {
 				@Override public void onClick(View view) {
 					eventsListener.onNewDaySelected(Dates.dateForDayOfWeek(day, referenceDate));
@@ -86,7 +86,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onNewEventRequested(DateTime date) {
-		Event event = new EventsProvider().createEmpty();
+		Event event = new EventsProvider().createEmpty(date);
 		NewEventDialog newEventDialog = new NewEventDialog();
 		newEventDialog.setup(this, event, R.id.course_weekly_main_fragment);
 		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);

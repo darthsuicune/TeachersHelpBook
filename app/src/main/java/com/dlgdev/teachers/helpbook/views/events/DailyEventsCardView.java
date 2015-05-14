@@ -24,119 +24,115 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
 public class DailyEventsCardView extends CardView {
-	DailyEventsCardListener listener;
-	EventList events;
-	DateTime date;
+    DailyEventsCardListener listener;
+    EventList events;
+    DateTime date;
 
-	TextView dateView;
-	TextView emptyEventListView;
-	TextView addNewView;
-	RecyclerView eventListView;
+    TextView dateView;
+    TextView emptyEventListView;
+    TextView addNewView;
+    RecyclerView eventListView;
 
-	EventListAdapter adapter;
+    EventListAdapter adapter;
 
-	public DailyEventsCardView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public DailyEventsCardView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-	public void setup(DailyEventsCardListener fragment, DateTime newDate) {
-		this.listener = fragment;
-		this.date = newDate;
-		loadViews();
-		setupViewParameters();
-		setBackground();
-	}
+    public void setup(DailyEventsCardListener fragment, DateTime newDate) {
+        this.listener = fragment;
+        this.date = newDate;
+        loadViews();
+        setupViewParameters();
+        setBackground();
+    }
 
-	private void loadViews() {
-		this.dateView = (TextView) findViewById(R.id.daily_event_card_date);
-		this.addNewView = (TextView) findViewById(R.id.daily_event_card_add_new);
-		this.eventListView = (RecyclerView) findViewById(R.id.event_list);
-		this.emptyEventListView = (TextView) findViewById(R.id.event_list_empty);
-	}
+    private void loadViews() {
+        this.dateView = (TextView) findViewById(R.id.daily_event_card_date);
+        this.addNewView = (TextView) findViewById(R.id.daily_event_card_add_new);
+        this.eventListView = (RecyclerView) findViewById(R.id.event_list);
+        this.emptyEventListView = (TextView) findViewById(R.id.event_list_empty);
+    }
 
-	private void setupViewParameters() {
-		eventListView.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
-		eventListView.setLayoutManager(new WrappedLayoutManager(getContext()));
-		dateView.setText(Dates.formatDate(date));
-		addNewView.setOnClickListener(new OnClickListener() {
-			@Override public void onClick(View view) {
-				newEventRequested();
-			}
-		});
-	}
+    private void setupViewParameters() {
+        eventListView.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
+        eventListView.setLayoutManager(new WrappedLayoutManager(getContext()));
+        dateView.setText(Dates.formatDate(date));
+        addNewView.setOnClickListener(new OnClickListener() {
+            @Override public void onClick(View view) {
+                newEventRequested();
+            }
+        });
+    }
 
-	private void setBackground() {
-		int color;
-		if (date.dayOfYear().equals(new DateTime().dayOfYear())) {
-			color = getResources().getColor(R.color.material_deep_teal_200);
-		} else {
-			color = getResources().getColor(R.color.background_material_light);
-		}
-		setBackgroundColor(color);
-	}
+    private void setBackground() {
+        int color;
+        if (date.dayOfYear().equals(new DateTime().dayOfYear())) {
+            color = getResources().getColor(R.color.material_deep_teal_200);
+        } else {
+            color = getResources().getColor(R.color.background_material_light);
+        }
+        setBackgroundColor(color);
+    }
 
-	private void newEventRequested() {
-		listener.onNewEventRequested(date);
-	}
+    private void newEventRequested() {
+        listener.onNewEventRequested(date);
+    }
 
-	public void updateEvents(EventList eventList) {
-		events = eventList;
-		if (events.eventCount() == 0) {
-			eventListView.setVisibility(View.GONE);
-			emptyEventListView.setVisibility(View.VISIBLE);
-		} else {
-			eventListView.setVisibility(View.VISIBLE);
-			emptyEventListView.setVisibility(View.GONE);
-			updateEventList();
-		}
-	}
+    public void updateEvents(EventList eventList) {
+        events = eventList;
+        if (events.eventCount() == 0) {
+            eventListView.setVisibility(View.GONE);
+            emptyEventListView.setVisibility(View.VISIBLE);
+        } else {
+            eventListView.setVisibility(View.VISIBLE);
+            emptyEventListView.setVisibility(View.GONE);
+            updateEventList();
+        }
+    }
 
-	private void updateEventList() {
-		if (adapter == null) {
-			adapter = new EventListAdapter();
-			eventListView.setAdapter(adapter);
-		}
-		adapter.swapItems(events);
-	}
+    private void updateEventList() {
+        if (adapter == null) {
+            adapter = new EventListAdapter();
+            eventListView.setAdapter(adapter);
+        }
+        adapter.swapItems(events);
+    }
 
-	public interface DailyEventsCardListener {
-		void onNewEventRequested(DateTime date);
+    public interface DailyEventsCardListener {
+        void onNewEventRequested(DateTime date);
 
-		void onEventSelected(Event event);
-	}
+        void onEventSelected(Event event);
+    }
 
-	private class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
-		List<Event> events;
+    private class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
+        List<Event> events;
 
-		public EventListAdapter() {
-			events = DailyEventsCardView.this.events.events();
-		}
+        public EventListAdapter() {
+            events = DailyEventsCardView.this.events.events();
+        }
 
-		@Override public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-			View v = LayoutInflater.from(getContext())
-					.inflate(R.layout.event_view_for_list, parent, false);
-			return new EventViewHolder(v);
-		}
+        @Override public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(getContext())
+                    .inflate(R.layout.event_view_for_list, parent, false);
+            EventViewHolder holder = new EventViewHolder(v, listener);
+            v.setOnClickListener(holder);
+            return holder;
+        }
 
-		@Override public void onBindViewHolder(EventViewHolder holder, int position) {
-			final Event event = events.get(position);
-			holder.name(event.title());
-			holder.time(Dates.formatTimeRange(event.start(), event.end()));
-			holder.listener(new OnClickListener() {
-				@Override public void onClick(View view) {
-					listener.onEventSelected(event);
-				}
-			});
-		}
+        @Override public void onBindViewHolder(EventViewHolder holder, int position) {
+            final Event event = events.get(position);
+            holder.event(event);
+        }
 
-		@Override public int getItemCount() {
-			return events.size();
-		}
+        @Override public int getItemCount() {
+            return events.size();
+        }
 
-		public void swapItems(EventList list) {
-			this.events = list.events();
-			notifyDataSetChanged();
-		}
-	}
+        public void swapItems(EventList list) {
+            this.events = list.events();
+            notifyDataSetChanged();
+        }
+    }
 
 }
