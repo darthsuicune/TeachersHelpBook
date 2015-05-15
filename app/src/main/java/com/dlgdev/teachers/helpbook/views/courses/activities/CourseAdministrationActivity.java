@@ -11,12 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.Holiday;
 import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment.CourseAdministrationActionListener;
-
-import org.joda.time.DateTime;
 
 public class CourseAdministrationActivity extends AppCompatActivity implements
 		CourseAdministrationActionListener {
@@ -56,7 +56,7 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 
 	}
 
-	@Override public void onBankHolidaySelected(DateTime date) {
+	@Override public void onBankHolidaySelected(Holiday holiday) {
 
 	}
 
@@ -65,6 +65,14 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 	}
 
 	@Override public void onGroupSelected(StudentGroup group) {
+
+	}
+
+	@Override public void onNewEventRequested() {
+
+	}
+
+	@Override public void onEventSelected(Event event) {
 
 	}
 

@@ -27,4 +27,6 @@
     <string name="invalid_day">Invalid day selected</string>
     <string name="course_administration_title">Administer Course</string>
     <string name="holidays">Holidays</string>
+    <string name="subjects">Subjects</string>
+    <string name="events">Events</string>
 </resources>

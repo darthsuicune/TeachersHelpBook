@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 @Table(name = TeachersDBContract.Subjects.TABLE_NAME, id = TeachersDBContract.Subjects._ID)
-public class Subject extends Model {
+public class Subject extends Model implements Listable {
 	@Column(name = TeachersDBContract.Subjects.TITLE) public String title;
 	@Column(name = TeachersDBContract.Subjects.DESCRIPTION) public String description;
 	@Column(name = TeachersDBContract.Subjects.COURSE) public Course course;
@@ -33,5 +33,13 @@ public class Subject extends Model {
 
 	public void course(Course course) {
 		this.course = course;
+	}
+
+	@Override public String title() {
+		return title;
+	}
+
+	@Override public String description() {
+		return description;
 	}
 }

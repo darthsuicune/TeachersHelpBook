@@ -13,12 +13,12 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.Holiday;
+import com.dlgdev.teachers.helpbook.models.Listable;
 import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.TitledRecyclerCardWithAddButton;
-
-import org.joda.time.DateTime;
+import com.dlgdev.teachers.helpbook.views.TitledRecyclerCardWithAddButton.RecyclerCardListener;
 
 /**
  * This Fragment should offer the chance to add new subjects, view the current subjects, handle
@@ -29,9 +29,9 @@ public class CourseAdministrationFragment extends Fragment {
 	TextView courseNameView;
 	TextView courseDescriptionView;
 	TextView datesView;
-	TitledRecyclerCardWithAddButton<Holiday> holidaysView;
-	TitledRecyclerCardWithAddButton<Subject> subjectsView;
-	TitledRecyclerCardWithAddButton<Event> eventsView;
+	TitledRecyclerCardWithAddButton holidaysView;
+	TitledRecyclerCardWithAddButton subjectsView;
+	TitledRecyclerCardWithAddButton eventsView;
 
 	Course course;
 
@@ -54,15 +54,42 @@ public class CourseAdministrationFragment extends Fragment {
 		courseNameView = (TextView) v.findViewById(R.id.course_administration_name);
 		courseDescriptionView = (TextView) v.findViewById(R.id.course_administration_description);
 		datesView = (TextView) v.findViewById(R.id.course_administration_dates);
-		holidaysView = (TitledRecyclerCardWithAddButton<Holiday>) v
+		holidaysView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_holidays);
-		subjectsView = (TitledRecyclerCardWithAddButton<Subject>) v
+		subjectsView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_subjects);
-		eventsView = (TitledRecyclerCardWithAddButton<Event>) v
+		eventsView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_events);
-		holidaysView.setup(null, getString(R.string.holidays), R.layout.event_view_for_list);
-		subjectsView.setup(null, "", R.layout.event_view_for_list);
-		eventsView.setup(null, "", R.layout.event_view_for_list);
+		holidaysView.setup(getString(R.string.holidays), R.layout.list_item,
+				new RecyclerCardListener() {
+					@Override public void onNewItemRequested() {
+						listener.onNewBankHolidayRequested();
+					}
+
+					@Override public <T extends Listable> void onItemSelected(T t) {
+						listener.onBankHolidaySelected((Holiday) t);
+					}
+				});
+		subjectsView.setup(getString(R.string.subjects), R.layout.list_item,
+				new RecyclerCardListener() {
+					@Override public void onNewItemRequested() {
+						listener.onNewSubjectRequested();
+					}
+
+					@Override public <T extends Listable> void onItemSelected(T t) {
+						listener.onSubjectSelected((Subject) t);
+					}
+				});
+		eventsView.setup(getString(R.string.events), R.layout.list_item,
+				new RecyclerCardListener() {
+					@Override public void onNewItemRequested() {
+						listener.onNewEventRequested();
+					}
+
+					@Override public <T extends Listable> void onItemSelected(T t) {
+						listener.onEventSelected((Event) t);
+					}
+				});
 	}
 
 	public void course(Course course) {
@@ -82,10 +109,14 @@ public class CourseAdministrationFragment extends Fragment {
 
 		void onNewBankHolidayRequested();
 
-		void onBankHolidaySelected(DateTime date);
+		void onBankHolidaySelected(Holiday holiday);
 
 		void onNewGroupRequested();
 
 		void onGroupSelected(StudentGroup group);
+
+		void onNewEventRequested();
+
+		void onEventSelected(Event event);
 	}
 }

@@ -77,6 +77,7 @@ public class CourseAdministrationFragmentTest {
 
 	private void createStuffForTheCourse() {
 		course = new Course();
+		course.save();
 		course.start = DateTime.now().minusWeeks(5);
 		course.end = DateTime.now().plusWeeks(5);
 		course.addSubject(subjectsFactory.createAndSave(SUBJECT_TITLE));

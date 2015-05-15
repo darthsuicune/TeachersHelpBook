@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.Listable;
 import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.List;
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
-public class TitledRecyclerCardWithAddButton<T> extends CardView {
+public class TitledRecyclerCardWithAddButton extends CardView {
 	RecyclerCardListener listener;
-	List<T> items;
+	List<? extends Listable> items;
 	String title;
 
 	TextView titleView;
@@ -28,13 +29,13 @@ public class TitledRecyclerCardWithAddButton<T> extends CardView {
 	RecyclerView listView;
 	int recyclerItemLayoutResId;
 
-	ItemListAdapter<T> adapter;
+	ItemListAdapter adapter;
 
 	public TitledRecyclerCardWithAddButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public void setup(RecyclerCardListener listener, String title, int recyclerItemLayoutId) {
+	public void setup(String title, int recyclerItemLayoutId, RecyclerCardListener listener) {
 		this.listener = listener;
 		this.title = title;
 		this.recyclerItemLayoutResId = recyclerItemLayoutId;
@@ -61,7 +62,7 @@ public class TitledRecyclerCardWithAddButton<T> extends CardView {
 		});
 	}
 
-	public void updateItems(List<T> itemList) {
+	public void updateItems(List<? extends Listable> itemList) {
 		items = itemList;
 		if (itemList.size() == 0) {
 			listView.setVisibility(View.GONE);
@@ -75,46 +76,54 @@ public class TitledRecyclerCardWithAddButton<T> extends CardView {
 
 	private void updateItemList() {
 		if (adapter == null) {
-			adapter = new ItemListAdapter<>(items, recyclerItemLayoutResId);
+			adapter = new ItemListAdapter(items, recyclerItemLayoutResId);
 			listView.setAdapter(adapter);
 		}
 		adapter.swapItems(items);
 	}
 
-	public interface RecyclerCardListener<T> {
+	public interface RecyclerCardListener {
 		void onNewItemRequested();
 
-		void onItemSelected(T t);
+		<T extends Listable> void onItemSelected(T t);
 	}
 
-	private class ItemListAdapter<U> extends RecyclerView.Adapter<ClickableViewHolder<U>> {
-		List<U> items;
+	private class ItemListAdapter extends RecyclerView.Adapter<ClickableListElementViewHolder>
+			implements ClickableListElementViewHolder.RecyclerItemListener {
+		List<? extends Listable> items;
 		int itemLayoutResId;
 
-		public ItemListAdapter(List<U> list, int itemLayoutResId) {
+		public ItemListAdapter(List<? extends Listable> list, int itemLayoutResId) {
 			items = list;
 			this.itemLayoutResId = itemLayoutResId;
 		}
 
-		@Override public ClickableViewHolder<U> onCreateViewHolder(ViewGroup parent, int viewType) {
+		@Override public ClickableListElementViewHolder onCreateViewHolder(
+				ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(getContext()).inflate(itemLayoutResId, parent, false);
-			ClickableViewHolder<U> holder = new ClickableViewHolder<U>(v, listener);
+			ClickableListElementViewHolder holder = new ClickableListElementViewHolder(v, this);
 			v.setOnClickListener(holder);
 			return holder;
 		}
 
-		@Override public void onBindViewHolder(ClickableViewHolder<U> holder, int position) {
-			final U item = items.get(position);
-			holder.item(item);
+		@Override
+		public void onBindViewHolder(ClickableListElementViewHolder holder, int position) {
+			holder.position(position);
+			holder.title(items.get(position).title());
+			holder.description(items.get(position).description());
 		}
 
 		@Override public int getItemCount() {
 			return items.size();
 		}
 
-		public void swapItems(List<U> list) {
+		public void swapItems(List<? extends Listable> list) {
 			this.items = list;
 			notifyDataSetChanged();
+		}
+
+		@Override public void onItemSelected(int position) {
+			listener.onItemSelected(items.get(position));
 		}
 	}
 
