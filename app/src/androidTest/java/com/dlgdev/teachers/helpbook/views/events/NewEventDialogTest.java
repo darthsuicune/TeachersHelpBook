@@ -5,8 +5,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogListener;
 
@@ -37,7 +37,7 @@ public class NewEventDialogTest {
 	NewEventDialog dialog;
 	CourseOverviewActivity activity;
 	NewEventDialogListener mockListener;
-	EventsProvider provider;
+	EventsFactory provider;
 
 	String someData = "someData";
 
@@ -45,7 +45,7 @@ public class NewEventDialogTest {
 		activity = rule.getActivity();
 		mockListener = Mockito.mock(NewEventDialogListener.class);
 		dialog = new NewEventDialog();
-		provider = new EventsProvider();
+		provider = new EventsFactory();
 		Event event = provider.createEmpty();
 		dialog.setup(mockListener, event, R.id.course_weekly_main_fragment);
 		dialog.show(activity.getSupportFragmentManager(), TAG);

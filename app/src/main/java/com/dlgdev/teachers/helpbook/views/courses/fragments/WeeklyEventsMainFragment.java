@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventList;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.EventList;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
 import com.dlgdev.teachers.helpbook.views.events.NewEventDialog;
@@ -86,7 +86,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onNewEventRequested(DateTime date) {
-		Event event = new EventsProvider().createEmpty(date);
+		Event event = new EventsFactory().createEmpty(date);
 		NewEventDialog newEventDialog = new NewEventDialog();
 		newEventDialog.setup(this, event, R.id.course_weekly_main_fragment);
 		newEventDialog.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);

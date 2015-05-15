@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.courses.Course;
-import com.dlgdev.teachers.helpbook.models.subjects.Subject;
+import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment.CourseAdministrationActionListener;
 

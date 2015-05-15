@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventList;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.EventList;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;
@@ -38,12 +38,12 @@ public class DailyEventsCardViewTest {
 	DailyEventsCardListener listener;
 	DateTime date;
 	EventList eventList;
-	EventsProvider provider;
+	EventsFactory provider;
 	LayoutInflater inflater;
 	Context context;
 
 	@Before public void setUp() throws Exception {
-		provider = new EventsProvider();
+		provider = new EventsFactory();
 		listener = mock(DailyEventsCardListener.class);
 		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
 		context = InstrumentationRegistry.getTargetContext();

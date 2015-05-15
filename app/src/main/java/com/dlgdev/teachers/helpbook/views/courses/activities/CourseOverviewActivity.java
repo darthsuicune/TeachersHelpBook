@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;

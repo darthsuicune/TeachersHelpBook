@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -1,8 +1,9 @@
-package com.dlgdev.teachers.helpbook.models.events;
+package com.dlgdev.teachers.helpbook.models;
 
 import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Delete;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -16,10 +17,10 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class EventTest {
 	Event event;
-	EventsProvider provider;
+	EventsFactory provider;
 
 	@Before public void setUp() throws Exception {
-		provider = new EventsProvider();
+		provider = new EventsFactory();
     }
 
 	@After public void tearDown() throws Exception {
@@ -59,9 +60,9 @@ public class EventTest {
 
 	private Event[] afterCreatingEventsInDifferentDays() {
 		Event[] events = new Event[3];
-		events[0] = provider.newEventAt(DateTime.now().minusDays(2), "Some title", "Some desc");
-		events[1] = provider.newEventAt(DateTime.now(), "Some title", "Some desc");
-		events[2] = provider.newEventAt(DateTime.now().plusDays(2), "Some title", "Some desc");
+		events[0] = provider.createAndSaveAt(DateTime.now().minusDays(2), "Some title", "Some desc");
+		events[1] = provider.createAndSaveAt(DateTime.now(), "Some title", "Some desc");
+		events[2] = provider.createAndSaveAt(DateTime.now().plusDays(2), "Some title", "Some desc");
 		return events;
 	}
 }

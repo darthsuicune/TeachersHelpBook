@@ -6,8 +6,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 
@@ -91,7 +91,7 @@ public class UIWeeklyEventsMainFragmentTest {
 	}
 
 	private Event afterAddingAnEvent() {
-		Event event = new EventsProvider().newEvent("sometext", "somedesc");
+		Event event = new EventsFactory().createAndSave("sometext", "somedesc");
 		event.save();
 		return event;
 	}

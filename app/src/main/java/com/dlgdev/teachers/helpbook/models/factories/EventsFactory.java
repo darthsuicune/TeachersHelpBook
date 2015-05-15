@@ -1,6 +1,9 @@
-package com.dlgdev.teachers.helpbook.models.events;
+package com.dlgdev.teachers.helpbook.models.factories;
 
 import android.database.Cursor;
+
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.EventList;
 
 import org.joda.time.DateTime;
 
@@ -8,14 +11,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventsProvider implements Serializable {
+public class EventsFactory implements Serializable {
 	int defaultEventDurationInHours;
 
-	public EventsProvider() {
+	public EventsFactory() {
 		this.defaultEventDurationInHours = Event.DEFAULT_EVENT_DURATION_IN_HOURS;
 	}
 
-	public EventsProvider(int defaultEventDurationInHours) {
+	public EventsFactory(int defaultEventDurationInHours) {
 		this.defaultEventDurationInHours = defaultEventDurationInHours;
 	}
 
@@ -44,7 +47,7 @@ public class EventsProvider implements Serializable {
 		return new Event(start, end);
 	}
 
-	public Event newEvent(String title, String description) {
+	public Event createAndSave(String title, String description) {
 		Event event = createEmpty();
 		event.title(title);
 		event.description(description);
@@ -52,7 +55,7 @@ public class EventsProvider implements Serializable {
 		return event;
 	}
 
-	public Event newEventAt(DateTime start, String title, String description) {
+	public Event createAndSaveAt(DateTime start, String title, String description) {
 		Event event = createEmpty(start);
 		event.title(title);
 		event.description(description);
@@ -60,7 +63,8 @@ public class EventsProvider implements Serializable {
 		return event;
 	}
 
-	public Event newEventBetween(DateTime start, DateTime end, String title, String description) {
+	public Event createAndSaveBetween(DateTime start, DateTime end, String title,
+									  String description) {
 		Event event = createEmpty(start, end);
 		event.title(title);
 		event.description(description);

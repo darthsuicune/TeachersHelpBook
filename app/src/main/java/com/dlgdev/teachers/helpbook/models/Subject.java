@@ -1,11 +1,9 @@
-package com.dlgdev.teachers.helpbook.models.subjects;
+package com.dlgdev.teachers.helpbook.models;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.dlgdev.teachers.helpbook.models.courses.Course;
-import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.models.events.Event;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 
 import org.joda.time.DateTime;
 
@@ -27,5 +25,13 @@ public class Subject extends Model {
 
 	public List<TimeTableEntry> timeTable() {
 		return getMany(TimeTableEntry.class, TeachersDBContract.TimeTableEntries.SUBJECT);
+	}
+
+	public List<GroupTakesSubject> groupsWithSubject() {
+		return getMany(GroupTakesSubject.class, TeachersDBContract.GroupTakesSubjects.SUBJECT);
+	}
+
+	public void course(Course course) {
+		this.course = course;
 	}
 }

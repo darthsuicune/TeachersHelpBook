@@ -1,11 +1,11 @@
-package com.dlgdev.teachers.helpbook.models.events;
+package com.dlgdev.teachers.helpbook.models;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.courses.Course;
-import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
 
 import org.joda.time.DateTime;
 

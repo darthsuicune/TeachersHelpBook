@@ -1,8 +1,5 @@
-package com.dlgdev.teachers.helpbook.models.events;
+package com.dlgdev.teachers.helpbook.utils;
 
-/**
- * Created by lapuente on 16.03.15.
- */
 public class InvalidDateTimeException extends RuntimeException {
 	int resId;
 	public InvalidDateTimeException(int errorResId) {

@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.InvalidDateTimeException;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;

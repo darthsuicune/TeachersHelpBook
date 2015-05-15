@@ -1,12 +1,9 @@
-package com.dlgdev.teachers.helpbook.models.db;
+package com.dlgdev.teachers.helpbook.db;
 
 import com.activeandroid.serializer.TypeSerializer;
 
 import org.joda.time.DateTime;
 
-/**
- * Created by lapuente on 22.04.15.
- */
 public class DateTimeTypeSerializer extends TypeSerializer {
 	@Override public Class<?> getDeserializedType() {
 		return DateTime.class;

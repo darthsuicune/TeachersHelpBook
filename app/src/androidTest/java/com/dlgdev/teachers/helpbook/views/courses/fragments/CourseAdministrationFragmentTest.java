@@ -6,22 +6,35 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.courses.Course;
+import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
+import com.dlgdev.teachers.helpbook.models.factories.SubjectsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseAdministrationActivity;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class CourseAdministrationFragmentTest {
+	static final String EVENT_TITLE = "event_title";
+	static final String EVENT_DESC = "desc";
+	static final String SUBJECT_TITLE = "subject_title";
+
 	CourseAdministrationFragment fragment;
 	CourseAdministrationActivity activity;
 	Course course;
+	SubjectsFactory subjectsFactory;
+	EventsFactory eventsFactory;
 
 	@Rule public ActivityTestRule<CourseAdministrationActivity> rule =
 			new ActivityTestRule<>(CourseAdministrationActivity.class, true, false);
@@ -29,6 +42,8 @@ public class CourseAdministrationFragmentTest {
 	@Before public void setUp() throws Exception {
 		course = new Course();
 		course.save();
+		subjectsFactory = new SubjectsFactory();
+		eventsFactory = new EventsFactory();
 	}
 
 	@After public void tearDown() throws Exception {
@@ -46,5 +61,24 @@ public class CourseAdministrationFragmentTest {
 		activity = rule.launchActivity(intent);
 		fragment = (CourseAdministrationFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_administration_fragment);
+	}
+
+	@Test public void afterLaunchTheAvailableInformationIsDisplayed() throws Exception {
+		createAdditionalStuffForTheCourse();
+		launchActivity();
+		onView(withText(EVENT_TITLE)).check(matches(isDisplayed()));
+		onView(withText(EVENT_DESC)).check(matches(isDisplayed()));
+		onView(withText(SUBJECT_TITLE)).check(matches(isDisplayed()));
+	}
+
+	private void createAdditionalStuffForTheCourse() {
+		course.start = DateTime.now().minusWeeks(5);
+		course.end = DateTime.now().plusWeeks(5);
+		course.addSubject(subjectsFactory.createAndSave(SUBJECT_TITLE));
+		course.addBankHoliday(DateTime.now(), "Something");
+		course.addEvent(eventsFactory.createAndSave(EVENT_TITLE, EVENT_DESC));
+		course.title = "Curse";
+		course.description = "This is such a curse";
+		course.save();
 	}
 }

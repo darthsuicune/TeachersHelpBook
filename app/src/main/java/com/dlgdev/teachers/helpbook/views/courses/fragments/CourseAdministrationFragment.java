@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.courses.Course;
-import com.dlgdev.teachers.helpbook.models.subjects.Subject;
+import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.models.Subject;
 
 import org.joda.time.DateTime;
 

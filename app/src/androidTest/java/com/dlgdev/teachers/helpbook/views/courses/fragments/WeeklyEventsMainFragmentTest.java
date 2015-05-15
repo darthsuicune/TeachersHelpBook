@@ -6,8 +6,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 
 import com.activeandroid.query.Select;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -61,7 +61,7 @@ public class WeeklyEventsMainFragmentTest {
 	}
 
 	private void whenWeCreateAnEvent() {
-		event = new EventsProvider().createEmpty();
+		event = new EventsFactory().createEmpty();
 		fragment.onNewEventCreated(event);
 	}
 

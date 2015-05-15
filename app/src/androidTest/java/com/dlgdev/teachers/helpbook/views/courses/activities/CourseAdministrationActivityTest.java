@@ -5,7 +5,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Delete;
-import com.dlgdev.teachers.helpbook.models.courses.Course;
+import com.dlgdev.teachers.helpbook.models.Course;
 
 import org.junit.After;
 import org.junit.Before;

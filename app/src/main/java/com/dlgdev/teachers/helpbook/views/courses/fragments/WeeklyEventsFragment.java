@@ -12,10 +12,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.dlgdev.teachers.helpbook.Settings;
-import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventList;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.EventList;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 
@@ -82,7 +82,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-			updateEventList(new EventsProvider().listFromCursor(data));
+			updateEventList(new EventsFactory().listFromCursor(data));
 		}
 
 		@Override public void onLoaderReset(Loader<Cursor> loader) {

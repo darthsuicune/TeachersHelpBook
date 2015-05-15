@@ -4,8 +4,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
@@ -28,13 +28,13 @@ import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.hasText;
 
 @RunWith(AndroidJUnit4.class)
 public class CoursePanelFragmentTest {
-	EventsProvider provider;
+	EventsFactory provider;
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setUp() throws Exception {
-		provider = new EventsProvider();
+		provider = new EventsFactory();
 	}
 
 	@Test public void testUpdateDateDoesntModifyItsMainDate() throws Exception {

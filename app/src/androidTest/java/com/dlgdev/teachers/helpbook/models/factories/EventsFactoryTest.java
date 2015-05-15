@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.models.events;
+package com.dlgdev.teachers.helpbook.models.factories;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -6,7 +6,9 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Delete;
-import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.EventList;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -18,12 +20,12 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class EventsProviderTest {
-    EventsProvider provider;
+public class EventsFactoryTest {
+    EventsFactory provider;
     Event event;
 
     @Before public void setUp() throws Exception {
-        provider = new EventsProvider();
+        provider = new EventsFactory();
     }
 
     @After public void tearDown() throws Exception {
@@ -73,9 +75,9 @@ public class EventsProviderTest {
     }
 
     private void afterCreatingSomeEvents(int i) {
-        Event event = provider.newEvent("Someevent", "Somedesc");
+        Event event = provider.createAndSave("Someevent", "Somedesc");
         event.save();
-        Event event1 = provider.newEvent("SomeOtherEvent", "Somedesc");
+        Event event1 = provider.createAndSave("SomeOtherEvent", "Somedesc");
         event1.save();
     }
 

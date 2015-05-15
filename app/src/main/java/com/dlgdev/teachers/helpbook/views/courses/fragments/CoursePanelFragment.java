@@ -14,9 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.models.events.EventList;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.EventList;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;
@@ -108,7 +108,7 @@ public class CoursePanelFragment extends Fragment {
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-			eventList(new EventsProvider().listFromCursor(data));
+			eventList(new EventsFactory().listFromCursor(data));
 		}
 
 		@Override public void onLoaderReset(Loader<Cursor> loader) {

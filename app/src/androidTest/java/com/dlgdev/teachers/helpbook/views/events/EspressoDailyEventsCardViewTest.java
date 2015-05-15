@@ -5,9 +5,9 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventList;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.EventList;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 
@@ -70,10 +70,10 @@ public class EspressoDailyEventsCardViewTest {
 	}
 
 	private void whenWeSendAnUpdatedEventListWithXEvents(int eventCount) throws Throwable {
-		EventsProvider provider = new EventsProvider();
+		EventsFactory provider = new EventsFactory();
 		list = provider.listFromList(new ArrayList<Event>());
 		for (int i = 0; i < eventCount; i++) {
-			Event event = provider.newEventAt(date, "sometext", "somedesc");
+			Event event = provider.createAndSaveAt(date, "sometext", "somedesc");
 			list.add(event);
 			event.save();
 		}

@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.events.Event;
-import com.dlgdev.teachers.helpbook.models.events.EventsProvider;
+import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class NewEventViewTest {
 
 	@Before public void setUp() throws Exception {
 		mockListener = mock(OnPickersRequestedListener.class);
-		Event event = new EventsProvider().createEmpty();
+		Event event = new EventsFactory().createEmpty();
 
 		view = (NewEventView) LayoutInflater.from(InstrumentationRegistry.getTargetContext())
 				.inflate(R.layout.create_event_dialog, null);
