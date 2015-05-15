@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +26,8 @@ public class CourseAdministrationActivityTest {
 
 	@Before public void setUp() throws Exception {
 		course = new Course();
+		course.start = DateTime.now();
+		course.end = DateTime.now();
 		course.save();
 	}
 
