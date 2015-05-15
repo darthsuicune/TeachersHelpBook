@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 
 import com.activeandroid.query.Select;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
@@ -36,9 +37,7 @@ public class WeeklyEventsMainFragmentTest {
 	}
 
 	@After public void tearDown() throws Exception {
-		if (event != null && event.getId() != null) {
-			event.delete();
-		}
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testPassingANewDateUpdatesTheMainFragmentsDate() throws Exception {

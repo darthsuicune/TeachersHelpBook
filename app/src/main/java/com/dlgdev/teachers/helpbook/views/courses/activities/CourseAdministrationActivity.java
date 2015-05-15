@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment.CourseAdministrationActionListener;
@@ -63,7 +64,7 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 
 	}
 
-	@Override public void onGroupSelected() {
+	@Override public void onGroupSelected(StudentGroup group) {
 
 	}
 

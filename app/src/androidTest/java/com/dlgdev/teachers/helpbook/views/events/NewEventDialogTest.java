@@ -4,6 +4,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
@@ -13,6 +14,7 @@ import com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogLi
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +51,10 @@ public class NewEventDialogTest {
 		Event event = provider.createEmpty();
 		dialog.setup(mockListener, event, R.id.course_weekly_main_fragment);
 		dialog.show(activity.getSupportFragmentManager(), TAG);
+	}
+
+	@After public void teardown() throws Exception {
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testSetup() throws Exception {

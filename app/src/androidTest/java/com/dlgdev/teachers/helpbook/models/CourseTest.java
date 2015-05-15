@@ -3,6 +3,7 @@ package com.dlgdev.teachers.helpbook.models;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Select;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -28,7 +29,7 @@ public class CourseTest {
 	}
 
 	@After public void tearDown() throws Exception {
-		course.delete();
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testModelGetsAnIdAfterSaving() throws Exception {

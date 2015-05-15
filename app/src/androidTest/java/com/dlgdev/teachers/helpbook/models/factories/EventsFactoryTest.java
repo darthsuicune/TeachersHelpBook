@@ -5,9 +5,9 @@ import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
-import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 
 import org.joda.time.DateTime;
@@ -29,7 +29,7 @@ public class EventsFactoryTest {
     }
 
     @After public void tearDown() throws Exception {
-        new Delete().from(Event.class).execute();
+        DatabaseUtils.clearDatabase();
     }
 
     @Test public void testCreateEmptyCreatesAnEventThatStartsNowAndLastsForAnHour()

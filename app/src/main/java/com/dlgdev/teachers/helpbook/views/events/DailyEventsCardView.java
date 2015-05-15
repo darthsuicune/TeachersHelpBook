@@ -72,7 +72,7 @@ public class DailyEventsCardView extends CardView {
         } else {
             color = getResources().getColor(R.color.background_material_light);
         }
-        setBackgroundColor(color);
+        setCardBackgroundColor(color);
     }
 
     private void newEventRequested() {

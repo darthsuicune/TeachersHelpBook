@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
@@ -29,6 +29,9 @@ public class CourseAdministrationFragmentTest {
 	static final String EVENT_TITLE = "event_title";
 	static final String EVENT_DESC = "desc";
 	static final String SUBJECT_TITLE = "subject_title";
+	public static final String COURSE_TITLE = "Curse";
+	public static final String COURSE_DESC = "This is such a curse";
+	public static final String HOLIDAY_TITLE = "Something";
 
 	CourseAdministrationFragment fragment;
 	CourseAdministrationActivity activity;
@@ -40,14 +43,13 @@ public class CourseAdministrationFragmentTest {
 			new ActivityTestRule<>(CourseAdministrationActivity.class, true, false);
 
 	@Before public void setUp() throws Exception {
-		course = new Course();
-		course.save();
 		subjectsFactory = new SubjectsFactory();
 		eventsFactory = new EventsFactory();
+		createStuffForTheCourse();
 	}
 
 	@After public void tearDown() throws Exception {
-		new Delete().from(Course.class).execute();
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testAfterLoadActivityLoadsTheCorrectCourse() throws Exception {
@@ -64,21 +66,24 @@ public class CourseAdministrationFragmentTest {
 	}
 
 	@Test public void afterLaunchTheAvailableInformationIsDisplayed() throws Exception {
-		createAdditionalStuffForTheCourse();
 		launchActivity();
+		onView(withText(COURSE_TITLE)).check(matches(isDisplayed()));
+		onView(withText(COURSE_DESC)).check(matches(isDisplayed()));
 		onView(withText(EVENT_TITLE)).check(matches(isDisplayed()));
 		onView(withText(EVENT_DESC)).check(matches(isDisplayed()));
 		onView(withText(SUBJECT_TITLE)).check(matches(isDisplayed()));
+		onView(withText(HOLIDAY_TITLE)).check(matches(isDisplayed()));
 	}
 
-	private void createAdditionalStuffForTheCourse() {
+	private void createStuffForTheCourse() {
+		course = new Course();
 		course.start = DateTime.now().minusWeeks(5);
 		course.end = DateTime.now().plusWeeks(5);
 		course.addSubject(subjectsFactory.createAndSave(SUBJECT_TITLE));
-		course.addBankHoliday(DateTime.now(), "Something");
+		course.addBankHoliday(DateTime.now(), HOLIDAY_TITLE);
 		course.addEvent(eventsFactory.createAndSave(EVENT_TITLE, EVENT_DESC));
-		course.title = "Curse";
-		course.description = "This is such a curse";
+		course.title = COURSE_TITLE;
+		course.description = COURSE_DESC;
 		course.save();
 	}
 }

@@ -2,8 +2,8 @@ package com.dlgdev.teachers.helpbook.models;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
 import org.joda.time.DateTime;
@@ -34,7 +34,7 @@ public class EventListTest {
     }
 
     @After public void teardown() throws Exception {
-        new Delete().from(Event.class).execute();
+        DatabaseUtils.clearDatabase();
     }
 
     private void whenWeHaveAnEventWithXEvents(int count) {

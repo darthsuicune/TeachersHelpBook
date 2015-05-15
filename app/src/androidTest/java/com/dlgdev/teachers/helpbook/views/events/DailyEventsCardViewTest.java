@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
@@ -13,6 +14,7 @@ import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +52,10 @@ public class DailyEventsCardViewTest {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		card = (DailyEventsCardView) inflater.inflate(R.layout.daily_events_card, null);
 		setupCard(date);
+	}
+
+	@After public void teardown() throws Exception {
+		DatabaseUtils.clearDatabase();
 	}
 
 	private void setupCard(DateTime date) {

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 
 import org.junit.After;
@@ -29,7 +29,7 @@ public class CourseAdministrationActivityTest {
 	}
 
 	@After public void tearDown() throws Exception {
-		new Delete().from(Course.class).execute();
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testOnCreateLoadsTheCorrectCourse() throws Exception {
