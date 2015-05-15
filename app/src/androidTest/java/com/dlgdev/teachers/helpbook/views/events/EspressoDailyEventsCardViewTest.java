@@ -3,7 +3,7 @@ package com.dlgdev.teachers.helpbook.views.events;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
@@ -45,7 +45,7 @@ public class EspressoDailyEventsCardViewTest {
 	}
 
 	@After public void teardown() throws Exception {
-		new Delete().from(Event.class).execute();
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void clickOnAnEventCallsTheCallback() throws Throwable {

@@ -3,6 +3,7 @@ package com.dlgdev.teachers.helpbook.views.courses.fragments;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
@@ -10,6 +11,7 @@ import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,6 +37,10 @@ public class CoursePanelFragmentTest {
 
 	@Before public void setUp() throws Exception {
 		provider = new EventsFactory();
+	}
+
+	@After public void teardown() throws Exception {
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testUpdateDateDoesntModifyItsMainDate() throws Exception {

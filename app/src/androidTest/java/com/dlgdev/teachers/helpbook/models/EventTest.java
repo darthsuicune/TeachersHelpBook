@@ -2,7 +2,7 @@ package com.dlgdev.teachers.helpbook.models;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
 import org.joda.time.DateTime;
@@ -24,7 +24,7 @@ public class EventTest {
     }
 
 	@After public void tearDown() throws Exception {
-		new Delete().from(Event.class).execute();
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testIsAtPresentDateTime() throws Exception {

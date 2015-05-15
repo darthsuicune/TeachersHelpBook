@@ -70,7 +70,7 @@ public class TeachersDBContract {
 		public static final String NAME = "name";
 		public static final String SURNAME = "surname";
 		public static final String BIRTHDAY = "birthday";
-		public static final String GROUP = "group";
+		public static final String GROUP = "student_group";
 		public static final String OBSERVATIONS = "observations";
 		public static final String GRADES = "grades";
 

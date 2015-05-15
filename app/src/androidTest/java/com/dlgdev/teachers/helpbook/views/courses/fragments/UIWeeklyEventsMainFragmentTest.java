@@ -4,7 +4,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Delete;
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
@@ -12,6 +12,7 @@ import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActiv
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,12 +35,13 @@ public class UIWeeklyEventsMainFragmentTest {
 	WeeklyEventsMainFragment fragment;
 	WeeklyEventsListener listener = mock(WeeklyEventsListener.class);
 	String text = "someText";
+	DateTime date = DateTime.now().withDayOfWeek(DateTimeConstants.MONDAY);
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@After public void tearDown() throws Exception {
-		new Delete().from(Event.class).execute();
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testOnNewEventRequestedOpensADialogToCreateAnEvent() throws Exception {
@@ -49,7 +51,7 @@ public class UIWeeklyEventsMainFragmentTest {
 
 	private void whenWeRequestANewEvent() {
 		getFragment();
-		fragment.onNewEventRequested(DateTime.now());
+		fragment.onNewEventRequested(date);
 	}
 
 	public void getFragment() {
@@ -75,7 +77,7 @@ public class UIWeeklyEventsMainFragmentTest {
 	}
 
 	private void theEventDataIsDisplayedInTheProperDay() {
-		int parentId = fragment.dailyCards.get(DateTime.now().getDayOfWeek()).getId();
+		int parentId = fragment.dailyCards.get(date.getDayOfWeek()).getId();
 		onView(allOf(withId(R.id.event_entry_name), isDescendantOfA(withId(parentId))))
 				.check(matches(withText(text)));
 	}
@@ -84,14 +86,14 @@ public class UIWeeklyEventsMainFragmentTest {
 		getFragment();
 		fragment.eventsListener = listener;
 		Event event = afterAddingAnEvent();
-		int parentId = fragment.dailyCards.get(DateTime.now().getDayOfWeek()).getId();
+		int parentId = fragment.dailyCards.get(date.getDayOfWeek()).getId();
 		onView(allOf(withId(R.id.event_entry_name), isDescendantOfA(withId(parentId))))
 				.perform(click());
 		verify(listener).onExistingEventSelected(event);
 	}
 
 	private Event afterAddingAnEvent() {
-		Event event = new EventsFactory().createAndSave("sometext", "somedesc");
+		Event event = new EventsFactory().createAndSaveAt(date, "sometext", "somedesc");
 		event.save();
 		return event;
 	}

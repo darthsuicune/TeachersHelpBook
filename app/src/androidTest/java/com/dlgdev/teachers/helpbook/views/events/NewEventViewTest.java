@@ -8,11 +8,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +48,10 @@ public class NewEventViewTest {
 		view = (NewEventView) LayoutInflater.from(InstrumentationRegistry.getTargetContext())
 				.inflate(R.layout.create_event_dialog, null);
 		view.setup(event, mockListener);
+	}
+
+	@After public void tearDown() throws Exception {
+		DatabaseUtils.clearDatabase();
 	}
 
 	@Test public void testSetup() throws Exception {
