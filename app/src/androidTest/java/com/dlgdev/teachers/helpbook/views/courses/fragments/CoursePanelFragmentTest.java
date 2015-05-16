@@ -5,10 +5,12 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -27,20 +29,30 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.dlgdev.teachers.helpbook.utils.Dates.formatDate;
 import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.hasText;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class CoursePanelFragmentTest {
+	Course course;
 	EventsFactory provider;
+	CoursePanelFragment fragment;
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setUp() throws Exception {
+		course = new Course(DateTime.now(), DateTime.now());
 		provider = new EventsFactory();
 	}
 
 	@After public void teardown() throws Exception {
 		DatabaseUtils.clearDatabase();
+	}
+
+	private void loadFragment() {
+		fragment = (CoursePanelFragment) rule.getActivity().getSupportFragmentManager()
+				.findFragmentById(R.id.course_overview_panel);
 	}
 
 	@Test public void testUpdateDateDoesntModifyItsMainDate() throws Exception {
@@ -88,7 +100,7 @@ public class CoursePanelFragmentTest {
 						.findFragmentById(R.id.course_overview_panel);
 		rule.runOnUiThread(new Runnable() {
 			@Override public void run() {
-				fragment.eventList(provider.listFromList(list));
+				fragment.eventList(list);
 			}
 		});
 	}
@@ -96,5 +108,14 @@ public class CoursePanelFragmentTest {
 	private void theEventCounterIsSetTo(int count) {
 		onView(withId(R.id.event_counter))
 				.check(matches(hasText(Integer.toString(count) + " events")));
+	}
+
+	@Test public void clickingOnThePanelCallsTheListener() throws Exception {
+		loadFragment();
+		CoursePanelListener listener = mock(CoursePanelListener.class);
+		fragment.listener = listener;
+		onView(withId(R.id.course_overview_panel)).perform(click());
+		verify(listener).onPanelTapped();
+
 	}
 }

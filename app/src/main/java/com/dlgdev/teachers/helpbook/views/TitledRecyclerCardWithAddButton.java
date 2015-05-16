@@ -27,7 +27,6 @@ public class TitledRecyclerCardWithAddButton extends CardView {
 	TextView emptyListView;
 	TextView addNewView;
 	RecyclerView listView;
-	int recyclerItemLayoutResId;
 
 	ItemListAdapter adapter;
 
@@ -35,10 +34,9 @@ public class TitledRecyclerCardWithAddButton extends CardView {
 		super(context, attrs);
 	}
 
-	public void setup(String title, int recyclerItemLayoutId, RecyclerCardListener listener) {
+	public void setup(String title, RecyclerCardListener listener) {
 		this.listener = listener;
 		this.title = title;
-		this.recyclerItemLayoutResId = recyclerItemLayoutId;
 		loadViews();
 		setupViewParameters();
 	}
@@ -76,7 +74,7 @@ public class TitledRecyclerCardWithAddButton extends CardView {
 
 	private void updateItemList() {
 		if (adapter == null) {
-			adapter = new ItemListAdapter(items, recyclerItemLayoutResId);
+			adapter = new ItemListAdapter(items);
 			listView.setAdapter(adapter);
 		}
 		adapter.swapItems(items);
@@ -91,16 +89,14 @@ public class TitledRecyclerCardWithAddButton extends CardView {
 	private class ItemListAdapter extends RecyclerView.Adapter<ClickableListElementViewHolder>
 			implements ClickableListElementViewHolder.RecyclerItemListener {
 		List<? extends Listable> items;
-		int itemLayoutResId;
 
-		public ItemListAdapter(List<? extends Listable> list, int itemLayoutResId) {
+		public ItemListAdapter(List<? extends Listable> list) {
 			items = list;
-			this.itemLayoutResId = itemLayoutResId;
 		}
 
 		@Override public ClickableListElementViewHolder onCreateViewHolder(
 				ViewGroup parent, int viewType) {
-			View v = LayoutInflater.from(getContext()).inflate(itemLayoutResId, parent, false);
+			View v = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
 			ClickableListElementViewHolder holder = new ClickableListElementViewHolder(v, this);
 			v.setOnClickListener(holder);
 			return holder;

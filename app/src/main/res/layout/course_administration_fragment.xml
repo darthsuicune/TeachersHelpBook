@@ -26,6 +26,12 @@
         layout="@layout/titled_recycler_card_with_add" />
 
     <include
+        android:id="@+id/course_administration_student_groups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/titled_recycler_card_with_add"/>
+
+    <include
         android:id="@+id/course_administration_subjects"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

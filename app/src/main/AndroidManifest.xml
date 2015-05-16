@@ -13,7 +13,7 @@
             android:value="Helpbook.db"/>
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="3"/>
+            android:value="4"/>
         <meta-data
             android:name="AA_SERIALIZERS"
             android:value="com.dlgdev.teachers.helpbook.db.DateTimeTypeSerializer"/>
@@ -40,7 +40,6 @@
 
         <activity android:name=".views.courses.activities.CourseAdministrationActivity"
             android:label="@string/course_administration_title">
-
         </activity>
         <provider
             android:name="com.activeandroid.content.ContentProvider"

@@ -22,6 +22,8 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 		CourseAdministrationActionListener {
 	public static final String KEY_COURSE = "course";
 	private static final int LOADER_COURSE = 1;
+	public static final String ACTION =
+			"com.dlgdev.teachers.helpbook.views.courses.activities.CourseAdministrationActivity";
 	CourseAdministrationFragment fragment;
 	Course course;
 

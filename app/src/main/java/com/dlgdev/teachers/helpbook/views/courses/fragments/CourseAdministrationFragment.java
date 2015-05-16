@@ -30,6 +30,7 @@ public class CourseAdministrationFragment extends Fragment {
 	TextView courseDescriptionView;
 	TextView datesView;
 	TitledRecyclerCardWithAddButton holidaysView;
+	TitledRecyclerCardWithAddButton studentGroupsView;
 	TitledRecyclerCardWithAddButton subjectsView;
 	TitledRecyclerCardWithAddButton eventsView;
 
@@ -56,12 +57,13 @@ public class CourseAdministrationFragment extends Fragment {
 		datesView = (TextView) v.findViewById(R.id.course_administration_dates);
 		holidaysView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_holidays);
+		studentGroupsView = (TitledRecyclerCardWithAddButton) v
+				.findViewById(R.id.course_administration_student_groups);
 		subjectsView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_subjects);
 		eventsView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_events);
-		holidaysView.setup(getString(R.string.holidays), R.layout.list_item,
-				new RecyclerCardListener() {
+		holidaysView.setup(getString(R.string.holidays), new RecyclerCardListener() {
 					@Override public void onNewItemRequested() {
 						listener.onNewBankHolidayRequested();
 					}
@@ -70,8 +72,16 @@ public class CourseAdministrationFragment extends Fragment {
 						listener.onBankHolidaySelected((Holiday) t);
 					}
 				});
-		subjectsView.setup(getString(R.string.subjects), R.layout.list_item,
-				new RecyclerCardListener() {
+		studentGroupsView.setup(getString(R.string.student_groups), new RecyclerCardListener() {
+					@Override public void onNewItemRequested() {
+						listener.onNewGroupRequested();
+					}
+
+					@Override public <T extends Listable> void onItemSelected(T t) {
+						listener.onGroupSelected((StudentGroup) t);
+					}
+				});
+		subjectsView.setup(getString(R.string.subjects), new RecyclerCardListener() {
 					@Override public void onNewItemRequested() {
 						listener.onNewSubjectRequested();
 					}
@@ -80,8 +90,7 @@ public class CourseAdministrationFragment extends Fragment {
 						listener.onSubjectSelected((Subject) t);
 					}
 				});
-		eventsView.setup(getString(R.string.events), R.layout.list_item,
-				new RecyclerCardListener() {
+		eventsView.setup(getString(R.string.events), new RecyclerCardListener() {
 					@Override public void onNewItemRequested() {
 						listener.onNewEventRequested();
 					}

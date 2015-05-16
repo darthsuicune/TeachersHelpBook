@@ -3,6 +3,7 @@ package com.dlgdev.teachers.helpbook.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import org.joda.time.DateTime;
 
@@ -30,6 +31,10 @@ public class Course extends Model {
 	public Course(DateTime start, DateTime end) {
 		this.start = start;
 		this.end = end;
+	}
+
+	public static int count() {
+		return new Select().from(Course.class).count();
 	}
 
 	public EventList eventsBetween(DateTime start, DateTime end) {

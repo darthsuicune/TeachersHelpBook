@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 
 import com.dlgdev.teachers.helpbook.Settings;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
@@ -36,6 +37,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 	int endingDayOfWeek;
 	EventList eventList;
 	SharedPreferences prefs;
+	Course course;
 
 	@Override public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -65,6 +67,10 @@ public abstract class WeeklyEventsFragment extends Fragment {
 
 	private void loadEvents() {
 		getLoaderManager().restartLoader(LOADER_EVENTS, null, new EventLoaderHelper());
+	}
+
+	public void updateCourse(Course course) {
+		this.course = course;
 	}
 
 	public interface WeeklyEventsListener {

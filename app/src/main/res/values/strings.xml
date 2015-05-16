@@ -29,4 +29,5 @@
     <string name="holidays">Holidays</string>
     <string name="subjects">Subjects</string>
     <string name="events">Events</string>
+    <string name="student_groups">Student Groups</string>
 </resources>

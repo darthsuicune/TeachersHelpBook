@@ -91,7 +91,7 @@ public class Dates {
 				hour = Integer.parseInt(tokenizer.nextToken());
 			}
 			return new DateTime(0, 1, 1, hour, minute);
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException | NoSuchElementException e) {
 			throw new InvalidDateTimeException(R.string.invalid_time_format);
 		}
 	}

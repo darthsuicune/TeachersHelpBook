@@ -1,15 +1,23 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
@@ -24,6 +32,7 @@ import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsF
 
 public class CourseOverviewActivity extends AppCompatActivity implements WeeklyEventsListener,
 		WeeklyPreviewListener, CoursePanelListener {
+	private static final int LOADER_COURSE = 1;
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
@@ -32,6 +41,7 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 	WeeklyEventsFragment secondNextWeekFragment;
 	CoursePanelFragment coursePanelFragment;
 	DateTime currentDate;
+	Course course;
 
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +49,7 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		setContentView(R.layout.course_overview_activity);
 		prepareCurrentDate(savedInstanceState);
-		setupFragments();
+		getSupportLoaderManager().initLoader(LOADER_COURSE, null, new CourseLoaderHelper());
 	}
 
 	private void prepareCurrentDate(Bundle savedInstanceState) {
@@ -53,19 +63,6 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(WORKING_DATE, currentDate.getMillis());
-	}
-
-	private void setupFragments() {
-		FragmentManager fm = getSupportFragmentManager();
-		mainViewFragment =
-				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
-		previousWeekFragment =
-				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_previous);
-		nextWeekFragment = (WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_next);
-		secondNextWeekFragment =
-				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
-		coursePanelFragment = (CoursePanelFragment) fm.findFragmentById(R.id.course_overview_panel);
-		reportDateToFragments();
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,6 +94,51 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 		reportDateToFragments();
 	}
 
+	@Override public void onPreviewTapped(DateTime referenceDate) {
+		currentDate = referenceDate;
+		reportDateToFragments();
+	}
+
+	@Override public void onPanelTapped() {
+		Intent intent = new Intent(getApplicationContext(), CourseAdministrationActivity.class);
+		intent.putExtra(CourseAdministrationActivity.KEY_COURSE, course.getId());
+		startActivity(intent);
+	}
+
+	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
+		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+			Uri uri = TeachersDBContract.Courses.URI;
+			return new CursorLoader(CourseOverviewActivity.this, uri, null, null, null, null);
+		}
+
+		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+			course = new Course();
+			if(data.moveToFirst()) {
+				course.loadFromCursor(data);
+			}
+			setupFragments();
+		}
+
+		@Override public void onLoaderReset(Loader<Cursor> loader) {
+
+		}
+	}
+
+	private void setupFragments() {
+		FragmentManager fm = getSupportFragmentManager();
+		mainViewFragment =
+				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
+		previousWeekFragment =
+				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_previous);
+		nextWeekFragment =
+				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_next);
+		secondNextWeekFragment =
+				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
+		coursePanelFragment = (CoursePanelFragment) fm.findFragmentById(R.id.course_overview_panel);
+		reportDateToFragments();
+		reportCourseToFragments();
+	}
+
 	private void reportDateToFragments() {
 		mainViewFragment.updateDate(currentDate);
 		previousWeekFragment.updateDate(currentDate.minusWeeks(1));
@@ -105,17 +147,11 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 		coursePanelFragment.updateDate(currentDate);
 	}
 
-	@Override public void onPreviewTapped(DateTime referenceDate) {
-		currentDate = referenceDate;
-		reportDateToFragments();
-	}
-
-	@Override public void onCurrentWeekTapped() {
-		currentDate = new DateTime();
-		reportDateToFragments();
-	}
-
-	@Override public void onEventCounterTapped() {
-		Toast.makeText(this, "Something fancy will happen!", Toast.LENGTH_LONG).show();
+	private void reportCourseToFragments() {
+		mainViewFragment.updateCourse(course);
+		previousWeekFragment.updateCourse(course);
+		nextWeekFragment.updateCourse(course);
+		secondNextWeekFragment.updateCourse(course);
+		coursePanelFragment.updateCourse(course);
 	}
 }
