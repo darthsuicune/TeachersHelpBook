@@ -99,6 +99,7 @@ public class DailyEventsCardViewTest {
 	}
 
 	@Test public void testAfterLaunchHighlightsTheCurrentDayInTheList() throws Exception {
+		setupCard(DateTime.now());
 		weGetAListWithTheExpectedEventsWithTodayHighlighted();
 	}
 

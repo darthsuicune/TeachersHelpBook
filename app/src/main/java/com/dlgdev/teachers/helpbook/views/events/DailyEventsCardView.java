@@ -1,7 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.utils.Dates;
+import com.dlgdev.teachers.helpbook.views.CardWithBackground;
 import com.dlgdev.teachers.helpbook.views.WrappedLayoutManager;
 import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
@@ -23,7 +23,7 @@ import java.util.List;
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
-public class DailyEventsCardView extends CardView {
+public class DailyEventsCardView extends CardWithBackground {
     DailyEventsCardListener listener;
     EventList events;
     DateTime date;

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -61,11 +62,16 @@ public class MoreViewMatchers {
 	}
 
 	public static Matcher<View> backgroundIs(final int color) {
-		return new TypeSafeMatcher<View>() {
+		return new BaseMatcher<View>() {
 			int detectedColor = 0;
-			@Override public boolean matchesSafely(View view) {
-				ColorDrawable drawable = (ColorDrawable) view.getBackground();
-				detectedColor = drawable.getColor();
+			@Override public boolean matches(Object view) {
+				try {
+					ColorDrawable drawable = (ColorDrawable) view;
+					detectedColor = drawable.getColor();
+				} catch (ClassCastException e) {
+					CardWithBackground card = (CardWithBackground) view;
+					detectedColor = card.getBackgroundColor();
+				}
 				return detectedColor == color;
 			}
 

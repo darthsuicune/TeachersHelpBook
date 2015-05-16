@@ -1,7 +1,6 @@
 package com.dlgdev.teachers.helpbook.views;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import java.util.List;
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
-public class TitledRecyclerCardWithAddButton extends CardView {
+public class TitledRecyclerCardWithAddButton extends CardWithBackground {
 	RecyclerCardListener listener;
 	List<? extends Listable> items;
 	String title;
