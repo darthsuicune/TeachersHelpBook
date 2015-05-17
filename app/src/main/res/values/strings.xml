@@ -30,4 +30,7 @@
     <string name="subjects">Subjects</string>
     <string name="events">Events</string>
     <string name="student_groups">Student Groups</string>
+    <string name="title_activity_courses_list">CoursesListActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="course_list_empty">No courses yet. Hit the add button to add one!</string>
 </resources>

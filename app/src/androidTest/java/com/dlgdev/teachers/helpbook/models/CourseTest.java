@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
@@ -21,11 +22,7 @@ public class CourseTest {
 	int count;
 
 	@Before public void setUp() throws Exception {
-		DateTime start = new DateTime();
-		DateTime end = new DateTime();
 		count = new Select().from(Course.class).count();
-		course = new Course(start, end);
-		course.save();
 	}
 
 	@After public void tearDown() throws Exception {
@@ -33,9 +30,19 @@ public class CourseTest {
 	}
 
 	@Test public void testModelGetsAnIdAfterSaving() throws Exception {
+		afterCreatingACourse();
 		assertTrue(course.getId() > 0);
 	}
+
+	private void afterCreatingACourse() {
+		DateTime start = new DateTime();
+		DateTime end = new DateTime();
+		course = new Course(start, end);
+		course.save();
+	}
+
 	@Test public void testModelIsStoredInTheDb() throws Exception {
+		afterCreatingACourse();
 		Course course = whenWeQueryTheDatabaseForOne();
 		assertNotNull(course);
 	}
@@ -45,7 +52,33 @@ public class CourseTest {
 	}
 
 	@Test public void testModelEqualsTheStoredObject() throws Exception {
+		afterCreatingACourse();
 		Course course = whenWeQueryTheDatabaseForOne();
 		assertEquals(course, this.course);
+	}
+
+	@Test public void currentReturnsACourseIfAnyMatchesTheCurrentDate() throws Exception {
+		addSeveralCoursesWithOneToday();
+		Course course = Course.current();
+		assertNotNull(course);
+		assertTrue(course.start.isBefore(DateTime.now()) && course.end.isAfter(DateTime.now()));
+	}
+
+	private long addSeveralCoursesWithOneToday() {
+		Course course = new Course(DateTime.now().minusYears(1), DateTime.now().minusMonths(3));
+		course.save();
+		course = new Course(DateTime.now().minusMonths(2), DateTime.now().plusMonths(2));
+		course.save();
+		long result = course.getId();
+		course = new Course(DateTime.now().plusMonths(3), DateTime.now().plusYears(1));
+		course.save();
+		return result;
+	}
+
+	@Test public void currentReturnsNullIfNoneMatchesTheCurrentDate() throws Exception {
+		long current = addSeveralCoursesWithOneToday();
+		Course.delete(Course.class, current);
+		Course course = Course.current();
+		assertNull(course);
 	}
 }

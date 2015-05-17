@@ -39,8 +39,8 @@ public class Course extends Model {
 
 	public EventList eventsBetween(DateTime start, DateTime end) {
 		List<Event> events = new ArrayList<>();
-		for(Event event : events()) {
-			if(event.isBetween(start, end)) {
+		for (Event event : events()) {
+			if (event.isBetween(start, end)) {
 				events.add(event);
 			}
 		}
@@ -77,5 +77,12 @@ public class Course extends Model {
 		event.course(this);
 		event.save();
 		return event;
+	}
+
+	public static Course current() {
+		return new Select().from(Course.class)
+				.where(Courses.START + "<?", DateTime.now().getMillis())
+				.and(Courses.END + ">?", DateTime.now().getMillis())
+				.executeSingle();
 	}
 }

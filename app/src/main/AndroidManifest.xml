@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.dlgdev.teachers.helpbook"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dlgdev.teachers.helpbook" >
 
     <application
         android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="Helpbook.db"/>
+            android:value="Helpbook.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="4"/>
+            android:value="4" />
         <meta-data
             android:name="AA_SERIALIZERS"
-            android:value="com.dlgdev.teachers.helpbook.db.DateTimeTypeSerializer"/>
+            android:value="com.dlgdev.teachers.helpbook.db.DateTimeTypeSerializer" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.dlgdev.teachers.helpbook.model.Course,
-            com.dlgdev.teachers.helpbook.model.Event,
-            com.dlgdev.teachers.helpbook.model.Holiday,
-            com.dlgdev.teachers.helpbook.model.TimeTableEntry,
-            com.dlgdev.teachers.helpbook.model.Subject,
-            com.dlgdev.teachers.helpbook.model.Student,
-            com.dlgdev.teachers.helpbook.model.StudentGroup,
-            com.dlgdev.teachers.helpbook.model.Grade"/>
+            android:value="com.dlgdev.teachers.helpbook.model.Course,             com.dlgdev.teachers.helpbook.model.Event,             com.dlgdev.teachers.helpbook.model.Holiday,             com.dlgdev.teachers.helpbook.model.TimeTableEntry,             com.dlgdev.teachers.helpbook.model.Subject,             com.dlgdev.teachers.helpbook.model.Student,             com.dlgdev.teachers.helpbook.model.StudentGroup,             com.dlgdev.teachers.helpbook.model.Grade" />
 
         <activity
-            android:name="com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            android:name=".views.courses.activities.CourseOverviewActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".views.courses.activities.CourseAdministrationActivity"
+            android:label="@string/course_administration_title" >
         </activity>
 
-        <activity android:name=".views.courses.activities.CourseAdministrationActivity"
-            android:label="@string/course_administration_title">
-        </activity>
         <provider
             android:name="com.activeandroid.content.ContentProvider"
             android:authorities="com.dlgdev.teachers.helpbook"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".views.courses.activities.CoursesListActivity"
+            android:label="@string/title_activity_courses_list" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -34,6 +34,7 @@ public class CourseOverviewActivity extends AppCompatActivity implements WeeklyE
 		WeeklyPreviewListener, CoursePanelListener {
 	private static final int LOADER_COURSE = 1;
 	private static final String WORKING_DATE = "workingDate";
+	public static final String KEY_COURSE = "course";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
 	WeeklyEventsFragment previousWeekFragment;
