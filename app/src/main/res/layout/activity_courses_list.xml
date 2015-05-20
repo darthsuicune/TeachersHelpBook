@@ -1,7 +1,7 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:id="@+id/fragment"
-          android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListActivityFragment"
+          android:id="@+id/courses_list_fragment"
+          android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment"
           tools:layout="@layout/fragment_courses_list"
           android:layout_width="match_parent"
           android:layout_height="match_parent"/>

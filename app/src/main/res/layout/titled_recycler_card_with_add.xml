@@ -30,7 +30,7 @@
                 android:layout_alignParentRight="true"
                 android:drawableEnd="@android:drawable/ic_input_add"
                 android:drawableRight="@android:drawable/ic_input_add"
-                android:text="@string/add_new_event" />
+                android:text="@string/add_new" />
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView

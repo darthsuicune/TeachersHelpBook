@@ -10,6 +10,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,7 +28,7 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class CoursesListActivityFragment extends Fragment {
+public class CoursesListFragment extends Fragment {
 	private static final int LOADER_COURSE = 1;
 	List<Course> courses = new ArrayList<>();
 
@@ -33,7 +36,7 @@ public class CoursesListActivityFragment extends Fragment {
 	TextView emptyList;
 	OnCourseSelectedListener listener;
 
-	public CoursesListActivityFragment() {
+	public CoursesListFragment() {
 	}
 
 	@Override public void onAttach(Activity activity) {
@@ -57,6 +60,25 @@ public class CoursesListActivityFragment extends Fragment {
 	@Override public void onResume() {
 		super.onResume();
 		getLoaderManager().initLoader(LOADER_COURSE, null, new CourseLoaderHelper());
+	}
+
+	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.menu_courses_list, menu);
+	}
+
+	@Override public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.add_new_course:
+				addNewCourse();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void addNewCourse() {
+
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {

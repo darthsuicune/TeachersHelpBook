@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class CoursesListActivityFragmentTest {
+public class CoursesListFragmentTest {
 	Course course;
 
 	@Rule public ActivityTestRule<CoursesListActivity> rule =
@@ -29,6 +29,10 @@ public class CoursesListActivityFragmentTest {
 
 	@After public void tearDown() throws Exception {
 		DatabaseUtils.clearDatabase();
+	}
+
+	@Test public void theAddCourseMenuIconIsAlwaysPresent() throws Exception {
+		onView(withId(R.id.add_new_course)).check(matches(isDisplayed()));
 	}
 
 	@Test public void withoutACurrentCourseItShouldDisplayAnEmptyList() throws Exception {
