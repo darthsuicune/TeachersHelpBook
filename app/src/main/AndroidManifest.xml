@@ -19,7 +19,14 @@
             android:value="com.dlgdev.teachers.helpbook.db.DateTimeTypeSerializer" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.dlgdev.teachers.helpbook.model.Course,             com.dlgdev.teachers.helpbook.model.Event,             com.dlgdev.teachers.helpbook.model.Holiday,             com.dlgdev.teachers.helpbook.model.TimeTableEntry,             com.dlgdev.teachers.helpbook.model.Subject,             com.dlgdev.teachers.helpbook.model.Student,             com.dlgdev.teachers.helpbook.model.StudentGroup,             com.dlgdev.teachers.helpbook.model.Grade" />
+            android:value="com.dlgdev.teachers.helpbook.model.Course,
+                         com.dlgdev.teachers.helpbook.model.Event,
+                         com.dlgdev.teachers.helpbook.model.Holiday,
+                         com.dlgdev.teachers.helpbook.model.TimeTableEntry,
+                         com.dlgdev.teachers.helpbook.model.Subject,
+                         com.dlgdev.teachers.helpbook.model.Student,
+                         com.dlgdev.teachers.helpbook.model.StudentGroup,
+                         com.dlgdev.teachers.helpbook.model.Grade" />
 
         <activity
             android:name=".views.courses.activities.CourseOverviewActivity"
@@ -37,7 +44,7 @@
 
         <activity
             android:name=".views.courses.activities.CoursesListActivity"
-            android:label="@string/title_activity_courses_list" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

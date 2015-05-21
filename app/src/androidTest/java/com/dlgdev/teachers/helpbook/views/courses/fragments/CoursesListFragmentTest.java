@@ -20,12 +20,14 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class CoursesListFragmentTest {
+	static final String COURSE_TITLE = "Something";
 	CoursesListFragment fragment;
 	Course course;
 	OnCourseListInteractionListener listener;
@@ -54,6 +56,7 @@ public class CoursesListFragmentTest {
 
 	private void afterCreatingACourse() {
 		course = new Course(DateTime.now().minusWeeks(1), DateTime.now().plusWeeks(1));
+		course.title = COURSE_TITLE;
 		course.save();
 	}
 
@@ -72,5 +75,17 @@ public class CoursesListFragmentTest {
 	public void getFragment() {
 		fragment = (CoursesListFragment) rule.getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.courses_list_fragment);
+	}
+
+	@Test public void creatingACourseDisplaysItOnTheList() throws Exception {
+		afterCreatingACourse();
+		onView(withId(R.id.title)).check(matches(withText(COURSE_TITLE)));
+	}
+
+	@Test public void clickACourseToGoToCallTheCallback() throws Exception {
+		afterCreatingACourse();
+		whenWeSetupTheFragment();
+		onView(withId(R.id.title)).perform(click());
+		verify(listener).onCourseSelected(course);
 	}
 }

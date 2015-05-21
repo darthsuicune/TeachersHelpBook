@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.dlgdev.teachers.helpbook.views.courses.activities.CoursesListActivity">
+    <item
+        android:id="@+id/menu_save_course"
+        android:orderInCategory="-50"
+        android:title="@string/save_course"
+        app:showAsAction="ifRoom"/>
+</menu>

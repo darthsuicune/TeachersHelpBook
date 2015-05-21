@@ -19,10 +19,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(AndroidJUnit4.class)
 public class CourseAdministrationFragmentTest {
@@ -60,6 +64,10 @@ public class CourseAdministrationFragmentTest {
 	private void launchActivity() {
 		Intent intent = new Intent();
 		intent.putExtra(CourseAdministrationActivity.KEY_COURSE, course.getId());
+		launchActivityWithIntent(intent);
+	}
+
+	private void launchActivityWithIntent(Intent intent) {
 		activity = rule.launchActivity(intent);
 		fragment = (CourseAdministrationFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_administration_fragment);
@@ -86,5 +94,17 @@ public class CourseAdministrationFragmentTest {
 		course.title = COURSE_TITLE;
 		course.description = COURSE_DESC;
 		course.save();
+	}
+
+	@Test public void displaysTheMenuOptionToSaveTheCourseInformation() throws Exception {
+		launchActivity();
+		onView(withId(R.id.menu_save_course)).check(matches(isDisplayed()));
+	}
+
+	@Test public void theSaveButtonWorks() throws Exception {
+		launchActivityWithIntent(new Intent());
+		assertNull(fragment.course);
+		onView(withId(R.id.menu_save_course)).perform(click());
+		assertNotNull(fragment.course.getId());
 	}
 }

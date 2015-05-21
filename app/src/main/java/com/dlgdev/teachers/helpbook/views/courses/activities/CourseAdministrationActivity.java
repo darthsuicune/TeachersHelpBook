@@ -22,8 +22,6 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 		CourseAdministrationActionListener {
 	public static final String KEY_COURSE = "course";
 	private static final int LOADER_COURSE = 1;
-	public static final String ACTION =
-			"com.dlgdev.teachers.helpbook.views.courses.activities.CourseAdministrationActivity";
 	CourseAdministrationFragment fragment;
 	Course course;
 
@@ -34,14 +32,13 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 		setContentView(R.layout.course_administration_activity);
 		fragment = (CourseAdministrationFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.course_administration_fragment);
+		fragment.setHasOptionsMenu(true);
 	}
 
 	private void parseInvocationArguments() {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.containsKey(KEY_COURSE)) {
 			getSupportLoaderManager().initLoader(LOADER_COURSE, extras, new CourseLoaderHelper());
-		} else {
-			finish();
 		}
 
 	}

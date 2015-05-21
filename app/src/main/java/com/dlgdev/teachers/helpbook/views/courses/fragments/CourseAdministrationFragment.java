@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
@@ -26,8 +30,8 @@ import com.dlgdev.teachers.helpbook.views.TitledRecyclerCardWithAddButton.Recycl
  */
 public class CourseAdministrationFragment extends Fragment {
 	CourseAdministrationActionListener listener;
-	TextView courseNameView;
-	TextView courseDescriptionView;
+	EditText courseNameView;
+	EditText courseDescriptionView;
 	TextView datesView;
 	TitledRecyclerCardWithAddButton holidaysView;
 	TitledRecyclerCardWithAddButton studentGroupsView;
@@ -52,8 +56,8 @@ public class CourseAdministrationFragment extends Fragment {
 	}
 
 	public void setupViews(View v) {
-		courseNameView = (TextView) v.findViewById(R.id.course_administration_name);
-		courseDescriptionView = (TextView) v.findViewById(R.id.course_administration_description);
+		courseNameView = (EditText) v.findViewById(R.id.course_administration_name);
+		courseDescriptionView = (EditText) v.findViewById(R.id.course_administration_description);
 		datesView = (TextView) v.findViewById(R.id.course_administration_dates);
 		holidaysView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_holidays);
@@ -82,23 +86,47 @@ public class CourseAdministrationFragment extends Fragment {
 					}
 				});
 		subjectsView.setup(getString(R.string.subjects), new RecyclerCardListener() {
-					@Override public void onNewItemRequested() {
-						listener.onNewSubjectRequested();
-					}
+			@Override public void onNewItemRequested() {
+				listener.onNewSubjectRequested();
+			}
 
-					@Override public <T extends Listable> void onItemSelected(T t) {
-						listener.onSubjectSelected((Subject) t);
-					}
-				});
+			@Override public <T extends Listable> void onItemSelected(T t) {
+				listener.onSubjectSelected((Subject) t);
+			}
+		});
 		eventsView.setup(getString(R.string.events), new RecyclerCardListener() {
-					@Override public void onNewItemRequested() {
-						listener.onNewEventRequested();
-					}
+			@Override public void onNewItemRequested() {
+				listener.onNewEventRequested();
+			}
 
-					@Override public <T extends Listable> void onItemSelected(T t) {
-						listener.onEventSelected((Event) t);
-					}
-				});
+			@Override public <T extends Listable> void onItemSelected(T t) {
+				listener.onEventSelected((Event) t);
+			}
+		});
+	}
+
+	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.menu_course_administration, menu);
+	}
+
+	@Override public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.menu_save_course:
+				saveCourseInformation();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void saveCourseInformation() {
+		if(course == null) {
+			course = new Course();
+		}
+		course.title = courseNameView.getText().toString();
+		course.description = courseDescriptionView.getText().toString();
+		course.save();
 	}
 
 	public void course(Course course) {

@@ -33,4 +33,7 @@
     <string name="title_activity_courses_list">CoursesListActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="course_list_empty">No courses yet. Hit the add button to add one!</string>
+    <string name="course_title">Course title</string>
+    <string name="course_description">Course description</string>
+    <string name="save_course">Save course</string>
 </resources>
