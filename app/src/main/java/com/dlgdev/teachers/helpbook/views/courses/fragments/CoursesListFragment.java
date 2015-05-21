@@ -34,14 +34,14 @@ public class CoursesListFragment extends Fragment {
 
 	RecyclerView courseList;
 	TextView emptyList;
-	OnCourseSelectedListener listener;
+	OnCourseListInteractionListener listener;
 
 	public CoursesListFragment() {
 	}
 
 	@Override public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		listener = (OnCourseSelectedListener) activity;
+		listener = (OnCourseListInteractionListener) activity;
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +78,7 @@ public class CoursesListFragment extends Fragment {
 	}
 
 	private void addNewCourse() {
-
+		listener.onNewCourseRequested();
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -107,8 +107,9 @@ public class CoursesListFragment extends Fragment {
 
 	}
 
-	public interface OnCourseSelectedListener {
+	public interface OnCourseListInteractionListener {
 		void onCourseSelected(Course course);
+		void onNewCourseRequested();
 	}
 
 	private class CoursesAdapter extends RecyclerView.Adapter<ClickableListElementViewHolder>

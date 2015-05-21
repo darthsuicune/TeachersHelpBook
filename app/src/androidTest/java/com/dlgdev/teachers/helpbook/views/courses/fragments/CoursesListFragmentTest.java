@@ -7,6 +7,7 @@ import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CoursesListActivity;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.OnCourseListInteractionListener;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -15,14 +16,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class CoursesListFragmentTest {
+	CoursesListFragment fragment;
 	Course course;
+	OnCourseListInteractionListener listener;
 
 	@Rule public ActivityTestRule<CoursesListActivity> rule =
 			new ActivityTestRule<>(CoursesListActivity.class);
@@ -49,5 +55,22 @@ public class CoursesListFragmentTest {
 	private void afterCreatingACourse() {
 		course = new Course(DateTime.now().minusWeeks(1), DateTime.now().plusWeeks(1));
 		course.save();
+	}
+
+	@Test public void clickTheAddCourseIconPassesTheCallToTheListener() throws Exception {
+		whenWeSetupTheFragment();
+		onView(withId(R.id.add_new_course)).perform(click());
+		verify(listener).onNewCourseRequested();
+	}
+
+	private void whenWeSetupTheFragment() {
+		getFragment();
+		listener = mock(OnCourseListInteractionListener.class);
+		fragment.listener = listener;
+	}
+
+	public void getFragment() {
+		fragment = (CoursesListFragment) rule.getActivity().getSupportFragmentManager()
+				.findFragmentById(R.id.courses_list_fragment);
 	}
 }

@@ -7,9 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment;
-import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.OnCourseSelectedListener;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.OnCourseListInteractionListener;
 
-public class CoursesListActivity extends AppCompatActivity implements OnCourseSelectedListener {
+public class CoursesListActivity extends AppCompatActivity implements
+		OnCourseListInteractionListener {
 	CoursesListFragment fragment;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,12 @@ public class CoursesListActivity extends AppCompatActivity implements OnCourseSe
 	@Override public void onCourseSelected(Course course) {
 		Intent intent = new Intent(this, CourseOverviewActivity.class);
 		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		startActivity(intent);
+		finish();
+	}
+
+	@Override public void onNewCourseRequested() {
+		Intent intent = new Intent(this, CourseAdministrationActivity.class);
 		startActivity(intent);
 		finish();
 	}

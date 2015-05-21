@@ -2,6 +2,7 @@ package com.dlgdev.teachers.helpbook.views.courses.activities;
 
 import android.support.test.espresso.intent.matcher.ComponentNameMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
@@ -11,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry;
@@ -21,9 +23,7 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by lapuente on 20.05.15.
- */
+@RunWith(AndroidJUnit4.class)
 public class CoursesListActivityWithoutDefaultTest {
 	Course course;
 
@@ -55,5 +55,17 @@ public class CoursesListActivityWithoutDefaultTest {
 		intended(allOf(hasComponent(ComponentNameMatchers.hasShortClassName(expectedComponentName)),
 				toPackage(expectedPackageName),
 				hasExtras(hasEntry(CourseOverviewActivity.KEY_COURSE, course.getId()))));
+	}
+
+	@Test public void whenANewCourseIsRequestedTheAppropiateIntentIsThrown() throws Exception {
+		rule.getActivity().onNewCourseRequested();
+		itThrowsAnIntentForANewCourse();
+	}
+
+	private void itThrowsAnIntentForANewCourse() {
+		String expectedComponentName = ".views.courses.activities.CourseAdministrationActivity";
+		String expectedPackageName = "com.dlgdev.teachers.helpbook";
+		intended(allOf(hasComponent(ComponentNameMatchers.hasShortClassName(expectedComponentName)),
+				toPackage(expectedPackageName)));
 	}
 }
