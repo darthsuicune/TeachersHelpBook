@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
@@ -21,8 +20,8 @@ import com.dlgdev.teachers.helpbook.models.Listable;
 import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.utils.Dates;
-import com.dlgdev.teachers.helpbook.views.TitledRecyclerCardWithAddButton;
-import com.dlgdev.teachers.helpbook.views.TitledRecyclerCardWithAddButton.RecyclerCardListener;
+import com.dlgdev.views.TitledRecyclerCardWithAddButton;
+import com.dlgdev.views.TitledRecyclerCardWithAddButton.RecyclerCardListener;
 
 /**
  * This Fragment should offer the chance to add new subjects, view the current subjects, handle
@@ -32,7 +31,8 @@ public class CourseAdministrationFragment extends Fragment {
 	CourseAdministrationActionListener listener;
 	EditText courseNameView;
 	EditText courseDescriptionView;
-	TextView datesView;
+	EditText startDateView;
+	EditText endDateView;
 	TitledRecyclerCardWithAddButton holidaysView;
 	TitledRecyclerCardWithAddButton studentGroupsView;
 	TitledRecyclerCardWithAddButton subjectsView;
@@ -58,7 +58,8 @@ public class CourseAdministrationFragment extends Fragment {
 	public void setupViews(View v) {
 		courseNameView = (EditText) v.findViewById(R.id.course_administration_name);
 		courseDescriptionView = (EditText) v.findViewById(R.id.course_administration_description);
-		datesView = (TextView) v.findViewById(R.id.course_administration_dates);
+		startDateView = (EditText) v.findViewById(R.id.course_administration_start_date);
+		endDateView = (EditText) v.findViewById(R.id.course_administration_end_date);
 		holidaysView = (TitledRecyclerCardWithAddButton) v
 				.findViewById(R.id.course_administration_holidays);
 		studentGroupsView = (TitledRecyclerCardWithAddButton) v
@@ -133,7 +134,9 @@ public class CourseAdministrationFragment extends Fragment {
 		this.course = course;
 		courseNameView.setText(course.title);
 		courseDescriptionView.setText(course.description);
-		datesView.setText(Dates.formatDateRange(course.start, course.end));
+		if(course.start != null && course.end != null) {
+			startDateView.setText(Dates.formatDateRange(course.start, course.end));
+		}
 		holidaysView.updateItems(course.holidays());
 		subjectsView.updateItems(course.subjects());
 		eventsView.updateItems(course.events());

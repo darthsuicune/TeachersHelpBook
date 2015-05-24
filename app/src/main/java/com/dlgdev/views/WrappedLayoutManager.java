@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.views;
+package com.dlgdev.views;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;

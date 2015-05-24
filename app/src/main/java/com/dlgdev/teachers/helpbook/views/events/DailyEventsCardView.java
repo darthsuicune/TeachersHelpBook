@@ -12,8 +12,8 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.utils.Dates;
-import com.dlgdev.teachers.helpbook.views.CardWithBackground;
-import com.dlgdev.teachers.helpbook.views.WrappedLayoutManager;
+import com.dlgdev.views.CardWithBackground;
+import com.dlgdev.views.WrappedLayoutManager;
 import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
 import org.joda.time.DateTime;

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.dlgdev.views.CardWithBackground;
+
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

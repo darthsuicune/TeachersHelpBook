@@ -79,13 +79,13 @@ public class CoursesListFragmentTest {
 
 	@Test public void creatingACourseDisplaysItOnTheList() throws Exception {
 		afterCreatingACourse();
-		onView(withId(R.id.title)).check(matches(withText(COURSE_TITLE)));
+		onView(withId(R.id.item_list_title)).check(matches(withText(COURSE_TITLE)));
 	}
 
 	@Test public void clickACourseToGoToCallTheCallback() throws Exception {
 		afterCreatingACourse();
 		whenWeSetupTheFragment();
-		onView(withId(R.id.title)).perform(click());
+		onView(withId(R.id.item_list_title)).perform(click());
 		verify(listener).onCourseSelected(course);
 	}
 }

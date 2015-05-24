@@ -20,7 +20,8 @@ import android.widget.TextView;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.models.Course;
-import com.dlgdev.teachers.helpbook.views.ClickableListElementViewHolder;
+import com.dlgdev.views.ClickableViewHolder;
+import com.dlgdev.views.ListElementViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class CoursesListFragment extends Fragment {
 	RecyclerView courseList;
 	TextView emptyList;
 	OnCourseListInteractionListener listener;
+	CoursesAdapter adapter;
 
 	public CoursesListFragment() {
 	}
@@ -54,7 +56,6 @@ public class CoursesListFragment extends Fragment {
 	private void setViews(View v) {
 		courseList = (RecyclerView) v.findViewById(R.id.course_list);
 		emptyList = (TextView) v.findViewById(R.id.course_list_empty);
-		courseList.setAdapter(new CoursesAdapter());
 	}
 
 	@Override public void onResume() {
@@ -104,6 +105,11 @@ public class CoursesListFragment extends Fragment {
 	private void displayData() {
 		courseList.setVisibility((courses.size() > 0) ? VISIBLE : GONE);
 		emptyList.setVisibility((courses.size() > 0) ? GONE : VISIBLE);
+		if (adapter == null) {
+			adapter = new CoursesAdapter();
+			courseList.setAdapter(adapter);
+		}
+		adapter.notifyDataSetChanged(courses);
 
 	}
 
@@ -112,19 +118,27 @@ public class CoursesListFragment extends Fragment {
 		void onNewCourseRequested();
 	}
 
-	private class CoursesAdapter extends RecyclerView.Adapter<ClickableListElementViewHolder>
-			implements ClickableListElementViewHolder.RecyclerItemListener {
+	private class CoursesAdapter extends RecyclerView.Adapter<ListElementViewHolder>
+			implements ClickableViewHolder.RecyclerItemListener {
+		List<Course> courses;
+
+		public CoursesAdapter() {
+			courses = CoursesListFragment.this.courses;
+		}
 		@Override
-		public ClickableListElementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		public ListElementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(getActivity()).inflate(R.layout.list_item, parent, false);
-			ClickableListElementViewHolder holder = new ClickableListElementViewHolder(v, this);
+			ListElementViewHolder holder = new ListElementViewHolder(v, this);
 			v.setOnClickListener(holder);
 			return holder;
 		}
 
 		@Override
-		public void onBindViewHolder(ClickableListElementViewHolder holder, int position) {
+		public void onBindViewHolder(ListElementViewHolder holder, int position) {
+			Course course = courses.get(position);
 			holder.position(position);
+			holder.title(course.title);
+			holder.description(course.description);
 		}
 
 		@Override public int getItemCount() {
@@ -133,6 +147,11 @@ public class CoursesListFragment extends Fragment {
 
 		@Override public void onItemSelected(int position) {
 			listener.onCourseSelected(courses.get(position));
+		}
+
+		public void notifyDataSetChanged(List<Course> courses) {
+			this.courses = courses;
+			notifyDataSetChanged();
 		}
 	}
 }

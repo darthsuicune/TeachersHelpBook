@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.views;
+package com.dlgdev.views;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -62,11 +62,11 @@ public class TitledRecyclerCardWithAddButton extends CardWithBackground {
 	public void updateItems(List<? extends Listable> itemList) {
 		items = itemList;
 		if (itemList.size() == 0) {
-			listView.setVisibility(View.GONE);
-			emptyListView.setVisibility(View.VISIBLE);
+			listView.setVisibility(GONE);
+			emptyListView.setVisibility(VISIBLE);
 		} else {
-			listView.setVisibility(View.VISIBLE);
-			emptyListView.setVisibility(View.GONE);
+			listView.setVisibility(VISIBLE);
+			emptyListView.setVisibility(GONE);
 			updateItemList();
 		}
 	}
@@ -85,24 +85,24 @@ public class TitledRecyclerCardWithAddButton extends CardWithBackground {
 		<T extends Listable> void onItemSelected(T t);
 	}
 
-	private class ItemListAdapter extends RecyclerView.Adapter<ClickableListElementViewHolder>
-			implements ClickableListElementViewHolder.RecyclerItemListener {
+	private class ItemListAdapter extends RecyclerView.Adapter<ListElementViewHolder>
+			implements ListElementViewHolder.RecyclerItemListener {
 		List<? extends Listable> items;
 
 		public ItemListAdapter(List<? extends Listable> list) {
 			items = list;
 		}
 
-		@Override public ClickableListElementViewHolder onCreateViewHolder(
+		@Override public ListElementViewHolder onCreateViewHolder(
 				ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-			ClickableListElementViewHolder holder = new ClickableListElementViewHolder(v, this);
+			ListElementViewHolder holder = new ListElementViewHolder(v, this);
 			v.setOnClickListener(holder);
 			return holder;
 		}
 
 		@Override
-		public void onBindViewHolder(ClickableListElementViewHolder holder, int position) {
+		public void onBindViewHolder(ListElementViewHolder holder, int position) {
 			holder.position(position);
 			holder.title(items.get(position).title());
 			holder.description(items.get(position).description());
