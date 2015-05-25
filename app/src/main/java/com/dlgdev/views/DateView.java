@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.utils.Dates;
+import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
 
 import org.joda.time.DateTime;
 
@@ -19,7 +20,7 @@ public class DateView extends LinearLayout implements TextWatcher {
 	OnDatePickerRequestedListener listener;
 	DateTime date;
 	ImageView iconView;
-	EditText dateAsEditTextView;
+	EditText dateAsTextView;
 	String dateFormat;
 
 	public DateView(Context context, AttributeSet attrs) {
@@ -30,11 +31,11 @@ public class DateView extends LinearLayout implements TextWatcher {
 		this.listener = listener;
 		prepareView();
 		setDate(initialDate);
-		dateAsEditTextView.addTextChangedListener(this);
+		dateAsTextView.addTextChangedListener(this);
 	}
 
 	private void prepareView() {
-		dateAsEditTextView = (EditText) findViewById(R.id.date_text);
+		dateAsTextView = (EditText) findViewById(R.id.date_text);
 		iconView = (ImageView) findViewById(R.id.select_date_icon);
 		iconView.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
@@ -45,7 +46,7 @@ public class DateView extends LinearLayout implements TextWatcher {
 
 	public void setDate(DateTime date) {
 		this.date = date;
-		dateAsEditTextView.setText(Dates.formatDate(date));
+		dateAsTextView.setText(Dates.formatDate(date));
 	}
 
 	public void setFormat(String format) {
@@ -65,7 +66,11 @@ public class DateView extends LinearLayout implements TextWatcher {
 	}
 
 	@Override public void afterTextChanged(Editable editable) {
-		date = Dates.parseDate(editable.toString());
+		try {
+			date = Dates.parseDate(editable.toString());
+		} catch (InvalidDateTimeException e) {
+			dateAsTextView.setError(getContext().getString(R.string.error_invalid_start_date));
+		}
 	}
 
 	public interface OnDatePickerRequestedListener {
