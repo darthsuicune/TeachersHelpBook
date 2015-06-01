@@ -68,6 +68,7 @@ public class DateView extends LinearLayout implements TextWatcher {
 	@Override public void afterTextChanged(Editable editable) {
 		try {
 			date = Dates.parseDate(editable.toString());
+			dateAsTextView.setError(null);
 		} catch (InvalidDateTimeException e) {
 			dateAsTextView.setError(getContext().getString(R.string.error_invalid_start_date));
 		}

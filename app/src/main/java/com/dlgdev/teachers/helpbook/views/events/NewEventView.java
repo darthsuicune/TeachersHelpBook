@@ -14,21 +14,20 @@ import android.widget.LinearLayout;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
-import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
 import com.dlgdev.teachers.helpbook.utils.Dates;
+import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
+import com.dlgdev.views.DateView;
 
 import org.joda.time.DateTime;
 
 public class NewEventView extends LinearLayout {
 
-	ImageView startDateIconView;
-	ImageView endDateIconView;
-	ImageView startTimeIconView;
-	ImageView endTimeIconView;
 	EditText titleView;
 	EditText descriptionView;
-	EditText startDateView;
-	EditText endDateView;
+	DateView startDateView;
+	DateView endDateView;
+	ImageView startTimeIconView;
+	ImageView endTimeIconView;
 	EditText startTimeView;
 	EditText endTimeView;
 	CheckBox fullDayCheckBox;
@@ -53,13 +52,11 @@ public class NewEventView extends LinearLayout {
 	private void loadViews() {
 		titleView = (EditText) findViewById(R.id.create_event_dialog_title);
 		descriptionView = (EditText) findViewById(R.id.create_event_dialog_description);
-		startDateView = (EditText) findViewById(R.id.create_event_dialog_start_date);
-		endDateView = (EditText) findViewById(R.id.create_event_dialog_end_date);
+		startDateView = (DateView) findViewById(R.id.create_event_dialog_start_date);
+		endDateView = (DateView) findViewById(R.id.create_event_dialog_end_date);
 		startTimeView = (EditText) findViewById(R.id.create_event_dialog_start_time);
 		endTimeView = (EditText) findViewById(R.id.create_event_dialog_end_time);
 		fullDayCheckBox = (CheckBox) findViewById(R.id.create_event_dialog_full_day_checkbox);
-		startDateIconView = (ImageView) findViewById(R.id.create_event_dialog_start_date_icon);
-		endDateIconView = (ImageView) findViewById(R.id.create_event_dialog_end_date_icon);
 		startTimeIconView = (ImageView) findViewById(R.id.create_event_dialog_start_time_icon);
 		endTimeIconView = (ImageView) findViewById(R.id.create_event_dialog_end_time_icon);
 	}
@@ -67,19 +64,17 @@ public class NewEventView extends LinearLayout {
 	private void prepareViews() {
 		startTimeView.setText(Dates.formatTime(event.start()));
 		endTimeView.setText(Dates.formatTime(event.end()));
-		startDateView.setText(Dates.formatDate(event.start()));
-		endDateView.setText(Dates.formatDate(event.end()));
+		startDateView.setup(event.start(), new DateView.OnDatePickerRequestedListener() {
+			@Override public void onDatePickerRequested(int viewId) {
+				listener.onStartDateRequested();
+			}
+		});
+		endDateView.setup(event.end(), new DateView.OnDatePickerRequestedListener() {
+			@Override public void onDatePickerRequested(int viewId) {
+				listener.onEndDateRequested();
+			}
+		});
 
-		startDateView.addTextChangedListener(new EventTextWatcher() {
-			@Override public void afterTextChanged(Editable editable) {
-				onStartDateTextChanged(editable);
-			}
-		});
-		endDateView.addTextChangedListener(new EventTextWatcher() {
-			@Override public void afterTextChanged(Editable editable) {
-				onEndDateTextChanged(editable);
-			}
-		});
 		startTimeView.addTextChangedListener(new EventTextWatcher() {
 			@Override public void afterTextChanged(Editable editable) {
 				onStartTimeTextChanged(editable);
@@ -101,44 +96,12 @@ public class NewEventView extends LinearLayout {
 				listener.onEndTimeRequested();
 			}
 		});
-		startDateIconView.setOnClickListener(new OnClickListener() {
-			@Override public void onClick(View view) {
-				listener.onStartDateRequested();
-			}
-		});
-		endDateIconView.setOnClickListener(new OnClickListener() {
-			@Override public void onClick(View view) {
-				listener.onEndDateRequested();
-			}
-		});
 
 		fullDayCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override public void onCheckedChanged(CompoundButton button, boolean checked) {
 				onFullDayChanged(checked);
 			}
 		});
-	}
-
-	private void onStartDateTextChanged(Editable editable) {
-		try {
-			DateTime date =
-					Dates.parseDate(editable.toString()).withTime(event.start().toLocalTime());
-			event.start(date);
-			startDateView.setError(null);
-		} catch (InvalidDateTimeException e) {
-			startDateView.setError(getContext().getString(R.string.error_invalid_start_date));
-		}
-	}
-
-	private void onEndDateTextChanged(Editable editable) {
-		try {
-			DateTime date =
-					Dates.parseDate(editable.toString()).withTime(event.end().toLocalTime());
-			event.end(date);
-			endDateView.setError(null);
-		} catch (InvalidDateTimeException e) {
-			endDateView.setError(getContext().getString(R.string.error_invalid_end_date));
-		}
 	}
 
 	private void onStartTimeTextChanged(Editable editable) {
@@ -168,7 +131,6 @@ public class NewEventView extends LinearLayout {
 		endDateView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endTimeView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		startTimeIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
-		endDateIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		endTimeIconView.setVisibility((isFullDay) ? View.GONE : View.VISIBLE);
 		if (isFullDay) {
 			oldStart = event.start();
@@ -182,11 +144,11 @@ public class NewEventView extends LinearLayout {
 	}
 
 	void changeStartDate(DateTime newDate) {
-		startDateView.setText(Dates.formatDate(newDate));
+		startDateView.setDate(newDate);
 	}
 
 	void changeEndDate(DateTime newDate) {
-		endDateView.setText(Dates.formatDate(newDate));
+		endDateView.setDate(newDate);
 	}
 
 	void changeStartTime(DateTime newTime) {

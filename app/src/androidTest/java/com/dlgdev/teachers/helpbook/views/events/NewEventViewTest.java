@@ -30,8 +30,6 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class NewEventViewTest {
-	private static final String VALID_START_DATE = "12/12/2012";
-	private static final String VALID_DATE = "12/12/2012";
 	private static final String VALID_START_TIME = "11:00";
 	private static final String VALID_TIME = "12:12";
 	private static final String INVALID_VALUE = "somethingsomething";
@@ -61,8 +59,6 @@ public class NewEventViewTest {
 	private void afterSetupEverythingIsInPlace() {
 		assertNotNull(view.event);
 		assertNotNull(view.listener);
-		assertNotNull(view.startDateIconView);
-		assertNotNull(view.endDateIconView);
 		assertNotNull(view.startTimeIconView);
 		assertNotNull(view.endTimeIconView);
 		assertNotNull(view.titleView);
@@ -74,26 +70,8 @@ public class NewEventViewTest {
 		assertNotNull(view.fullDayCheckBox);
 	}
 
-	@Test public void testStartDateIconCallsTheCallback() throws Exception {
-		ifWeClickOnTheIcon(view.startDateIconView);
-		onStartDateRequestedIsCalled();
-	}
-
 	private void ifWeClickOnTheIcon(ImageView iconView) {
 		iconView.performClick();
-	}
-
-	private void onStartDateRequestedIsCalled() {
-		verify(mockListener).onStartDateRequested();
-	}
-
-	@Test public void testEndDateIconCallsTheCallback() throws Exception {
-		ifWeClickOnTheIcon(view.endDateIconView);
-		onEndDateRequestedIsCalled();
-	}
-
-	private void onEndDateRequestedIsCalled() {
-		verify(mockListener).onEndDateRequested();
 	}
 
 	@Test public void testStartTimeIconCallsTheCallback() throws Exception {
@@ -136,7 +114,6 @@ public class NewEventViewTest {
 		assertEquals(view.endDateView.getVisibility(), visibility);
 		assertEquals(view.endTimeView.getVisibility(), visibility);
 		assertEquals(view.startTimeIconView.getVisibility(), visibility);
-		assertEquals(view.endDateIconView.getVisibility(), visibility);
 		assertEquals(view.endTimeIconView.getVisibility(), visibility);
 	}
 
@@ -145,44 +122,17 @@ public class NewEventViewTest {
 		theEndDateTimeViewsAre(VISIBLE);
 	}
 
-	@Test public void testOnStartDateTextChangedWithValidDateDoesntDisplayError() throws Exception {
-		whenWeWriteAValueInTheEditTextViews(view.startDateView, VALID_DATE);
-		itsParsedWithoutError(view.startDateView);
-	}
-
 	private void whenWeWriteAValueInTheEditTextViews(EditText view, String value) {
 		view.setText(value);
-	}
-
-	private void itsParsedWithoutError(EditText view) {
-		assertTrue(TextUtils.isEmpty(view.getError()));
-	}
-
-	@Test public void testOnStartDateTextChangedWithValidDateUpdatesTheEvent() throws Exception {
-		whenWeWriteAValueInTheEditTextViews(view.startDateView, VALID_DATE);
-		theEventDateAndTimeAreUpdated(view.event.start());
 	}
 
 	private void theEventDateAndTimeAreUpdated(DateTime date) {
 		assertTrue(date.isAfter(VALID_START) && date.isBefore(VALID_END));
 	}
 
-	@Test public void testOnEndDateTextChangedWithValidDateDoesntDisplayError() throws Exception {
-		givenTheStartDateIsPreviousToTheNewEndDate();
-		whenWeWriteAValueInTheEditTextViews(view.endDateView, VALID_DATE);
-		itsParsedWithoutError(view.endDateView);
-
-	}
-
 	private void givenTheStartDateIsPreviousToTheNewEndDate() {
-		view.startDateView.setText(VALID_START_DATE);
+		view.startDateView.setDate(VALID_START);
 		view.startTimeView.setText(VALID_START_TIME);
-	}
-
-	@Test public void testOnEndDateTextChangedWithValidDateUpdatesTheEvent() throws Exception {
-		givenTheStartDateIsPreviousToTheNewEndDate();
-		whenWeWriteAValueInTheEditTextViews(view.endDateView, VALID_DATE);
-		theEventDateAndTimeAreUpdated(view.event.end());
 	}
 
 	@Test public void testOnStartTimeTextChangedWithValidTime() throws Exception {
@@ -197,18 +147,8 @@ public class NewEventViewTest {
 		theEventDateAndTimeAreUpdated(view.event.end());
 	}
 
-	@Test public void testWhenAnInvalidDateIsInputAnErrorIsSet() throws Exception {
-		whenWeWriteAValueInTheEditTextViews(view.startDateView, INVALID_VALUE);
-		theEditTextViewShowsAnError(view.startDateView);
-	}
-
 	private void theEditTextViewShowsAnError(TextView v) {
 		assertFalse(TextUtils.isEmpty(v.getError()));
-	}
-
-	@Test public void testWhenAnInvalidEndDateIsInputAnErrorIsSet() throws Exception {
-		whenWeWriteAValueInTheEditTextViews(view.endDateView, INVALID_VALUE);
-		theEditTextViewShowsAnError(view.endDateView);
 	}
 
 	@Test public void testWhenAnInvalidTimeIsInputAnErrorIsSet() throws Exception {
