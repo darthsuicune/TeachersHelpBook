@@ -128,6 +128,7 @@ public class CourseAdministrationFragment extends Fragment {
 		course.title = courseNameView.getText().toString();
 		course.description = courseDescriptionView.getText().toString();
 		course.save();
+		listener.onSaved(course);
 	}
 
 	public void course(Course course) {
@@ -158,5 +159,7 @@ public class CourseAdministrationFragment extends Fragment {
 		void onNewEventRequested();
 
 		void onEventSelected(Event event);
+
+		void onSaved(Course course);
 	}
 }

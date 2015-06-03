@@ -13,14 +13,11 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.views.CardWithBackground;
-import com.dlgdev.views.WrappedLayoutManager;
-import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
+import com.dlgdev.views.DividerWrappedRecyclerView;
 
 import org.joda.time.DateTime;
 
 import java.util.List;
-
-import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 
 public class DailyEventsCardView extends CardWithBackground {
@@ -31,7 +28,7 @@ public class DailyEventsCardView extends CardWithBackground {
     TextView dateView;
     TextView emptyEventListView;
     TextView addNewView;
-    RecyclerView eventListView;
+    DividerWrappedRecyclerView eventListView;
 
     EventListAdapter adapter;
 
@@ -50,13 +47,11 @@ public class DailyEventsCardView extends CardWithBackground {
     private void loadViews() {
         this.dateView = (TextView) findViewById(R.id.daily_event_card_date);
         this.addNewView = (TextView) findViewById(R.id.daily_event_card_add_new);
-        this.eventListView = (RecyclerView) findViewById(R.id.event_list);
+        this.eventListView = (DividerWrappedRecyclerView) findViewById(R.id.event_list);
         this.emptyEventListView = (TextView) findViewById(R.id.event_list_empty);
     }
 
     private void setupViewParameters() {
-        eventListView.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
-        eventListView.setLayoutManager(new WrappedLayoutManager(getContext()));
         dateView.setText(Dates.formatDate(date));
         addNewView.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View view) {

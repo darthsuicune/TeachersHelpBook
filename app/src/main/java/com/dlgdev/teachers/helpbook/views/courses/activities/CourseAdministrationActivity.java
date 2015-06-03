@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -73,6 +74,12 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 
 	@Override public void onEventSelected(Event event) {
 
+	}
+
+	@Override public void onSaved(Course course) {
+		Intent intent = new Intent(this, CourseOverviewActivity.class);
+		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		startActivity(intent);
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {

@@ -30,11 +30,10 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
 public class NewEventViewTest {
-	private static final String VALID_START_TIME = "11:00";
-	private static final String VALID_TIME = "12:12";
-	private static final String INVALID_VALUE = "somethingsomething";
-	private static final DateTime VALID_START = new DateTime(2012, 12, 12, 0, 0);
-	private static final DateTime VALID_END = new DateTime(2012, 12, 13, 0, 0);
+	static final String VALID_TIME = "12:12";
+	static final String INVALID_VALUE = "somethingsomething";
+	static final DateTime VALID_START_DATE = DateTime.now().withTimeAtStartOfDay();
+	static final DateTime VALID_END_DATE = DateTime.now().withTimeAtStartOfDay().plusDays(1);
 
 	NewEventView view;
 	OnPickersRequestedListener mockListener;
@@ -70,13 +69,13 @@ public class NewEventViewTest {
 		assertNotNull(view.fullDayCheckBox);
 	}
 
-	private void ifWeClickOnTheIcon(ImageView iconView) {
-		iconView.performClick();
-	}
-
 	@Test public void testStartTimeIconCallsTheCallback() throws Exception {
 		ifWeClickOnTheIcon(view.startTimeIconView);
 		onStartTimeRequestedIsCalled();
+	}
+
+	private void ifWeClickOnTheIcon(ImageView iconView) {
+		iconView.performClick();
 	}
 
 	private void onStartTimeRequestedIsCalled() {
@@ -122,23 +121,23 @@ public class NewEventViewTest {
 		theEndDateTimeViewsAre(VISIBLE);
 	}
 
+	@Test public void testOnStartTimeTextChangedWithValidTime() throws Exception {
+		givenTheStartDateIsPreviousToTheNewEndDate();
+		whenWeWriteAValueInTheEditTextViews(view.startTimeView, VALID_TIME);
+		theEventDateAndTimeAreUpdated(view.event.start());
+	}
+
+	private void givenTheStartDateIsPreviousToTheNewEndDate() {
+		view.startDateView.setDate(VALID_START_DATE);
+		view.endDateView.setDate(VALID_END_DATE);
+	}
+
 	private void whenWeWriteAValueInTheEditTextViews(EditText view, String value) {
 		view.setText(value);
 	}
 
 	private void theEventDateAndTimeAreUpdated(DateTime date) {
-		assertTrue(date.isAfter(VALID_START) && date.isBefore(VALID_END));
-	}
-
-	private void givenTheStartDateIsPreviousToTheNewEndDate() {
-		view.startDateView.setDate(VALID_START);
-		view.startTimeView.setText(VALID_START_TIME);
-	}
-
-	@Test public void testOnStartTimeTextChangedWithValidTime() throws Exception {
-		givenTheStartDateIsPreviousToTheNewEndDate();
-		whenWeWriteAValueInTheEditTextViews(view.startTimeView, VALID_TIME);
-		theEventDateAndTimeAreUpdated(view.event.start());
+		assertTrue(date.isAfter(VALID_START_DATE) && date.isBefore(VALID_END_DATE));
 	}
 
 	@Test public void testOnEndTimeTextChangedWithValidTime() throws Exception {

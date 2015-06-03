@@ -21,6 +21,7 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.views.ClickableViewHolder;
+import com.dlgdev.views.DividerWrappedRecyclerView;
 import com.dlgdev.views.ListElementViewHolder;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class CoursesListFragment extends Fragment {
 	private static final int LOADER_COURSE = 1;
 	List<Course> courses = new ArrayList<>();
 
-	RecyclerView courseList;
+	DividerWrappedRecyclerView courseList;
 	TextView emptyList;
 	OnCourseListInteractionListener listener;
 	CoursesAdapter adapter;
@@ -54,7 +55,7 @@ public class CoursesListFragment extends Fragment {
 	}
 
 	private void setViews(View v) {
-		courseList = (RecyclerView) v.findViewById(R.id.course_list);
+		courseList = (DividerWrappedRecyclerView) v.findViewById(R.id.course_list);
 		emptyList = (TextView) v.findViewById(R.id.course_list_empty);
 	}
 
@@ -89,12 +90,15 @@ public class CoursesListFragment extends Fragment {
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+			List<Course> courses = new ArrayList<>();
 			if (data != null && data.moveToFirst()) {
-				Course course = new Course();
-				course.loadFromCursor(data);
-				courses.add(course);
+				do {
+					Course course = new Course();
+					course.loadFromCursor(data);
+					courses.add(course);
+				} while (data.moveToNext());
 			}
-			displayData();
+			updateCourses(courses);
 		}
 
 		@Override public void onLoaderReset(Loader<Cursor> loader) {
@@ -102,9 +106,19 @@ public class CoursesListFragment extends Fragment {
 		}
 	}
 
-	private void displayData() {
-		courseList.setVisibility((courses.size() > 0) ? VISIBLE : GONE);
-		emptyList.setVisibility((courses.size() > 0) ? GONE : VISIBLE);
+	public void updateCourses(List<Course> courses) {
+		this.courses = courses;
+		if (courses.size() > 0) {
+			courseList.setVisibility(VISIBLE);
+			emptyList.setVisibility(GONE);
+			loadData();
+		} else {
+			courseList.setVisibility(GONE);
+			emptyList.setVisibility(VISIBLE);
+		}
+	}
+
+	private void loadData() {
 		if (adapter == null) {
 			adapter = new CoursesAdapter();
 			courseList.setAdapter(adapter);
@@ -125,6 +139,7 @@ public class CoursesListFragment extends Fragment {
 		public CoursesAdapter() {
 			courses = CoursesListFragment.this.courses;
 		}
+
 		@Override
 		public ListElementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(getActivity()).inflate(R.layout.list_item, parent, false);

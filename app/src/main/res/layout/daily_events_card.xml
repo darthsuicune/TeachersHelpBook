@@ -34,7 +34,7 @@
                 android:text="@string/add_new" />
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <com.dlgdev.views.DividerWrappedRecyclerView
             android:id="@+id/event_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -107,4 +107,10 @@ public class CourseAdministrationFragmentTest {
 		onView(withId(R.id.menu_save_course)).perform(click());
 		assertNotNull(fragment.course.getId());
 	}
+
+	@Test public void theSaveButtonForwardsToTheOverviewActivity() throws Exception {
+		launchActivity();
+		onView(withId(R.id.menu_save_course)).perform(click());
+		onView(withId(R.id.course_overview_panel)).check(matches(isDisplayed()));
+	}
 }

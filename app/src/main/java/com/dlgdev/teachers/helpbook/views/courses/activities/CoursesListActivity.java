@@ -17,6 +17,7 @@ public class CoursesListActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 		if (shouldSkipList()) {
 			skipToCourse();
+			finish();
 		} else {
 			setContentView(R.layout.activity_courses_list);
 			fragment = (CoursesListFragment) getSupportFragmentManager()
@@ -37,12 +38,10 @@ public class CoursesListActivity extends AppCompatActivity implements
 		Intent intent = new Intent(this, CourseOverviewActivity.class);
 		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
 		startActivity(intent);
-		finish();
 	}
 
 	@Override public void onNewCourseRequested() {
 		Intent intent = new Intent(this, CourseAdministrationActivity.class);
 		startActivity(intent);
-		finish();
 	}
 }
