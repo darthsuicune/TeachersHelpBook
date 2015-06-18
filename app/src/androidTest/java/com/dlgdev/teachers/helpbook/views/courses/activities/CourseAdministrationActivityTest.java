@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 
-import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class CourseAdministrationActivityTest {
+
 	CourseAdministrationActivity activity;
 	Course course;
 
@@ -26,8 +26,6 @@ public class CourseAdministrationActivityTest {
 
 	@Before public void setUp() throws Exception {
 		course = new Course();
-		course.start = DateTime.now();
-		course.end = DateTime.now();
 		course.save();
 	}
 
@@ -36,13 +34,13 @@ public class CourseAdministrationActivityTest {
 	}
 
 	@Test public void testOnCreateLoadsTheCorrectCourse() throws Exception {
-		launchActivity();
-		assertEquals(course.getId(), activity.course.getId());
+		assertEquals(course.getId(), activity().course.getId());
 	}
 
-	private void launchActivity() {
+	private CourseAdministrationActivity activity() {
 		Intent intent = new Intent();
 		intent.putExtra(CourseAdministrationActivity.KEY_COURSE, course.getId());
 		activity = rule.launchActivity(intent);
+		return activity;
 	}
 }

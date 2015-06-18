@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.views;
+package com.dlgdev.views;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;

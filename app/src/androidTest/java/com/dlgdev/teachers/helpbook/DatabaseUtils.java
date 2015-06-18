@@ -11,9 +11,6 @@ import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.models.TimeTableEntry;
 
-/**
- * Created by lapuente on 15.05.15.
- */
 public class DatabaseUtils {
 	public static void clearDatabase() {
 		new Delete().from(GroupTakesSubject.class).execute();

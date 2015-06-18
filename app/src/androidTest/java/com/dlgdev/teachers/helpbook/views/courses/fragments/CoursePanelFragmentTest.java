@@ -28,7 +28,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.dlgdev.teachers.helpbook.utils.Dates.formatDate;
-import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.hasText;
+import static com.dlgdev.views.MoreViewMatchers.hasText;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -116,6 +116,5 @@ public class CoursePanelFragmentTest {
 		fragment.listener = listener;
 		onView(withId(R.id.course_overview_panel)).perform(click());
 		verify(listener).onPanelTapped();
-
 	}
 }

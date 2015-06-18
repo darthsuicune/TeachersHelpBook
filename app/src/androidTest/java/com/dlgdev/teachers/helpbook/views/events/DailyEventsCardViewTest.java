@@ -22,8 +22,8 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dlgdev.teachers.helpbook.views.Matchers.matchesAnyDateTime;
-import static com.dlgdev.teachers.helpbook.views.MoreViewMatchers.backgroundIs;
+import static com.dlgdev.views.Matchers.matchesAnyDateTime;
+import static com.dlgdev.views.MoreViewMatchers.backgroundIs;
 import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.junit.Assert.assertEquals;
