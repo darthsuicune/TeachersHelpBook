@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,6 +18,7 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
+import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
@@ -30,7 +30,7 @@ import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFr
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 
 
-public class CourseOverviewActivity extends AppCompatActivity implements WeeklyEventsListener,
+public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyEventsListener,
 		WeeklyPreviewListener, CoursePanelListener {
 	private static final int LOADER_COURSE = 1;
 	private static final String WORKING_DATE = "workingDate";

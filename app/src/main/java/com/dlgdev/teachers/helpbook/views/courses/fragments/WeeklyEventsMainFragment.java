@@ -12,7 +12,7 @@ import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
-import com.dlgdev.teachers.helpbook.views.events.NewEventDialog;
+import com.dlgdev.teachers.helpbook.views.events.fragments.NewEventDialog;
 
 import org.joda.time.DateTime;
 
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
-import static com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogListener;
+import static com.dlgdev.teachers.helpbook.views.events.fragments.NewEventDialog.NewEventDialogListener;
 import static org.joda.time.DateTimeConstants.FRIDAY;
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.joda.time.DateTimeConstants.SATURDAY;

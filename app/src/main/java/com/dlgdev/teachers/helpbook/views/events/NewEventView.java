@@ -143,20 +143,28 @@ public class NewEventView extends LinearLayout {
 		}
 	}
 
-	void changeStartDate(DateTime newDate) {
+	public void changeStartDate(DateTime newDate) {
 		startDateView.setDate(newDate);
 	}
 
-	void changeEndDate(DateTime newDate) {
+	public void changeEndDate(DateTime newDate) {
 		endDateView.setDate(newDate);
 	}
 
-	void changeStartTime(DateTime newTime) {
+	public void changeStartTime(DateTime newTime) {
 		startTimeView.setText(Dates.formatTime(newTime));
 	}
 
-	void changeEndTime(DateTime newTime) {
+	public void changeEndTime(DateTime newTime) {
 		endTimeView.setText(Dates.formatTime(newTime));
+	}
+
+	public String getTitle() {
+		return titleView.getText().toString();
+	}
+
+	public String getDescription() {
+		return descriptionView.getText().toString();
 	}
 
 	/**

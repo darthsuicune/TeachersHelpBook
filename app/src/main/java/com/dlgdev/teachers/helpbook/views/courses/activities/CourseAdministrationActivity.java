@@ -16,8 +16,13 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.Holiday;
 import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
+import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment.CourseAdministrationActionListener;
+import com.dlgdev.teachers.helpbook.views.events.activities.EventInfoActivity;
+import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidayInfoActivity;
+import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupInfoActivity;
+import com.dlgdev.teachers.helpbook.views.subjects.activities.SubjectInfoActivity;
 
 public class CourseAdministrationActivity extends AppCompatActivity implements
 		CourseAdministrationActionListener {
@@ -48,15 +53,7 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 
 	}
 
-	@Override public void onSubjectSelected(Subject subject) {
-
-	}
-
 	@Override public void onNewBankHolidayRequested() {
-
-	}
-
-	@Override public void onBankHolidaySelected(Holiday holiday) {
 
 	}
 
@@ -64,22 +61,34 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 
 	}
 
-	@Override public void onGroupSelected(StudentGroup group) {
-
-	}
-
 	@Override public void onNewEventRequested() {
 
 	}
 
-	@Override public void onEventSelected(Event event) {
+	@Override public void onSubjectSelected(Subject subject) {
+		openModelInfoActivity(SubjectInfoActivity.class, subject.getId());
+	}
 
+	private void openModelInfoActivity(Class<? extends ModelInfoActivity> targetClass, long id) {
+		Intent intent = new Intent(this, targetClass);
+		intent.putExtra(ModelInfoActivity.KEY_ID, id);
+		startActivity(intent);
+	}
+
+	@Override public void onBankHolidaySelected(Holiday holiday) {
+		openModelInfoActivity(HolidayInfoActivity.class, holiday.getId());
+	}
+
+	@Override public void onGroupSelected(StudentGroup group) {
+		openModelInfoActivity(StudentGroupInfoActivity.class, group.getId());
+	}
+
+	@Override public void onEventSelected(Event event) {
+		openModelInfoActivity(EventInfoActivity.class, event.getId());
 	}
 
 	@Override public void onSaved(Course course) {
-		Intent intent = new Intent(this, CourseOverviewActivity.class);
-		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
-		startActivity(intent);
+		openModelInfoActivity(CourseOverviewActivity.class, course.getId());
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {

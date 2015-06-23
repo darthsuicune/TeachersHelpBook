@@ -1,4 +1,4 @@
-package com.dlgdev.teachers.helpbook.views.events;
+package com.dlgdev.teachers.helpbook.views.events.fragments;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -17,6 +17,8 @@ import android.widget.TimePicker;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
+import com.dlgdev.teachers.helpbook.views.events.NewEventView;
+import com.dlgdev.teachers.helpbook.views.events.OnPickersRequestedListener;
 
 import org.joda.time.DateTime;
 
@@ -87,8 +89,8 @@ public class NewEventDialog extends DialogFragment implements OnPickersRequested
 	}
 
 	private void save() {
-		event.title(newEventView.titleView.getText().toString());
-		event.description(newEventView.descriptionView.getText().toString());
+		event.title(newEventView.getTitle());
+		event.description(newEventView.getDescription());
 		listener.onNewEventCreated(event);
 	}
 

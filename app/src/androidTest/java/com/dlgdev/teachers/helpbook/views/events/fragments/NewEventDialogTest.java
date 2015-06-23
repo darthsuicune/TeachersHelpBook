@@ -1,4 +1,5 @@
-package com.dlgdev.teachers.helpbook.views.events;
+package com.dlgdev.teachers.helpbook.views.events.fragments;
+
 
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
@@ -9,7 +10,6 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
-import com.dlgdev.teachers.helpbook.views.events.NewEventDialog.NewEventDialogListener;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -38,14 +38,14 @@ public class NewEventDialogTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 	NewEventDialog dialog;
 	CourseOverviewActivity activity;
-	NewEventDialogListener mockListener;
+	NewEventDialog.NewEventDialogListener mockListener;
 	EventsFactory provider;
 
 	String someData = "someData";
 
 	@Before public void setUp() throws Exception {
 		activity = rule.getActivity();
-		mockListener = Mockito.mock(NewEventDialogListener.class);
+		mockListener = Mockito.mock(NewEventDialog.NewEventDialogListener.class);
 		dialog = new NewEventDialog();
 		provider = new EventsFactory();
 		Event event = provider.createEmpty();
@@ -86,7 +86,7 @@ public class NewEventDialogTest {
 	}
 
 	private void theDataIsHeld(String s) throws InterruptedException {
-		assertEquals(s, dialog.newEventView.titleView.getText().toString());
+		assertEquals(s, dialog.newEventView.getTitle());
 	}
 
 	@Test public void testClickingOnCreateSavesTheEvent() throws Throwable {
