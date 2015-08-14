@@ -4,15 +4,13 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,6 +36,7 @@ public class CoursesListFragment extends Fragment {
 	TextView emptyList;
 	OnCourseListInteractionListener listener;
 	CoursesAdapter adapter;
+	FloatingActionButton addCourseButton;
 
 	public CoursesListFragment() {
 	}
@@ -57,26 +56,17 @@ public class CoursesListFragment extends Fragment {
 	private void setViews(View v) {
 		courseList = (DividerWrappedRecyclerView) v.findViewById(R.id.course_list);
 		emptyList = (TextView) v.findViewById(R.id.course_list_empty);
+		addCourseButton = (FloatingActionButton) v.findViewById(R.id.add_new_course);
+		addCourseButton.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				addNewCourse();
+			}
+		});
 	}
 
 	@Override public void onResume() {
 		super.onResume();
 		getLoaderManager().initLoader(LOADER_COURSE, null, new CourseLoaderHelper());
-	}
-
-	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.menu_courses_list, menu);
-	}
-
-	@Override public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			case R.id.add_new_course:
-				addNewCourse();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
 	}
 
 	private void addNewCourse() {

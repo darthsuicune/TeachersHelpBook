@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.activeandroid.ActiveAndroid;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
@@ -30,6 +31,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.toPack
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class IntentCourseAdministrationActivityTest {
@@ -63,6 +65,11 @@ public class IntentCourseAdministrationActivityTest {
 
 	@After public void tearDown() throws Exception {
 		DatabaseUtils.clearDatabase();
+	}
+
+	@Test public void testDbName() {
+		String name = ActiveAndroid.getDatabase().getPath();
+		assertTrue(name.contains("test"));
 	}
 
 	@Test public void testOnNewSubjectRequested() throws Exception {

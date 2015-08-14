@@ -3,6 +3,7 @@ package com.dlgdev.teachers.helpbook.views.courses.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
@@ -22,7 +23,7 @@ public class CoursesListActivity extends AppCompatActivity implements
 			setContentView(R.layout.activity_courses_list);
 			fragment = (CoursesListFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.courses_list_fragment);
-			fragment.setHasOptionsMenu(true);
+			setSupportActionBar((Toolbar)findViewById(R.id.course_list_toolbar));
 		}
 	}
 
