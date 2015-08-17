@@ -1,6 +1,15 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/event_info"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.dlgdev.teachers.helpbook.views.events.activities.EventInfoActivity" />
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/event_info_toolbar"
+        style="@style/ActionBar"/>
+
+    <fragment
+        android:id="@+id/event_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.dlgdev.teachers.helpbook.views.events.fragments.EventInfoFragment"
+        tools:context="com.dlgdev.teachers.helpbook.views.events.activities.EventInfoActivity" />
+</RelativeLayout>

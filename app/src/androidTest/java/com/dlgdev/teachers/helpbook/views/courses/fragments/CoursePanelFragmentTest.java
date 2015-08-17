@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -42,6 +43,7 @@ public class CoursePanelFragmentTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		course = new Course(DateTime.now(), DateTime.now());
 		provider = new EventsFactory();
 	}

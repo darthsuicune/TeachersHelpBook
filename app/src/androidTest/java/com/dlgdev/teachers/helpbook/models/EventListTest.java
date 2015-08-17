@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.models;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Select;
@@ -23,6 +24,7 @@ public class EventListTest {
     EventsFactory provider;
 
     @Before public void setUp() throws Exception {
+        DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
         List<Event> events = new ArrayList<>();
         eventList = new EventList(events);
         provider = new EventsFactory();

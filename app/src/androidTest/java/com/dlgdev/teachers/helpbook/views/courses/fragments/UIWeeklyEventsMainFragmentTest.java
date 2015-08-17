@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -14,6 +15,7 @@ import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +41,10 @@ public class UIWeeklyEventsMainFragmentTest {
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class);
+
+	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+	}
 
 	@After public void tearDown() throws Exception {
 		DatabaseUtils.clearDatabase();

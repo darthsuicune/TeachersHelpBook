@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.models;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.activeandroid.query.Select;
@@ -22,6 +23,7 @@ public class CourseTest {
 	int count;
 
 	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		count = new Select().from(Course.class).count();
 	}
 

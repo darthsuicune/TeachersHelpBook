@@ -6,14 +6,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.models.Course;
@@ -30,8 +32,8 @@ import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFr
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 
 
-public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyEventsListener,
-		WeeklyPreviewListener, CoursePanelListener {
+public class CourseOverviewActivity extends ModelInfoActivity
+		implements WeeklyEventsListener, WeeklyPreviewListener, CoursePanelListener {
 	private static final int LOADER_COURSE = 1;
 	private static final String WORKING_DATE = "workingDate";
 	public static final String KEY_COURSE = "course";
@@ -48,9 +50,10 @@ public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyE
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		setContentView(R.layout.course_overview_activity);
+		setContentView(R.layout.activity_course_overview);
+		setSupportActionBar((Toolbar) findViewById(R.id.course_overview_toolbar));
 		prepareCurrentDate(savedInstanceState);
-		getSupportLoaderManager().initLoader(LOADER_COURSE, null, new CourseLoaderHelper());
+		prepareCourseData(savedInstanceState);
 	}
 
 	private void prepareCurrentDate(Bundle savedInstanceState) {
@@ -61,9 +64,20 @@ public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyE
 		}
 	}
 
+	private void prepareCourseData(Bundle savedInstanceState) {
+		Bundle args = new Bundle();
+		if(savedInstanceState != null && savedInstanceState.containsKey(KEY_COURSE)) {
+			args.putLong(KEY_COURSE, savedInstanceState.getLong(KEY_COURSE));
+		}
+		getSupportLoaderManager().initLoader(LOADER_COURSE, args, new CourseLoaderHelper());
+	}
+
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(WORKING_DATE, currentDate.getMillis());
+		if(course != null) {
+			outState.putLong(KEY_COURSE, course.getId());
+		}
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,11 +97,13 @@ public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyE
 	}
 
 	@Override public void onNewEventCreated(Event event) {
-		Toast.makeText(this, R.string.event_created, Toast.LENGTH_LONG).show();
+		Snackbar.make(findViewById(R.id.course_overview_root), R.string.event_created,
+				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override public void onExistingEventSelected(Event event) {
-		Toast.makeText(this, "Something!!!!" + event.title(), Toast.LENGTH_LONG).show();
+		Snackbar.make(findViewById(R.id.course_overview_root), "Something!!!!" + event.title(),
+				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override public void onNewDaySelected(DateTime newDate) {
@@ -108,16 +124,21 @@ public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyE
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-			Uri uri = TeachersDBContract.Courses.URI;
+			Uri uri;
+			if(args.containsKey(KEY_COURSE)) {
+				uri = ContentProvider.createUri(Course.class, args.getLong(KEY_COURSE));
+			} else {
+				uri = TeachersDBContract.Courses.URI;
+			}
 			return new CursorLoader(CourseOverviewActivity.this, uri, null, null, null, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			course = new Course();
-			if(data.moveToFirst()) {
+			if (data.moveToFirst()) {
 				course.loadFromCursor(data);
 			}
-			setupFragments();
+			loadCourseData();
 		}
 
 		@Override public void onLoaderReset(Loader<Cursor> loader) {
@@ -125,7 +146,14 @@ public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyE
 		}
 	}
 
-	private void setupFragments() {
+	private void loadCourseData() {
+		setTitle(course.title);
+		loadFragments();
+		reportDateToFragments();
+		reportCourseToFragments();
+	}
+
+	private void loadFragments() {
 		FragmentManager fm = getSupportFragmentManager();
 		mainViewFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
@@ -136,8 +164,6 @@ public class CourseOverviewActivity extends ModelInfoActivity implements WeeklyE
 		secondNextWeekFragment =
 				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
 		coursePanelFragment = (CoursePanelFragment) fm.findFragmentById(R.id.course_overview_panel);
-		reportDateToFragments();
-		reportCourseToFragments();
 	}
 
 	private void reportDateToFragments() {

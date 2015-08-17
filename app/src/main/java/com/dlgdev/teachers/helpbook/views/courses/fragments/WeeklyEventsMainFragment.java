@@ -40,7 +40,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 
 	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 									   @Nullable Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.weekly_events_main_fragment, container, false);
+		rootView = inflater.inflate(R.layout.fragment_weekly_events_main, container, false);
 		return rootView;
 	}
 

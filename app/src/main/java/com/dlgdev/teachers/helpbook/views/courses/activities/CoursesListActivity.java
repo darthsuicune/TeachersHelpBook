@@ -13,9 +13,11 @@ import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.
 public class CoursesListActivity extends AppCompatActivity implements
 		OnCourseListInteractionListener {
 	CoursesListFragment fragment;
+	Course course;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		course = Course.current();
 		if (shouldSkipList()) {
 			skipToCourse();
 			finish();
@@ -28,11 +30,11 @@ public class CoursesListActivity extends AppCompatActivity implements
 	}
 
 	private boolean shouldSkipList() {
-		return Course.current() != null;
+		return course != null;
 	}
 
 	private void skipToCourse() {
-		onCourseSelected(Course.current());
+		onCourseSelected(course);
 	}
 
 	@Override public void onCourseSelected(Course course) {

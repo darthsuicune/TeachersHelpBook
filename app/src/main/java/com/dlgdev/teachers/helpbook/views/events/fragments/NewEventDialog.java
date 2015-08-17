@@ -55,7 +55,7 @@ public class NewEventDialog extends DialogFragment implements OnPickersRequested
 		if (savedInstanceState != null) {
 			restoreFragment(savedInstanceState);
 		}
-		return buildDialog(getDialogView(R.layout.create_event_dialog));
+		return buildDialog(getDialogView(R.layout.dialog_create_event));
 	}
 
 	private void restoreFragment(Bundle savedInstanceState) {

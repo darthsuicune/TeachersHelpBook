@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
@@ -35,7 +37,8 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 		course = new Course();
 		parseInvocationArguments();
-		setContentView(R.layout.course_administration_activity);
+		setContentView(R.layout.activity_course_administration);
+		setSupportActionBar((Toolbar) findViewById(R.id.course_administration_toolbar));
 		fragment = (CourseAdministrationFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.course_administration_fragment);
 		fragment.setHasOptionsMenu(true);
@@ -50,7 +53,7 @@ public class CourseAdministrationActivity extends AppCompatActivity implements
 	}
 
 	@Override public void onNewSubjectRequested() {
-
+		Snackbar.make(null, "Some new subject requested", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override public void onNewBankHolidayRequested() {

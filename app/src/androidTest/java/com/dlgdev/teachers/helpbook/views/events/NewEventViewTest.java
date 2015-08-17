@@ -39,11 +39,12 @@ public class NewEventViewTest {
 	OnPickersRequestedListener mockListener;
 
 	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		mockListener = mock(OnPickersRequestedListener.class);
 		Event event = new EventsFactory().createEmpty();
 
 		view = (NewEventView) LayoutInflater.from(InstrumentationRegistry.getTargetContext())
-				.inflate(R.layout.create_event_dialog, null);
+				.inflate(R.layout.dialog_create_event, null);
 		view.setup(event, mockListener);
 	}
 

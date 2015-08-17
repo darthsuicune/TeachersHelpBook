@@ -45,12 +45,13 @@ public class DailyEventsCardViewTest {
 	Context context;
 
 	@Before public void setUp() throws Exception {
+		context = InstrumentationRegistry.getTargetContext();
+		DatabaseUtils.getDatabase(context);
 		provider = new EventsFactory();
 		listener = mock(DailyEventsCardListener.class);
 		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
-		context = InstrumentationRegistry.getTargetContext();
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		card = (DailyEventsCardView) inflater.inflate(R.layout.daily_events_card, null);
+		card = (DailyEventsCardView) inflater.inflate(R.layout.card_daily_events, null);
 		setupCard(date);
 	}
 

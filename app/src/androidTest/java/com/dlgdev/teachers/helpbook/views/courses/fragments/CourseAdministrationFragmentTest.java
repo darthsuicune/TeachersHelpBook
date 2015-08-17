@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -57,6 +58,7 @@ public class CourseAdministrationFragmentTest {
 			new ActivityTestRule<>(CourseAdministrationActivity.class, true, false);
 
 	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		listener = Mockito.mock(CourseAdministrationActionListener.class);
 		subjectsFactory = new SubjectsFactory();
 		eventsFactory = new EventsFactory();

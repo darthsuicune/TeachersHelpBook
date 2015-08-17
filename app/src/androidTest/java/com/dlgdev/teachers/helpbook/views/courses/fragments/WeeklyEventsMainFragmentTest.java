@@ -29,6 +29,7 @@ public class WeeklyEventsMainFragmentTest {
 
 	@Before public void setup() throws Exception {
 		Context context = InstrumentationRegistry.getTargetContext();
+		DatabaseUtils.getDatabase(context);
 		fragment = (WeeklyEventsMainFragment) Fragment
 				.instantiate(context, WeeklyEventsMainFragment.class.getName());
 		fragment.updateDate(currentDate);

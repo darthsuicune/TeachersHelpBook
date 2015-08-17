@@ -1,0 +1,66 @@
+<RelativeLayout
+    android:id="@+id/course_overview_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    tools:context=".CourseOverviewActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/course_overview_toolbar"
+        style="@style/ActionBar" />
+
+    <LinearLayout
+        style="@style/Activity.MainChild"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/course_overview_toolbar"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/course_weekly_main_fragment"
+            android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="4" />
+
+        <LinearLayout
+            android:id="@+id/lower_pane"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <fragment
+                android:id="@+id/course_overview_panel"
+                android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/course_weekly_previous"
+                android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/course_weekly_next"
+                android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <fragment
+                android:id="@+id/course_weekly_second_next"
+                android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

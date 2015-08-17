@@ -13,43 +13,43 @@
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
         <include
             android:id="@+id/tuesday_card"
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
         <include
             android:id="@+id/wednesday_card"
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
         <include
             android:id="@+id/thursday_card"
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
         <include
             android:id="@+id/friday_card"
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
         <include
             android:id="@+id/saturday_card"
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
         <include
             android:id="@+id/sunday_card"
             android:layout_margin="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/daily_events_card" />
+            layout="@layout/card_daily_events" />
 
     </LinearLayout>
 </ScrollView>

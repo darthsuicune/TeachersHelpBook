@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<ScrollView style="@style/Activity.MainChild"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,59 +12,59 @@
             android:id="@+id/course_administration_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/course_title"/>
+            android:hint="@string/course_title" />
 
         <EditText
             android:id="@+id/course_administration_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/course_administration_name"
-            android:inputType="date"
-            android:hint="@string/course_start_date"/>
+            android:hint="@string/course_start_date"
+            android:inputType="date" />
 
         <EditText
             android:id="@+id/course_administration_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/course_administration_name"
-            android:layout_toRightOf="@+id/course_administration_start_date"
             android:layout_toEndOf="@+id/course_administration_start_date"
-            android:inputType="date"
-            android:hint="@string/course_start_date"/>
+            android:layout_toRightOf="@+id/course_administration_start_date"
+            android:hint="@string/course_start_date"
+            android:inputType="date" />
 
         <EditText
             android:id="@+id/course_administration_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/course_administration_start_date"
-            android:hint="@string/course_description"/>
+            android:hint="@string/course_description" />
 
         <include
             android:id="@+id/course_administration_student_groups"
             layout="@layout/titled_recycler_card_with_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/course_administration_description"/>
+            android:layout_below="@+id/course_administration_description" />
 
         <include
             android:id="@+id/course_administration_subjects"
             layout="@layout/titled_recycler_card_with_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/course_administration_student_groups"/>
+            android:layout_below="@+id/course_administration_student_groups" />
 
         <include
             android:id="@+id/course_administration_holidays"
             layout="@layout/titled_recycler_card_with_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/course_administration_subjects"/>
+            android:layout_below="@+id/course_administration_subjects" />
 
         <include
             android:id="@+id/course_administration_events"
             layout="@layout/titled_recycler_card_with_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/course_administration_holidays"/>
+            android:layout_below="@+id/course_administration_holidays" />
     </RelativeLayout>
 </ScrollView>

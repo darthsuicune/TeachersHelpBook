@@ -25,6 +25,7 @@ public class EventsFactoryTest {
     Event event;
 
     @Before public void setUp() throws Exception {
+        DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
         provider = new EventsFactory();
     }
 

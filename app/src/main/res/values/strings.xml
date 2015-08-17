@@ -38,4 +38,7 @@
     <string name="save_course">Save course</string>
     <string name="course_start_date">Course start date</string>
     <string name="title_activity_event_info">EventInfo</string>
+    <string name="title_activity_holiday_info">Holiday info</string>
+    <string name="title_activity_student_group_info">Student Group</string>
+    <string name="title_activity_subject_info">Subject info</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.models;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
@@ -20,6 +21,7 @@ public class EventTest {
 	EventsFactory provider;
 
 	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		provider = new EventsFactory();
     }
 

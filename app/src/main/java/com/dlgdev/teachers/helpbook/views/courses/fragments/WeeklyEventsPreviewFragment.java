@@ -21,7 +21,7 @@ public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 							 @Nullable Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.weekly_events_preview_fragment, container, false);
+		View v = inflater.inflate(R.layout.fragment_weekly_events_preview, container, false);
 		preparePreviewLayout(v);
 		return v;
 	}

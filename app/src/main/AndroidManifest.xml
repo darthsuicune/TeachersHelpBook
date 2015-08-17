@@ -48,6 +48,18 @@
             android:name=".views.events.activities.EventInfoActivity"
             android:label="@string/title_activity_event_info" >
         </activity>
+        <activity
+            android:name=".views.holidays.activities.HolidayInfoActivity"
+            android:label="@string/title_activity_holiday_info" >
+        </activity>
+        <activity
+            android:name=".views.students.activities.StudentGroupInfoActivity"
+            android:label="@string/title_activity_student_group_info" >
+        </activity>
+        <activity
+            android:name=".views.subjects.activities.SubjectInfoActivity"
+            android:label="@string/title_activity_subject_info" >
+        </activity>
     </application>
 
 </manifest>

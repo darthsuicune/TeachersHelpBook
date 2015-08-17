@@ -1,5 +1,9 @@
 package com.dlgdev.teachers.helpbook;
 
+import android.content.Context;
+
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
 import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
@@ -22,5 +26,17 @@ public class DatabaseUtils {
 		new Delete().from(Subject.class).execute();
 		new Delete().from(StudentGroup.class).execute();
 		new Delete().from(Course.class).execute();
+	}
+
+	public static void getDatabase(Context context) {
+		getDatabase(context, "tests.db");
+	}
+
+	public static void getDatabase(Context context, String name) {
+		ActiveAndroid.dispose();
+		Configuration config = new Configuration.Builder(context)
+				.setDatabaseName(name)
+				.create();
+		ActiveAndroid.initialize(config);
 	}
 }

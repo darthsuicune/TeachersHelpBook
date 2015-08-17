@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -25,6 +26,7 @@ public class CourseAdministrationActivityTest {
 			new ActivityTestRule<>(CourseAdministrationActivity.class, true, false);
 
 	@Before public void setUp() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		course = new Course();
 		course.save();
 	}

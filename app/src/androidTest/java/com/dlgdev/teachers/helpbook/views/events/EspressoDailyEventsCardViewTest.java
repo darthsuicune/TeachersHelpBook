@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -40,6 +41,7 @@ public class EspressoDailyEventsCardViewTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setup() throws Exception {
+		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
 		date = DateTime.now().withDayOfWeek(THURSDAY);
 		listener = mock(DailyEventsCardListener.class);
 	}

@@ -43,7 +43,7 @@ public class CoursePanelFragment extends Fragment {
 
 	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 									   @Nullable Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.course_panel_fragment, container, false);
+		View v = inflater.inflate(R.layout.fragment_course_panel, container, false);
 		prepareViews(v);
 		return v;
 	}
