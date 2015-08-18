@@ -39,7 +39,7 @@ public class NewEventViewTest {
 	OnPickersRequestedListener mockListener;
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		mockListener = mock(OnPickersRequestedListener.class);
 		Event event = new EventsFactory().createEmpty();
 

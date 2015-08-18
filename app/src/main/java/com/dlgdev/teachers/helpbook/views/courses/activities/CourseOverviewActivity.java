@@ -65,8 +65,12 @@ public class CourseOverviewActivity extends ModelInfoActivity
 	}
 
 	private void prepareCourseData(Bundle savedInstanceState) {
+		Bundle extras = getIntent().getExtras();
 		Bundle args = new Bundle();
-		if(savedInstanceState != null && savedInstanceState.containsKey(KEY_COURSE)) {
+		if (extras != null && extras.containsKey(KEY_COURSE)) {
+			args.putLong(KEY_COURSE, extras.getLong(KEY_COURSE));
+		}
+		if (savedInstanceState != null && savedInstanceState.containsKey(KEY_COURSE)) {
 			args.putLong(KEY_COURSE, savedInstanceState.getLong(KEY_COURSE));
 		}
 		getSupportLoaderManager().initLoader(LOADER_COURSE, args, new CourseLoaderHelper());
@@ -75,7 +79,7 @@ public class CourseOverviewActivity extends ModelInfoActivity
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(WORKING_DATE, currentDate.getMillis());
-		if(course != null) {
+		if (course != null) {
 			outState.putLong(KEY_COURSE, course.getId());
 		}
 	}
@@ -123,27 +127,30 @@ public class CourseOverviewActivity extends ModelInfoActivity
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
-		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-			Uri uri;
-			if(args.containsKey(KEY_COURSE)) {
-				uri = ContentProvider.createUri(Course.class, args.getLong(KEY_COURSE));
-			} else {
-				uri = TeachersDBContract.Courses.URI;
-			}
+		Long id;
+
+		@Override public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
+			this.id = args.getLong(KEY_COURSE);
+			Uri uri = ContentProvider.createUri(Course.class, this.id);
 			return new CursorLoader(CourseOverviewActivity.this, uri, null, null, null, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-			course = new Course();
 			if (data.moveToFirst()) {
-				course.loadFromCursor(data);
+				do {
+					if (data.getLong(data.getColumnIndex(TeachersDBContract.Courses._ID)) != id) {
+						course = new Course();
+						course.loadFromCursor(data);
+						loadCourseData();
+					}
+				} while (data.moveToNext());
 			}
-			loadCourseData();
 		}
 
 		@Override public void onLoaderReset(Loader<Cursor> loader) {
 
 		}
+
 	}
 
 	private void loadCourseData() {

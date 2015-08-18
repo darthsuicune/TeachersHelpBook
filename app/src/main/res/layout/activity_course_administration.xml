@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/course_administration_toolbar"
-        style="@style/ActionBar" />
-
-    <fragment
-        android:id="@+id/course_administration_fragment"
-        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/course_administration_toolbar"
-        tools:layout="@layout/fragment_course_administration" />
-</RelativeLayout>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/course_administration_toolbar"
+            style="@style/ActionBar" />
+
+        <fragment
+            android:id="@+id/course_administration_fragment"
+            android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/course_administration_toolbar"
+            tools:layout="@layout/fragment_course_administration" />
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

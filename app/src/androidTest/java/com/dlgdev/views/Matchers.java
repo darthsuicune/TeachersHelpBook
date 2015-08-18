@@ -1,18 +1,12 @@
 package com.dlgdev.views;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.joda.time.DateTime;
+import org.mockito.ArgumentMatcher;
 
 public class Matchers {
 
-	public static Matcher<DateTime> matchesAnyDateTime() {
-		return new BaseMatcher<DateTime>() {
-			@Override public void describeTo(Description description) {
-
-			}
-
+	public static ArgumentMatcher<DateTime> matchesAnyDateTime() {
+		return new ArgumentMatcher<DateTime>() {
 			@Override public boolean matches(Object o) {
 				return o instanceof DateTime;
 			}

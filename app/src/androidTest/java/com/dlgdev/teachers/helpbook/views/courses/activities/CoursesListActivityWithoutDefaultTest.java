@@ -37,7 +37,7 @@ public class CoursesListActivityWithoutDefaultTest {
 	private CoursesListActivity activity;
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		activity = rule.getActivity();
 	}
 

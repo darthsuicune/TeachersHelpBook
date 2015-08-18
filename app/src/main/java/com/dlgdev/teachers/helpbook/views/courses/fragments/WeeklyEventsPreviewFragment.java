@@ -42,8 +42,10 @@ public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 		}
 	}
 
-	@Override void onEventListUpdated() {
-
+	@Override void loadEvents() {
+		if(course != null) {
+			this.eventList = course.eventsBetween(startOfWeek, endOfWeek);
+		}
 	}
 
 	public interface WeeklyPreviewListener {

@@ -41,7 +41,7 @@ public class EspressoDailyEventsCardViewTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		date = DateTime.now().withDayOfWeek(THURSDAY);
 		listener = mock(DailyEventsCardListener.class);
 	}

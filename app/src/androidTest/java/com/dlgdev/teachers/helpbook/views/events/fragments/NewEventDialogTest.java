@@ -12,14 +12,12 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -45,7 +43,7 @@ public class NewEventDialogTest {
 	String someData = "someData";
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		activity = rule.getActivity();
 		mockListener = Mockito.mock(NewEventDialog.NewEventDialogListener.class);
 		dialog = new NewEventDialog();
@@ -105,18 +103,14 @@ public class NewEventDialogTest {
 		verify(mockListener).onNewEventCreated(argThat(matchesEventWithTitle(data)));
 	}
 
-	private Matcher<Event> matchesEventWithTitle(final String data) {
-		return new BaseMatcher<Event>() {
+	private ArgumentMatcher<Event> matchesEventWithTitle(final String data) {
+		return new ArgumentMatcher<Event>() {
 			@Override public boolean matches(Object o) {
 				if(o != null) {
 					Event event = (Event) o;
 					return event.title().equals(data);
 				}
 				return false;
-			}
-
-			@Override public void describeTo(Description description) {
-
 			}
 		};
 	}

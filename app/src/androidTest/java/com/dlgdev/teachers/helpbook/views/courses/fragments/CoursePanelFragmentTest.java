@@ -14,6 +14,7 @@ import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActiv
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -43,7 +44,7 @@ public class CoursePanelFragmentTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		course = new Course(DateTime.now(), DateTime.now());
 		provider = new EventsFactory();
 	}
@@ -77,11 +78,11 @@ public class CoursePanelFragmentTest {
 	}
 
 	private DateTime endOfNextWeek() {
-		return Dates.endOfWeek(DateTime.now()).plusWeeks(1);
+		return Dates.endOfWeek(DateTime.now(), DateTimeConstants.MONDAY).plusWeeks(1);
 	}
 
 	private DateTime startOfNextWeek() {
-		return Dates.startOfWeek(DateTime.now()).plusWeeks(1);
+		return Dates.startOfWeek(DateTime.now(), DateTimeConstants.MONDAY).plusWeeks(1);
 	}
 
 	private void theCurrentReferenceWeekIsUpdatedTo(String s) {

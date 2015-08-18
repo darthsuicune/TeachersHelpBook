@@ -28,7 +28,7 @@ public class CoursesListActivityWithDefaultTest {
 			new ActivityTestRule<>(CoursesListActivity.class, true, false);
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		Course course = new Course(DateTime.now().minusWeeks(1), DateTime.now().plusWeeks(1));
 		course.title = TITLE;
 		course.save();

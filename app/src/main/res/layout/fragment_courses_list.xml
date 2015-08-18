@@ -1,31 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     style="@style/Activity.MainChild"
-    tools:context="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment">
+    tools:context="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.dlgdev.views.DividerWrappedRecyclerView
-        android:id="@+id/course_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:visibility="gone" />
+        <com.dlgdev.views.DividerWrappedRecyclerView
+            android:id="@+id/course_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/course_list_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/course_list_empty" />
+        <TextView
+            android:id="@+id/course_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/course_list_empty" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_new_course"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_layout_margin" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_new_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_layout_margin"
+            app:layout_anchor="@id/course_list"
+            app:layout_anchorGravity="bottom|right|end" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -23,7 +23,7 @@ public class CourseTest {
 	int count;
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		count = new Select().from(Course.class).count();
 	}
 

@@ -1,6 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,9 +43,16 @@ public class CourseAdministrationFragment extends Fragment {
 	public CourseAdministrationFragment() {
 	}
 
-	@Override public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		listener = (CourseAdministrationActionListener) activity;
+	@Override public void onAttach(Context context) {
+		super.onAttach(context);
+		listener = (CourseAdministrationActionListener) context;
+		setHasOptionsMenu(true);
+	}
+
+	@Override public void onDetach() {
+		super.onDetach();
+		setHasOptionsMenu(false);
+		listener = null;
 	}
 
 	@Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

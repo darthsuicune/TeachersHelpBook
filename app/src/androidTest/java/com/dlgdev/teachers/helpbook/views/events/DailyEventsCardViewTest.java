@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.LayoutInflater;
@@ -46,7 +47,7 @@ public class DailyEventsCardViewTest {
 
 	@Before public void setUp() throws Exception {
 		context = InstrumentationRegistry.getTargetContext();
-		DatabaseUtils.getDatabase(context);
+		DatabaseUtils.intializeDb(context);
 		provider = new EventsFactory();
 		listener = mock(DailyEventsCardListener.class);
 		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
@@ -105,14 +106,12 @@ public class DailyEventsCardViewTest {
 	}
 
 	private void weGetAListWithTheExpectedEventsWithTodayHighlighted() {
-		assertTrue(backgroundIs(context.getResources()
-				.getColor(R.color.material_deep_teal_200)).matches(card));
+		assertTrue(backgroundIs(Color.parseColor("#80cbc4")).matches(card));
 	}
 
 	@Test public void testAfterLaunchAnotherDayIsntHighlighted() throws Exception {
 		setupCard(DateTime.now().plusDays(1));
-		assertFalse(backgroundIs(context.getResources()
-				.getColor(R.color.material_deep_teal_200)).matches(card));
+		assertFalse(backgroundIs(Color.parseColor("#80cbc4")).matches(card));
 	}
 
 	@Test public void testUpdateEventsWithoutEventsShowsAnEmptyListMessage() {

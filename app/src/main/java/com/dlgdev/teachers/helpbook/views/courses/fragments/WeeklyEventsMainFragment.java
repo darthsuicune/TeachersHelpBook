@@ -77,11 +77,14 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		}
 	}
 
-	@Override void onEventListUpdated() {
-		for (Integer day : dailyCards.keySet()) {
-			DateTime date = referenceDate.withDayOfWeek(day);
-			EventList events = eventList.eventsForDay(date);
-			dailyCards.get(day).updateEvents(events);
+	@Override void loadEvents() {
+		if(course != null) {
+			this.eventList = course.eventsBetween(startOfWeek, endOfWeek);
+			for (Integer day : dailyCards.keySet()) {
+				DateTime date = referenceDate.withDayOfWeek(day);
+				EventList events = eventList.eventsForDay(date);
+				dailyCards.get(day).updateEvents(events);
+			}
 		}
 	}
 

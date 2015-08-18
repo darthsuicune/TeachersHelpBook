@@ -28,13 +28,16 @@ public class DatabaseUtils {
 		new Delete().from(Course.class).execute();
 	}
 
-	public static void getDatabase(Context context) {
-		getDatabase(context, "tests.db");
+	public static void intializeDb(Context context) {
+		intializeDb(context, "tests.db");
 	}
 
-	public static void getDatabase(Context context, String name) {
+	public static void intializeDb(Context context, String name) {
 		ActiveAndroid.dispose();
 		Configuration config = new Configuration.Builder(context)
+				.setModelClasses(Course.class, Event.class, Grade.class, GroupTakesSubject.class,
+						Holiday.class, Student.class, StudentGroup.class, Subject.class,
+						TimeTableEntry.class)
 				.setDatabaseName(name)
 				.create();
 		ActiveAndroid.initialize(config);

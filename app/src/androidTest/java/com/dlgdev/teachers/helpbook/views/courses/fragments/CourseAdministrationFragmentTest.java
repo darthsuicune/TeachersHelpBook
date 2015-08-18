@@ -58,7 +58,7 @@ public class CourseAdministrationFragmentTest {
 			new ActivityTestRule<>(CourseAdministrationActivity.class, true, false);
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		listener = Mockito.mock(CourseAdministrationActionListener.class);
 		subjectsFactory = new SubjectsFactory();
 		eventsFactory = new EventsFactory();

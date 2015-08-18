@@ -43,7 +43,7 @@ public class UIWeeklyEventsMainFragmentTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.getDatabase(InstrumentationRegistry.getTargetContext());
+		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 	}
 
 	@After public void tearDown() throws Exception {

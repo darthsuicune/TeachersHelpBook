@@ -8,6 +8,7 @@ import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,9 +40,9 @@ public class WeeklyEventsPreviewFragmentTest {
 	}
 
 	private void thePanelShowsTheStartAndEndOfWeekForDate(int parent, DateTime date) {
-		String range = Dates.formatDateRange(Dates.startOfWeek(date), Dates.endOfWeek(date));
-		onView(allOf(withId(R.id.weekly_events_preview_text),
-					 isDescendantOfA(withId(parent))))
+		String range = Dates.formatDateRange(Dates.startOfWeek(date, DateTimeConstants.MONDAY),
+				Dates.endOfWeek(date, DateTimeConstants.MONDAY));
+		onView(allOf(withId(R.id.weekly_events_preview_text), isDescendantOfA(withId(parent))))
 				.check(matches(withText(range)));
 	}
 

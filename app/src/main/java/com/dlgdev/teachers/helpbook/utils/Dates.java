@@ -10,12 +10,14 @@ import java.util.StringTokenizer;
 
 public class Dates {
 
-	public static DateTime startOfWeek(DateTime date) {
-		return date.withDayOfWeek(DateTimeConstants.MONDAY).withHourOfDay(0).withMinuteOfHour(0);
+	public static DateTime startOfWeek(DateTime date, int firstDayOfWeek) {
+		return date.withDayOfWeek(firstDayOfWeek).withHourOfDay(0).withMinuteOfHour(0);
 	}
 
-	public static DateTime endOfWeek(DateTime date) {
-		return date.withDayOfWeek(DateTimeConstants.SUNDAY).withHourOfDay(0).withMinuteOfHour(0);
+	public static DateTime endOfWeek(DateTime date, int firstDayOfWeek) {
+		int endOfWeek = (firstDayOfWeek == DateTimeConstants.MONDAY) ? DateTimeConstants.SUNDAY :
+				DateTimeConstants.SATURDAY;
+		return date.withDayOfWeek(endOfWeek).withHourOfDay(23).withMinuteOfHour(59);
 	}
 
 	public static String formatDate(DateTime date) {
@@ -84,7 +86,7 @@ public class Dates {
 		try {
 			int hour;
 			int minute = 0;
-			if(time.contains(":")) {
+			if (time.contains(":")) {
 				hour = Integer.parseInt(tokenizer.nextToken());
 				minute = Integer.parseInt(tokenizer.nextToken());
 			} else {

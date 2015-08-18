@@ -1,16 +1,14 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
@@ -18,27 +16,20 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
-public class CoursePanelFragment extends Fragment {
+public class CoursePanelFragment extends WeeklyEventsFragment {
 	DateTime currentDate;
-	DateTime referenceDate;
 	CoursePanelListener listener;
 	TextView currentWeek;
 	TextView referenceWeek;
 	TextView eventCounter;
 	List<Event> eventList;
-	Course course;
 
 	public CoursePanelFragment() {
 	}
 
-	@Override public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			listener = (CoursePanelListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(
-					"Activities holding a CoursePanelFragment must implement CoursePanelListener");
-		}
+	@Override public void onAttach(Context context) {
+		super.onAttach(context);
+		listener = (CoursePanelListener) context;
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -59,33 +50,30 @@ public class CoursePanelFragment extends Fragment {
 		eventCounter = (TextView) v.findViewById(R.id.event_counter);
 	}
 
-	public void updateDate(DateTime date) {
-		showCurrentDate(date);
-		this.referenceDate = date;
-		DateTime startOfWeek = Dates.startOfWeek(date);
-		DateTime endOfWeek = Dates.endOfWeek(date);
+	@Override protected void onDateUpdated() {
+		showCurrentDate();
 		if (referenceWeek != null) {
 			referenceWeek.setText(Dates.formatDateRange(startOfWeek, endOfWeek));
 		}
+
 	}
 
-	private void showCurrentDate(DateTime date) {
+	private void showCurrentDate() {
 		if (currentDate == null) {
-			currentDate = date;
+			currentDate = DateTime.now();
 			currentWeek.setText(Dates.formatDate(currentDate));
+		}
+	}
+
+	@Override void loadEvents() {
+		if(course != null) {
+			eventList(course.events());
 		}
 	}
 
 	public void eventList(List<Event> eventList) {
 		this.eventList = eventList;
 		eventCounter.setText(getString(R.string.event_count, eventList.size()));
-	}
-
-	public void updateCourse(Course course) {
-		this.course = course;
-		if(course.getId() != null) {
-			eventList(course.events());
-		}
 	}
 
 	public interface CoursePanelListener {
