@@ -1,6 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.support.test.InstrumentationRegistry;
+import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -41,21 +41,19 @@ public class CoursePanelFragmentTest {
 	CoursePanelFragment fragment;
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
-			new ActivityTestRule<>(CourseOverviewActivity.class);
+			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		course = new Course(DateTime.now(), DateTime.now());
+		course.save();
 		provider = new EventsFactory();
+		Intent intent = new Intent();
+		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		rule.launchActivity(intent);
 	}
 
 	@After public void teardown() throws Exception {
 		DatabaseUtils.clearDatabase();
-	}
-
-	private void loadFragment() {
-		fragment = (CoursePanelFragment) rule.getActivity().getSupportFragmentManager()
-				.findFragmentById(R.id.course_overview_panel);
 	}
 
 	@Test public void testUpdateDateDoesntModifyItsMainDate() throws Exception {
@@ -77,16 +75,16 @@ public class CoursePanelFragmentTest {
 				Dates.formatDateRange(startOfNextWeek(), endOfNextWeek()));
 	}
 
-	private DateTime endOfNextWeek() {
-		return Dates.endOfWeek(DateTime.now(), DateTimeConstants.MONDAY).plusWeeks(1);
+	private void theCurrentReferenceWeekIsUpdatedTo(String s) {
+		onView(withId(R.id.reference_week)).check(matches(withText(s)));
 	}
 
 	private DateTime startOfNextWeek() {
 		return Dates.startOfWeek(DateTime.now(), DateTimeConstants.MONDAY).plusWeeks(1);
 	}
 
-	private void theCurrentReferenceWeekIsUpdatedTo(String s) {
-		onView(withId(R.id.reference_week)).check(matches(withText(s)));
+	private DateTime endOfNextWeek() {
+		return Dates.endOfWeek(DateTime.now(), DateTimeConstants.MONDAY).plusWeeks(1);
 	}
 
 	@Test public void testUpdateEventListUpdatesTheCounter() throws Throwable {
@@ -119,5 +117,10 @@ public class CoursePanelFragmentTest {
 		fragment.listener = listener;
 		onView(withId(R.id.course_overview_panel)).perform(click());
 		verify(listener).onPanelTapped();
+	}
+
+	private void loadFragment() {
+		fragment = (CoursePanelFragment) rule.getActivity().getSupportFragmentManager()
+				.findFragmentById(R.id.course_overview_panel);
 	}
 }

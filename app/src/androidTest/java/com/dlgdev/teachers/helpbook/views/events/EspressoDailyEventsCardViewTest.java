@@ -1,6 +1,5 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -10,7 +9,6 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
-import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -33,7 +31,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4.class)
 public class EspressoDailyEventsCardViewTest {
 	DailyEventsCardView card;
-	DailyEventsCardListener listener;
+	EventActionsListener listener;
 	DateTime date;
 	EventList list;
 
@@ -41,9 +39,8 @@ public class EspressoDailyEventsCardViewTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class);
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		date = DateTime.now().withDayOfWeek(THURSDAY);
-		listener = mock(DailyEventsCardListener.class);
+		listener = mock(EventActionsListener.class);
 	}
 
 	@After public void teardown() throws Exception {
@@ -52,7 +49,7 @@ public class EspressoDailyEventsCardViewTest {
 
 	@Test public void clickOnAnEventCallsTheCallback() throws Throwable {
 		setMockListener();
-		whenWeSendAnUpdatedEventListWithXEvents(1);
+		whenWeSendAnUpdatedEventListWithEvents(1);
 		onView(allOf(withId(R.id.event_entry_name), isDescendantOfA(withId(R.id.thursday_card))))
 				.perform(click());
 		verify(listener).onEventSelected(list.events().get(0));
@@ -71,7 +68,7 @@ public class EspressoDailyEventsCardViewTest {
 		card = ((DailyEventsCardView) rule.getActivity().findViewById(R.id.thursday_card));
 	}
 
-	private void whenWeSendAnUpdatedEventListWithXEvents(int eventCount) throws Throwable {
+	private void whenWeSendAnUpdatedEventListWithEvents(int eventCount) throws Throwable {
 		EventsFactory provider = new EventsFactory();
 		list = provider.listFromList(new ArrayList<Event>());
 		for (int i = 0; i < eventCount; i++) {
@@ -79,5 +76,10 @@ public class EspressoDailyEventsCardViewTest {
 			list.add(event);
 			event.save();
 		}
+		rule.runOnUiThread(new Runnable() {
+			@Override public void run() {
+				card.updateEvents(list);
+			}
+		});
 	}
 }

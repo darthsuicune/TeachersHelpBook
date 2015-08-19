@@ -1,7 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.events.fragments;
 
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -43,7 +42,6 @@ public class NewEventDialogTest {
 	String someData = "someData";
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		activity = rule.getActivity();
 		mockListener = Mockito.mock(NewEventDialog.NewEventDialogListener.class);
 		dialog = new NewEventDialog();

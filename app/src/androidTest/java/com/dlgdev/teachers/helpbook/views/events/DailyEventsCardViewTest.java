@@ -25,7 +25,7 @@ import java.util.List;
 
 import static com.dlgdev.views.Matchers.matchesAnyDateTime;
 import static com.dlgdev.views.MoreViewMatchers.backgroundIs;
-import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
+
 import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4.class)
 public class DailyEventsCardViewTest {
 	DailyEventsCardView card;
-	DailyEventsCardListener listener;
+	EventActionsListener listener;
 	DateTime date;
 	EventList eventList;
 	EventsFactory provider;
@@ -47,9 +47,8 @@ public class DailyEventsCardViewTest {
 
 	@Before public void setUp() throws Exception {
 		context = InstrumentationRegistry.getTargetContext();
-		DatabaseUtils.intializeDb(context);
 		provider = new EventsFactory();
-		listener = mock(DailyEventsCardListener.class);
+		listener = mock(EventActionsListener.class);
 		date = Dates.dateForDayOfWeek(MONDAY, DateTime.now());
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		card = (DailyEventsCardView) inflater.inflate(R.layout.card_daily_events, null);
@@ -65,10 +64,6 @@ public class DailyEventsCardViewTest {
 	}
 
 	@Test public void testSetupPreparesTheViewFieldsCorrectly() throws Exception {
-		theFieldsAreCorrectlySetup();
-	}
-
-	private void theFieldsAreCorrectlySetup() {
 		assertNotNull(card.listener);
 		assertNotNull(card.date);
 		assertNotNull(card.dateView);

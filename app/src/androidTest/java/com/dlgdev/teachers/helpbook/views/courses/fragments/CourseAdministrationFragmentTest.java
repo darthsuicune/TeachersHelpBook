@@ -1,7 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.content.Intent;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -58,7 +57,6 @@ public class CourseAdministrationFragmentTest {
 			new ActivityTestRule<>(CourseAdministrationActivity.class, true, false);
 
 	@Before public void setUp() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		listener = Mockito.mock(CourseAdministrationActionListener.class);
 		subjectsFactory = new SubjectsFactory();
 		eventsFactory = new EventsFactory();
@@ -88,7 +86,7 @@ public class CourseAdministrationFragmentTest {
 
 	@Test public void afterLaunchTheAvailableInformationIsDisplayed() throws Exception {
 		launchActivity();
-		onView(withText(COURSE_TITLE)).check(matches(isDisplayed()));
+		onView(withId(R.id.course_administration_name)).check(matches(withText(COURSE_TITLE)));
 		onView(withText(COURSE_DESC)).check(matches(isDisplayed()));
 		onView(withText(EVENT_TITLE)).check(matches(isEnabled()));
 		onView(withText(EVENT_DESC)).check(matches(isEnabled()));

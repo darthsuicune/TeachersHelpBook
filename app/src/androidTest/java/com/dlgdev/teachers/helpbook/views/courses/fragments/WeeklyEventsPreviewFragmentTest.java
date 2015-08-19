@@ -1,14 +1,17 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
+import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +28,15 @@ import static org.hamcrest.Matchers.allOf;
 public class WeeklyEventsPreviewFragmentTest {
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
-			new ActivityTestRule<>(CourseOverviewActivity.class);
+			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
+
+	@Before public void setUp() throws Exception {
+		Course course = new Course();
+		course.save();
+		Intent intent = new Intent();
+		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		rule.launchActivity(intent);
+	}
 
 	@Test public void testClickingNextWeekFragmentViewShowsFollowingWeekInOwnPanel()
 			throws Exception {

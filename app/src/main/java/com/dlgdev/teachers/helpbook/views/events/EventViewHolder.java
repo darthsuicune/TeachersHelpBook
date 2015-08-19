@@ -9,12 +9,12 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 
 public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-	DailyEventsCardView.DailyEventsCardListener listener;
+	EventActionsListener listener;
 	Event event;
 	TextView name;
 	TextView time;
 
-	public EventViewHolder(View itemView, DailyEventsCardView.DailyEventsCardListener listener) {
+	public EventViewHolder(View itemView, EventActionsListener listener) {
 		super(itemView);
 		name = (TextView) itemView.findViewById(R.id.event_entry_name);
 		time = (TextView) itemView.findViewById(R.id.event_entry_time);

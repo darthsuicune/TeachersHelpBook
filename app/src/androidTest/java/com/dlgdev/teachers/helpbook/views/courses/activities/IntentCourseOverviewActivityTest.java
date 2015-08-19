@@ -1,11 +1,9 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.matcher.ComponentNameMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 
 import org.joda.time.DateTime;
@@ -30,7 +28,6 @@ public class IntentCourseOverviewActivityTest {
 	CourseOverviewActivity activity;
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		course = new Course(DateTime.now(), DateTime.now());
 		course.title = "course1";
 		course.save();

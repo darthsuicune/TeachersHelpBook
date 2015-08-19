@@ -1,7 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
 import android.content.Intent;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -28,7 +27,6 @@ public class CoursesListActivityWithDefaultTest {
 			new ActivityTestRule<>(CoursesListActivity.class, true, false);
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		Course course = new Course(DateTime.now().minusWeeks(1), DateTime.now().plusWeeks(1));
 		course.title = TITLE;
 		course.save();

@@ -1,6 +1,5 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -12,7 +11,6 @@ import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.
 
 import org.joda.time.DateTime;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,10 +34,6 @@ public class CoursesListFragmentTest {
 
 	@Rule public ActivityTestRule<CoursesListActivity> rule =
 			new ActivityTestRule<>(CoursesListActivity.class);
-
-	@Before public void setUp() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
-	}
 
 	@After public void tearDown() throws Exception {
 		DatabaseUtils.clearDatabase();

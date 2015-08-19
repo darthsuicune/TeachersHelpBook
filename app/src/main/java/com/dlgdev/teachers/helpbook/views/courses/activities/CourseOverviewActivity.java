@@ -23,13 +23,13 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment.WeeklyEventsListener;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
 
 import org.joda.time.DateTime;
 
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
-import static com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment.WeeklyEventsListener;
 
 
 public class CourseOverviewActivity extends ModelInfoActivity
@@ -110,12 +110,12 @@ public class CourseOverviewActivity extends ModelInfoActivity
 				Snackbar.LENGTH_LONG).show();
 	}
 
-	@Override public void onNewDaySelected(DateTime newDate) {
+	@Override public void onNewDateSelected(DateTime newDate) {
 		currentDate = newDate;
 		reportDateToFragments();
 	}
 
-	@Override public void onPreviewTapped(DateTime referenceDate) {
+	@Override public void onPreviewSelected(DateTime referenceDate) {
 		currentDate = referenceDate;
 		reportDateToFragments();
 	}
@@ -127,23 +127,20 @@ public class CourseOverviewActivity extends ModelInfoActivity
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
-		Long id;
-
 		@Override public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
-			this.id = args.getLong(KEY_COURSE);
-			Uri uri = ContentProvider.createUri(Course.class, this.id);
-			return new CursorLoader(CourseOverviewActivity.this, uri, null, null, null, null);
+			long id = args.getLong(KEY_COURSE);
+			Uri uri = ContentProvider.createUri(Course.class, id);
+			String selection = TeachersDBContract.Courses._ID + "=?";
+			String[] selectionArgs = {Long.toString(id)};
+			return new CursorLoader(CourseOverviewActivity.this, uri, null, selection,
+					selectionArgs, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			if (data.moveToFirst()) {
-				do {
-					if (data.getLong(data.getColumnIndex(TeachersDBContract.Courses._ID)) != id) {
-						course = new Course();
-						course.loadFromCursor(data);
-						loadCourseData();
-					}
-				} while (data.moveToNext());
+				course = new Course();
+				course.loadFromCursor(data);
+				loadCourseData();
 			}
 		}
 

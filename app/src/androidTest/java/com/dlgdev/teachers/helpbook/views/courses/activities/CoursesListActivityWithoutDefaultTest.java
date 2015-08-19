@@ -1,6 +1,5 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.matcher.ComponentNameMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -37,7 +36,6 @@ public class CoursesListActivityWithoutDefaultTest {
 	private CoursesListActivity activity;
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		activity = rule.getActivity();
 	}
 

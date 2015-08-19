@@ -1,12 +1,11 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
+import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 
 import org.joda.time.DateTime;
@@ -19,6 +18,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +33,6 @@ public class CourseOverviewActivityTest {
 			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
 
 	@Before public void setup() throws Exception {
-		DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
 		course = new Course(DateTime.now(), DateTime.now());
 		course.title = COURSE_TITLE;
 		course.save();
@@ -59,30 +58,21 @@ public class CourseOverviewActivityTest {
 	}
 
 
-	@Test public void testPreConditionsPreviewsArentNull() throws Exception {
+	@Test public void testPreConditionsPreviewsAreDisplayed() throws Exception {
 		loadActivity();
-		assertNotNull(activity.nextWeekFragment);
-		assertNotNull(activity.previousWeekFragment);
-		assertNotNull(activity.secondNextWeekFragment);
+		onView(withId(R.id.course_weekly_next)).check(matches(isDisplayed()));
+		onView(withId(R.id.course_weekly_second_next)).check(matches(isDisplayed()));
+		onView(withId(R.id.course_weekly_previous)).check(matches(isDisplayed()));
 	}
 
-	@Test public void testPreConditionsPanelIsntNull() throws Exception {
+	@Test public void testPreConditionsPanelIsDisplayed() throws Exception {
 		loadActivity();
-		assertNotNull(activity.coursePanelFragment);
+		onView(withId(R.id.course_overview_panel)).check(matches(isDisplayed()));
 	}
 
-	@Test public void testPreConditionsImplementsWeeklyPreviewListener() throws Exception {
+	@Test public void testPreConditionsImplementsItsFragmentsCallbacks() throws Exception {
 		loadActivity();
-		assertTrue(activity != null);
-	}
-
-	@Test public void testPreConditionsImplementsWeeklyEventsListener() throws Exception {
-		loadActivity();
-		assertTrue(activity != null);
-	}
-
-	@Test public void testPreConditionsImplementsCoursePanelListener() throws Exception {
-		loadActivity();
+		//This check suffices: If they aren't implemented an exception is thrown
 		assertTrue(activity != null);
 	}
 
@@ -103,7 +93,7 @@ public class CourseOverviewActivityTest {
 		onView(withText(title)).check(matches(isDisplayed()));
 	}
 
-	@NonNull private Course createSecondCourse(String title) {
+	private Course createSecondCourse(String title) {
 		Course course2 = new Course(DateTime.now().plusWeeks(1), DateTime.now().plusWeeks(2));
 		course2.title = title;
 		course2.save();
@@ -111,8 +101,16 @@ public class CourseOverviewActivityTest {
 	}
 
 	@Test public void bugWrongCourseIsLoadedv2() throws Exception {
-		createSecondCourse("");
+		createSecondCourse("asdas");
 		loadActivity();
 		onView(withText(COURSE_TITLE)).check(matches(isDisplayed()));
+	}
+
+	@Test public void changingTheDataUpdatesTheViews() throws Exception {
+		loadActivity();
+		String title = "new Title";
+		course.title = title;
+		course.save();
+		onView(withText(title)).check(matches(isDisplayed()));
 	}
 }

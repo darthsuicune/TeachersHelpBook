@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
@@ -24,17 +25,19 @@ import static org.mockito.Mockito.verify;
 public class WeeklyEventsMainFragmentTest {
 	WeeklyEventsMainFragment fragment;
 	DateTime currentDate = DateTime.now();
-	WeeklyEventsFragment.WeeklyEventsListener listener;
+	WeeklyEventsMainFragment.WeeklyEventsListener listener;
 	Event event;
 
 	@Before public void setup() throws Exception {
 		Context context = InstrumentationRegistry.getTargetContext();
-		DatabaseUtils.intializeDb(context);
+		Course course = new Course();
+		course.save();
 		fragment = (WeeklyEventsMainFragment) Fragment
 				.instantiate(context, WeeklyEventsMainFragment.class.getName());
 		fragment.updateDate(currentDate);
-		listener = mock(WeeklyEventsFragment.WeeklyEventsListener.class);
-		fragment.eventsListener = listener;
+		fragment.updateCourse(course);
+		listener = mock(WeeklyEventsMainFragment.WeeklyEventsListener.class);
+		fragment.listener = listener;
 	}
 
 	@After public void tearDown() throws Exception {

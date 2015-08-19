@@ -17,8 +17,8 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 public class CoursePanelFragment extends WeeklyEventsFragment {
-	DateTime currentDate;
 	CoursePanelListener listener;
+	DateTime currentDate;
 	TextView currentWeek;
 	TextView referenceWeek;
 	TextView eventCounter;

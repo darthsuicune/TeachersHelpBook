@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
+import android.text.TextUtils;
+
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
@@ -17,7 +18,7 @@ import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.StudentGroups;
 import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Subjects;
 
 @Table(name = Courses.TABLE_NAME, id = Courses._ID)
-public class Course extends Model {
+public class Course extends ValidatingModel {
 	@Column(name = Courses.START) public DateTime start;
 	@Column(name = Courses.END) public DateTime end;
 	@Column(name = Courses.TITLE) public String title;
@@ -31,10 +32,6 @@ public class Course extends Model {
 	public Course(DateTime start, DateTime end) {
 		this.start = start;
 		this.end = end;
-	}
-
-	public static int count() {
-		return new Select().from(Course.class).count();
 	}
 
 	public EventList eventsBetween(DateTime start, DateTime end) {
@@ -84,5 +81,9 @@ public class Course extends Model {
 				.where(Courses.START + "<?", DateTime.now().getMillis())
 				.and(Courses.END + ">?", DateTime.now().getMillis())
 				.executeSingle();
+	}
+
+	@Override protected boolean checkConstraints() {
+		return !TextUtils.isEmpty(title) && start != null && end != null;
 	}
 }

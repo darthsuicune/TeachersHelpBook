@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView;
+import com.dlgdev.teachers.helpbook.views.events.EventActionsListener;
 import com.dlgdev.teachers.helpbook.views.events.fragments.NewEventDialog;
 
 import org.joda.time.DateTime;
@@ -19,7 +21,6 @@ import org.joda.time.DateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dlgdev.teachers.helpbook.views.events.DailyEventsCardView.DailyEventsCardListener;
 import static com.dlgdev.teachers.helpbook.views.events.fragments.NewEventDialog.NewEventDialogListener;
 import static org.joda.time.DateTimeConstants.FRIDAY;
 import static org.joda.time.DateTimeConstants.MONDAY;
@@ -30,13 +31,18 @@ import static org.joda.time.DateTimeConstants.TUESDAY;
 import static org.joda.time.DateTimeConstants.WEDNESDAY;
 
 public class WeeklyEventsMainFragment extends WeeklyEventsFragment
-		implements DailyEventsCardListener, NewEventDialogListener {
+		implements NewEventDialogListener, EventActionsListener {
 	private static final String DIALOG_FRAGMENT_TAG = "dialog fragment";
-
-	View rootView;
 	Map<Integer, DailyEventsCardView> dailyCards = new HashMap<>();
+	WeeklyEventsListener listener;
+	View rootView;
 
 	public WeeklyEventsMainFragment() {}
+
+	@Override public void onAttach(Context context) {
+		super.onAttach(context);
+		listener = (WeeklyEventsListener) context;
+	}
 
 	@Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 									   @Nullable Bundle savedInstanceState) {
@@ -64,7 +70,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 			DailyEventsCardView v = dailyCards.get(day);
 			v.setOnClickListener(new View.OnClickListener() {
 				@Override public void onClick(View view) {
-					eventsListener.onNewDaySelected(Dates.dateForDayOfWeek(day, referenceDate));
+					listener.onNewDateSelected(Dates.dateForDayOfWeek(day, referenceDate));
 				}
 			});
 		}
@@ -96,14 +102,24 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 	}
 
 	@Override public void onEventSelected(Event event) {
-		eventsListener.onExistingEventSelected(event);
+		listener.onExistingEventSelected(event);
 	}
 
 	@Override public void onNewEventCreated(Event event) {
-		event.save();
-		eventsListener.onNewEventCreated(event);
+		course.addEvent(event);
+		loadEvents();
+		listener.onNewEventCreated(event);
 	}
 
 	@Override public void onDialogCancelled() {
+	}
+
+	public interface WeeklyEventsListener {
+
+		void onExistingEventSelected(Event event);
+
+		void onNewDateSelected(DateTime dateTime);
+
+		void onNewEventCreated(Event event);
 	}
 }

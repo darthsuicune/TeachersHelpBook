@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -21,7 +22,7 @@ import java.util.List;
 
 
 public class DailyEventsCardView extends CardWithBackground {
-    DailyEventsCardListener listener;
+    EventActionsListener listener;
     EventList events;
     DateTime date;
 
@@ -36,7 +37,7 @@ public class DailyEventsCardView extends CardWithBackground {
         super(context, attrs);
     }
 
-    public void setup(DailyEventsCardListener fragment, DateTime newDate) {
+    public void setup(EventActionsListener fragment, DateTime newDate) {
         this.listener = fragment;
         this.date = newDate;
         loadViews();
@@ -63,9 +64,9 @@ public class DailyEventsCardView extends CardWithBackground {
     private void setBackground() {
         int color;
         if (date.dayOfYear().equals(new DateTime().dayOfYear())) {
-            color = getResources().getColor(R.color.material_deep_teal_200);
+            color = Color.parseColor("#80cbc4");
         } else {
-            color = getResources().getColor(R.color.background_material_light);
+            color = Color.parseColor("#fafafa");
         }
         setCardBackgroundColor(color);
     }
@@ -92,12 +93,6 @@ public class DailyEventsCardView extends CardWithBackground {
             eventListView.setAdapter(adapter);
         }
         adapter.swapItems(events);
-    }
-
-    public interface DailyEventsCardListener {
-        void onNewEventRequested(DateTime date);
-
-        void onEventSelected(Event event);
     }
 
     private class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {

@@ -24,7 +24,6 @@ public class EventListTest {
     EventsFactory provider;
 
     @Before public void setUp() throws Exception {
-        DatabaseUtils.intializeDb(InstrumentationRegistry.getTargetContext());
         List<Event> events = new ArrayList<>();
         eventList = new EventList(events);
         provider = new EventsFactory();
