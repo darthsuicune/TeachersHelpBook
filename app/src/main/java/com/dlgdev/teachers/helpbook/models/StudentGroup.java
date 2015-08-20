@@ -12,6 +12,7 @@ import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Students;
 @Table(name = StudentGroups.TABLE_NAME, id = StudentGroups._ID)
 public class StudentGroup extends Model implements Listable {
 	@Column(name = StudentGroups.NAME) String name;
+	@Column(name = StudentGroups.COURSE, index = true) Course course;
 
 	public List<Student> students() {
 		return getMany(Student.class, Students.GROUP);
@@ -19,6 +20,10 @@ public class StudentGroup extends Model implements Listable {
 
 	public List<GroupTakesSubject> subjectsTaken() {
 		return getMany(GroupTakesSubject.class, GroupTakesSubjects.STUDENT_GROUP);
+	}
+
+	public Course course() {
+		return course;
 	}
 
 	@Override public String title() {

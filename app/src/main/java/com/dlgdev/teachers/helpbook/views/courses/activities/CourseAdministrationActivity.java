@@ -14,17 +14,13 @@ import android.text.TextUtils;
 import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
-import com.dlgdev.teachers.helpbook.models.Event;
-import com.dlgdev.teachers.helpbook.models.Holiday;
-import com.dlgdev.teachers.helpbook.models.StudentGroup;
-import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment.CourseAdministrationActionListener;
-import com.dlgdev.teachers.helpbook.views.events.activities.EventInfoActivity;
-import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidayInfoActivity;
-import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupInfoActivity;
-import com.dlgdev.teachers.helpbook.views.subjects.activities.SubjectInfoActivity;
+import com.dlgdev.teachers.helpbook.views.events.activities.EventsInfoActivity;
+import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidaysInfoActivity;
+import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupsInfoActivity;
+import com.dlgdev.teachers.helpbook.views.subjects.activities.SubjectsInfoActivity;
 
 public class CourseAdministrationActivity extends AppCompatActivity
 		implements CourseAdministrationActionListener {
@@ -50,51 +46,30 @@ public class CourseAdministrationActivity extends AppCompatActivity
 		}
 	}
 
-	@Override public void onNewSubjectRequested() {
-		openNewModelActivity(SubjectInfoActivity.class);
-	}
-
-	private void openNewModelActivity(Class<? extends ModelInfoActivity> targetClass) {
-		Intent intent = new Intent(this, targetClass);
-		startActivity(intent);
-	}
-
-	@Override public void onNewBankHolidayRequested() {
-		openNewModelActivity(HolidayInfoActivity.class);
-	}
-
-	@Override public void onNewGroupRequested() {
-		openNewModelActivity(StudentGroupInfoActivity.class);
-	}
-
-	@Override public void onNewEventRequested() {
-		openNewModelActivity(EventInfoActivity.class);
-	}
-
-	@Override public void onSubjectSelected(Subject subject) {
-		openModelInfoActivity(SubjectInfoActivity.class, subject.getId());
-	}
-
-	private void openModelInfoActivity(Class<? extends ModelInfoActivity> targetClass, long id) {
-		Intent intent = new Intent(this, targetClass);
-		intent.putExtra(ModelInfoActivity.KEY_ID, id);
-		startActivity(intent);
-	}
-
-	@Override public void onBankHolidaySelected(Holiday holiday) {
-		openModelInfoActivity(HolidayInfoActivity.class, holiday.getId());
-	}
-
-	@Override public void onGroupSelected(StudentGroup group) {
-		openModelInfoActivity(StudentGroupInfoActivity.class, group.getId());
-	}
-
-	@Override public void onEventSelected(Event event) {
-		openModelInfoActivity(EventInfoActivity.class, event.getId());
-	}
-
 	@Override public void onSaved(Course course) {
 		openModelInfoActivity(CourseOverviewActivity.class, course.getId());
+	}
+
+	private void openModelInfoActivity(Class<? extends ModelInfoActivity> target, long id) {
+		Intent intent = new Intent(this, target);
+		intent.putExtra(ModelInfoActivity.KEY_COURSE_ID, id);
+		startActivity(intent);
+	}
+
+	@Override public void onStudentGroupsInfoRequested() {
+		openModelInfoActivity(StudentGroupsInfoActivity.class, course.getId());
+	}
+
+	@Override public void onHolidaysInfoRequested() {
+		openModelInfoActivity(HolidaysInfoActivity.class, course.getId());
+	}
+
+	@Override public void onEventsInfoRequested() {
+		openModelInfoActivity(EventsInfoActivity.class, course.getId());
+	}
+
+	@Override public void onSubjectsInfoRequested() {
+		openModelInfoActivity(SubjectsInfoActivity.class, course.getId());
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -108,7 +83,7 @@ public class CourseAdministrationActivity extends AppCompatActivity
 			if (data != null && data.moveToFirst()) {
 				course.loadFromCursor(data);
 				fragment.course(course);
-				if(!TextUtils.isEmpty(course.title)) {
+				if (!TextUtils.isEmpty(course.title)) {
 					setTitle(course.title);
 				}
 			}

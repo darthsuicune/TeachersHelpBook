@@ -33,11 +33,12 @@ public class TitledRecyclerCardWithAddButton extends CardWithBackground {
 		super(context, attrs);
 	}
 
-	public void setup(String title, RecyclerCardListener listener) {
+	public void setup(String title, String emptyListText, RecyclerCardListener listener) {
 		this.listener = listener;
 		this.title = title;
 		loadViews();
 		setupViewParameters();
+		this.emptyListView.setText(emptyListText);
 	}
 
 	private void loadViews() {

@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_layout_margin"
+            android:src="@drawable/ic_new_course"
             app:layout_anchor="@id/course_list"
             app:layout_anchorGravity="bottom|right|end" />
 

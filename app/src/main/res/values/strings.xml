@@ -41,4 +41,13 @@
     <string name="title_activity_holiday_info">Holiday info</string>
     <string name="title_activity_student_group_info">Student Group</string>
     <string name="title_activity_subject_info">Subject info</string>
+    <string name="course_end_date">Course end date</string>
+    <string name="no_holidays">No holidays, add some!</string>
+    <string name="no_groups">No groups added yet</string>
+    <string name="no_subjects">No subjects added yet</string>
+    <string name="no_events">No events added yet</string>
+    <string formatted="false" name="student_groups_marker">Student groups (%d)</string>
+    <string formatted="false" name="holidays_marker">Holidays (%d)</string>
+    <string formatted="false" name="subjects_marker">Subjects (%d)</string>
+    <string formatted="false" name="events_marker">Events (%d)</string>
 </resources>

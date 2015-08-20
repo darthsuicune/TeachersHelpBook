@@ -12,4 +12,8 @@ public abstract class ValidatingModel extends Model {
 	}
 
 	protected abstract boolean checkConstraints();
+
+	public boolean isPersisted() {
+		return this.getId() != null;
+	}
 }

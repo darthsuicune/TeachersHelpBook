@@ -17,6 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/event_info_toolbar"
-            tools:context="com.dlgdev.teachers.helpbook.views.events.activities.EventInfoActivity" />
+            tools:context="com.dlgdev.teachers.helpbook.views.events.activities.EventsInfoActivity" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

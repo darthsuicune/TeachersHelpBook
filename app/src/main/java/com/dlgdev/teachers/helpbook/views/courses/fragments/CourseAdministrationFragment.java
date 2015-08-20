@@ -11,17 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
-import com.dlgdev.teachers.helpbook.models.Event;
-import com.dlgdev.teachers.helpbook.models.Holiday;
-import com.dlgdev.teachers.helpbook.models.Listable;
-import com.dlgdev.teachers.helpbook.models.StudentGroup;
-import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.utils.Dates;
-import com.dlgdev.views.TitledRecyclerCardWithAddButton;
-import com.dlgdev.views.TitledRecyclerCardWithAddButton.RecyclerCardListener;
+import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
 
 /**
  * This Fragment should offer the chance to add new subjects, view the current subjects, handle
@@ -33,10 +28,10 @@ public class CourseAdministrationFragment extends Fragment {
 	EditText courseDescriptionView;
 	EditText startDateView;
 	EditText endDateView;
-	TitledRecyclerCardWithAddButton holidaysView;
-	TitledRecyclerCardWithAddButton studentGroupsView;
-	TitledRecyclerCardWithAddButton subjectsView;
-	TitledRecyclerCardWithAddButton eventsView;
+	TextView holidaysView;
+	TextView studentGroupsView;
+	TextView subjectsView;
+	TextView eventsView;
 
 	Course course;
 
@@ -67,50 +62,20 @@ public class CourseAdministrationFragment extends Fragment {
 		courseDescriptionView = (EditText) v.findViewById(R.id.course_administration_description);
 		startDateView = (EditText) v.findViewById(R.id.course_administration_start_date);
 		endDateView = (EditText) v.findViewById(R.id.course_administration_end_date);
-		holidaysView = (TitledRecyclerCardWithAddButton) v
-				.findViewById(R.id.course_administration_holidays);
-		studentGroupsView = (TitledRecyclerCardWithAddButton) v
-				.findViewById(R.id.course_administration_student_groups);
-		subjectsView = (TitledRecyclerCardWithAddButton) v
-				.findViewById(R.id.course_administration_subjects);
-		eventsView = (TitledRecyclerCardWithAddButton) v
-				.findViewById(R.id.course_administration_events);
-		holidaysView.setup(getString(R.string.holidays), new RecyclerCardListener() {
-					@Override public void onNewItemRequested() {
-						listener.onNewBankHolidayRequested();
-					}
+		holidaysView = (TextView) v.findViewById(R.id.course_administration_holidays);
+		studentGroupsView = (TextView) v.findViewById(R.id.course_administration_students);
+		subjectsView = (TextView) v.findViewById(R.id.course_administration_subjects);
+		eventsView = (TextView) v.findViewById(R.id.course_administration_events);
 
-					@Override public <T extends Listable> void onItemSelected(T t) {
-						listener.onBankHolidaySelected((Holiday) t);
-					}
-				});
-		studentGroupsView.setup(getString(R.string.student_groups), new RecyclerCardListener() {
-					@Override public void onNewItemRequested() {
-						listener.onNewGroupRequested();
-					}
+		setTags(0,0,0,0);
+	}
 
-					@Override public <T extends Listable> void onItemSelected(T t) {
-						listener.onGroupSelected((StudentGroup) t);
-					}
-				});
-		subjectsView.setup(getString(R.string.subjects), new RecyclerCardListener() {
-			@Override public void onNewItemRequested() {
-				listener.onNewSubjectRequested();
-			}
+	private void setTags(int groups, int holidays, int subjects, int events) {
+		studentGroupsView.setText(getString(R.string.student_groups_marker, groups));
+		holidaysView.setText(getString(R.string.holidays_marker, holidays));
+		subjectsView.setText(getString(R.string.subjects_marker, subjects));
+		eventsView.setText(getString(R.string.events_marker, events));
 
-			@Override public <T extends Listable> void onItemSelected(T t) {
-				listener.onSubjectSelected((Subject) t);
-			}
-		});
-		eventsView.setup(getString(R.string.events), new RecyclerCardListener() {
-			@Override public void onNewItemRequested() {
-				listener.onNewEventRequested();
-			}
-
-			@Override public <T extends Listable> void onItemSelected(T t) {
-				listener.onEventSelected((Event) t);
-			}
-		});
 	}
 
 	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -119,7 +84,7 @@ public class CourseAdministrationFragment extends Fragment {
 	}
 
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
+		switch (item.getItemId()) {
 			case R.id.menu_save_course:
 				saveCourseInformation();
 				return true;
@@ -129,44 +94,67 @@ public class CourseAdministrationFragment extends Fragment {
 	}
 
 	private void saveCourseInformation() {
-		if(course == null) {
+		if (course == null) {
 			course = new Course();
 		}
-		course.title = courseNameView.getText().toString();
-		course.description = courseDescriptionView.getText().toString();
-		course.save();
-		listener.onSaved(course);
+		try {
+			course.title = courseNameView.getText().toString();
+			course.description = courseDescriptionView.getText().toString();
+			course.start = Dates.parseDate(startDateView.getText().toString());
+			course.end = Dates.parseDate(endDateView.getText().toString());
+		} catch (InvalidDateTimeException e) {
+			e.printStackTrace();
+		} finally {
+			course.save();
+			listener.onSaved(course);
+		}
 	}
 
 	public void course(Course course) {
 		this.course = course;
 		courseNameView.setText(course.title);
 		courseDescriptionView.setText(course.description);
-		if(course.start != null && course.end != null) {
-			startDateView.setText(Dates.formatDateRange(course.start, course.end));
+		if (course.start != null) {
+			startDateView.setText(Dates.formatDate(course.start));
 		}
-		holidaysView.updateItems(course.holidays());
-		subjectsView.updateItems(course.subjects());
-		eventsView.updateItems(course.events());
+		if (course.end != null) {
+			endDateView.setText(Dates.formatDate(course.end));
+		}
+
+		setTags(course.studentGroups().size(), course.holidays().size(),
+				course.subjects().size(), course.events().size());
+		studentGroupsView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onStudentGroupsInfoRequested();
+			}
+		});
+		holidaysView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onHolidaysInfoRequested();
+			}
+		});
+		eventsView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onEventsInfoRequested();
+			}
+		});
+		subjectsView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				listener.onSubjectsInfoRequested();
+			}
+		});
 	}
 
 	public interface CourseAdministrationActionListener {
-		void onNewSubjectRequested();
-
-		void onSubjectSelected(Subject subject);
-
-		void onNewBankHolidayRequested();
-
-		void onBankHolidaySelected(Holiday holiday);
-
-		void onNewGroupRequested();
-
-		void onGroupSelected(StudentGroup group);
-
-		void onNewEventRequested();
-
-		void onEventSelected(Event event);
 
 		void onSaved(Course course);
+
+		void onStudentGroupsInfoRequested();
+
+		void onHolidaysInfoRequested();
+
+		void onEventsInfoRequested();
+
+		void onSubjectsInfoRequested();
 	}
 }

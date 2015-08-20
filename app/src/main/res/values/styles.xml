@@ -29,4 +29,10 @@
         <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
     </style>
 
+    <style name="Course.Items" parent="AppTheme">
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:elevation">6dp</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">8dp</item>
+    </style>
 </resources>

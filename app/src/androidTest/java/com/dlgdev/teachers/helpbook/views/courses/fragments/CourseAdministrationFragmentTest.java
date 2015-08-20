@@ -11,6 +11,7 @@ import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.models.factories.SubjectsFactory;
+import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseAdministrationActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment.CourseAdministrationActionListener;
 
@@ -27,7 +28,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
@@ -67,73 +67,82 @@ public class CourseAdministrationFragmentTest {
 	}
 
 	@Test public void afterLoadActivityLoadsTheCorrectCourse() throws Exception {
-		launchActivity();
+		launchActivityWithCourse();
 		assertEquals(course.getId(), fragment.course.getId());
 	}
 
-	private void launchActivity() {
+	private void launchActivityWithCourse() {
 		createStuffForTheCourse();
 		Intent intent = new Intent();
 		intent.putExtra(CourseAdministrationActivity.KEY_COURSE, course.getId());
 		launchActivityWithIntent(intent);
 	}
 
-	private void launchActivityWithIntent(Intent intent) {
-		activity = rule.launchActivity(intent);
-		fragment = (CourseAdministrationFragment) activity.getSupportFragmentManager()
-				.findFragmentById(R.id.course_administration_fragment);
-	}
-
-	@Test public void afterLaunchTheAvailableInformationIsDisplayed() throws Exception {
-		launchActivity();
-		onView(withId(R.id.course_administration_name)).check(matches(withText(COURSE_TITLE)));
-		onView(withText(COURSE_DESC)).check(matches(isDisplayed()));
-		onView(withText(EVENT_TITLE)).check(matches(isEnabled()));
-		onView(withText(EVENT_DESC)).check(matches(isEnabled()));
-		onView(withText(SUBJECT_TITLE)).check(matches(isDisplayed()));
-		onView(withText(HOLIDAY_TITLE)).check(matches(isDisplayed()));
-	}
-
 	private void createStuffForTheCourse() {
 		course = new Course();
-		course.save();
-		course.addSubject(subjectsFactory.createAndSave(SUBJECT_TITLE));
-		course.addBankHoliday(DateTime.now(), HOLIDAY_TITLE);
-		course.addEvent(eventsFactory.createAndSave(EVENT_TITLE, EVENT_DESC));
 		course.start = DateTime.now().minusWeeks(5);
 		course.end = DateTime.now().plusWeeks(5);
 		course.title = COURSE_TITLE;
 		course.description = COURSE_DESC;
 		course.save();
+		course.addSubject(subjectsFactory.createAndSave(SUBJECT_TITLE));
+		course.addBankHoliday(DateTime.now(), HOLIDAY_TITLE);
+		course.addEvent(eventsFactory.createAndSave(EVENT_TITLE, EVENT_DESC));
+	}
+
+	private void launchActivityWithIntent(Intent intent) {
+		activity = rule.launchActivity(intent);
+		fragment = (CourseAdministrationFragment) activity.getSupportFragmentManager()
+				.findFragmentById(R.id.course_administration_fragment);
+		fragment.listener = listener;
+	}
+
+	@Test public void afterLaunchTheAvailableInformationIsDisplayed() throws Exception {
+		launchActivityWithCourse();
+		onView(withId(R.id.course_administration_name)).check(matches(withText(COURSE_TITLE)));
+		onView(withId(R.id.course_administration_description))
+				.check(matches(withText(COURSE_DESC)));
+		onView(withId(R.id.course_administration_start_date))
+				.check(matches(withText(Dates.formatDate(course.start))));
+		onView(withId(R.id.course_administration_end_date))
+				.check(matches(withText(Dates.formatDate(course.end))));
 	}
 
 	@Test public void displaysTheMenuOptionToSaveTheCourseInformation() throws Exception {
-		launchActivity();
+		launchActivityWithCourse();
 		onView(withId(R.id.menu_save_course)).check(matches(isDisplayed()));
 	}
 
-	@Test public void theSaveButtonWorks() throws Exception {
+	@Test public void theSaveButtonAssignsTheCourseToTheFragment() throws Exception {
 		launchActivityWithIntent(new Intent());
 		assertNull(fragment.course);
 		onView(withId(R.id.menu_save_course)).perform(click());
 		assertNotNull(fragment.course.getId());
 	}
 
-	@Test public void theSaveButtonForwardsToTheOverviewActivity() throws Exception {
-		launchActivity();
+	@Test public void theSaveButtonForwardsTheSaveToItsListener() throws Exception {
+		launchActivityWithCourse();
 		onView(withId(R.id.menu_save_course)).perform(click());
-		onView(withId(R.id.course_overview_panel)).check(matches(isDisplayed()));
+		verify(listener).onSaved(course);
 	}
 
 	@Test public void introducingSomeDataSavesItAfterPressingSave() throws Exception {
 		launchActivityWithIntent(new Intent());
-		fragment.listener = listener;
 		onView(withId(R.id.course_administration_name)).perform(typeText(COURSE_TITLE));
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(500);
 		onView(withId(R.id.course_administration_description)).perform(typeText(COURSE_DESC));
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(500);
+		onView(withId(R.id.menu_save_course)).perform(click());
+		course = new Select().from(Course.class).orderBy("_ID DESC").executeSingle();
+		assertEquals(course.title, COURSE_TITLE);
+		assertEquals(course.description, COURSE_DESC);
+
+	}
+
+	@Test public void introducedDatesAreSaved() throws Exception {
+		launchActivityWithIntent(new Intent());
 		onView(withId(R.id.course_administration_start_date)).perform(typeText(COURSE_START));
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(500);
@@ -142,6 +151,7 @@ public class CourseAdministrationFragmentTest {
 		Thread.sleep(500);
 		onView(withId(R.id.menu_save_course)).perform(click());
 		course = new Select().from(Course.class).orderBy("_ID DESC").executeSingle();
-		verify(listener).onSaved(course);
+		assertEquals(Dates.parseDate(COURSE_START), course.start);
+		assertEquals(Dates.parseDate(COURSE_END), course.end);
 	}
 }

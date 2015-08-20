@@ -45,18 +45,30 @@ public class Course extends ValidatingModel {
 	}
 
 	public List<Event> events() {
+		if(getId() == null) {
+			return new ArrayList<>();
+		}
 		return getMany(Event.class, Events.COURSE);
 	}
 
 	public List<Subject> subjects() {
+		if(getId() == null) {
+			return new ArrayList<>();
+		}
 		return getMany(Subject.class, Subjects.COURSE);
 	}
 
 	public List<Holiday> holidays() {
+		if(getId() == null) {
+			return new ArrayList<>();
+		}
 		return getMany(Holiday.class, Holidays.COURSE);
 	}
 
 	public List<StudentGroup> studentGroups() {
+		if(getId() == null) {
+			return new ArrayList<>();
+		}
 		return getMany(StudentGroup.class, StudentGroups.COURSE);
 	}
 

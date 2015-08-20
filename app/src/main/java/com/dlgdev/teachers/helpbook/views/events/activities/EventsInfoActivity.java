@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 
-public class EventInfoActivity extends ModelInfoActivity {
+public class EventsInfoActivity extends ModelInfoActivity {
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

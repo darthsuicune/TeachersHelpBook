@@ -14,7 +14,7 @@
             android:value="Helpbook.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="4" />
+            android:value="6" />
         <meta-data
             android:name="AA_SERIALIZERS"
             android:value="com.dlgdev.teachers.helpbook.db.DateTimeTypeSerializer" />
@@ -52,16 +52,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.events.activities.EventInfoActivity"
+            android:name=".views.events.activities.EventsInfoActivity"
             android:label="@string/title_activity_event_info"/>
         <activity
-            android:name=".views.holidays.activities.HolidayInfoActivity"
+            android:name=".views.holidays.activities.HolidaysInfoActivity"
             android:label="@string/title_activity_holiday_info"/>
         <activity
-            android:name=".views.students.activities.StudentGroupInfoActivity"
+            android:name=".views.students.activities.StudentGroupsInfoActivity"
             android:label="@string/title_activity_student_group_info"/>
         <activity
-            android:name=".views.subjects.activities.SubjectInfoActivity"
+            android:name=".views.subjects.activities.SubjectsInfoActivity"
             android:label="@string/title_activity_subject_info"/>
     </application>
 
