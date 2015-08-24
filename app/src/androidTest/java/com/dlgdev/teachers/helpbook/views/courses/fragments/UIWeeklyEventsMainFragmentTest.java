@@ -50,7 +50,7 @@ public class UIWeeklyEventsMainFragmentTest {
 
 	public void getFragment() {
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
 		rule.launchActivity(intent);
 		fragment = (WeeklyEventsMainFragment) rule.getActivity().getSupportFragmentManager()
 				.findFragmentById(R.id.course_weekly_main_fragment);

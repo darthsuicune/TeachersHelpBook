@@ -20,10 +20,6 @@ android {
     packagingOptions {
         exclude 'LICENSE.txt'
     }
-    productFlavors {
-        standard {}
-        dbTests {}
-    }
 }
 
 dependencies {

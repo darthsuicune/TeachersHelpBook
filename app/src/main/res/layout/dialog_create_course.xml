@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dlgdev.teachers.helpbook.views.courses.NewCourseView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/start_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/start_date_time_tag" />
+
+    <include
+        android:id="@+id/create_course_dialog_start_date"
+        layout="@layout/date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@id/start_tag"
+        android:layout_toStartOf="@id/start_tag" />
+
+    <TextView
+        android:id="@+id/end_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/end_date_time_tag" />
+
+    <include
+        android:id="@+id/create_course_dialog_end_date"
+        layout="@layout/date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/end_tag"
+        android:layout_toStartOf="@id/end_tag" />
+
+    <EditText
+        android:id="@+id/create_course_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_tag"
+        android:hint="@string/new_course_name_hint" />
+
+    <EditText
+        android:id="@+id/create_course_dialog_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/create_course_dialog_title"
+        android:hint="@string/new_course_description_hint" />
+
+</com.dlgdev.teachers.helpbook.views.courses.NewCourseView>

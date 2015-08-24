@@ -11,7 +11,7 @@ import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
-import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment.CoursePanelListener;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoFragment.CoursePanelListener;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -35,10 +35,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
-public class CoursePanelFragmentTest {
+public class CourseInfoFragmentTest {
 	Course course;
 	EventsFactory provider;
-	CoursePanelFragment fragment;
+	CourseInfoFragment fragment;
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
@@ -48,7 +48,7 @@ public class CoursePanelFragmentTest {
 		course.save();
 		provider = new EventsFactory();
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
 		rule.launchActivity(intent);
 	}
 
@@ -96,9 +96,9 @@ public class CoursePanelFragmentTest {
 		final List<Event> list = new ArrayList<>();
 		list.add(provider.createEmpty());
 
-		final CoursePanelFragment fragment =
-				(CoursePanelFragment) rule.getActivity().getSupportFragmentManager()
-						.findFragmentById(R.id.course_overview_panel);
+		final CourseInfoFragment fragment =
+				(CourseInfoFragment) rule.getActivity().getSupportFragmentManager()
+						.findFragmentById(R.id.course_info_panel);
 		rule.runOnUiThread(new Runnable() {
 			@Override public void run() {
 				fragment.eventList(list);
@@ -115,12 +115,12 @@ public class CoursePanelFragmentTest {
 		loadFragment();
 		CoursePanelListener listener = mock(CoursePanelListener.class);
 		fragment.listener = listener;
-		onView(withId(R.id.course_overview_panel)).perform(click());
-		verify(listener).onPanelTapped();
+		onView(withId(R.id.course_info_panel)).perform(click());
+		verify(listener).onPanelTapped(course);
 	}
 
 	private void loadFragment() {
-		fragment = (CoursePanelFragment) rule.getActivity().getSupportFragmentManager()
-				.findFragmentById(R.id.course_overview_panel);
+		fragment = (CourseInfoFragment) rule.getActivity().getSupportFragmentManager()
+				.findFragmentById(R.id.course_info_panel);
 	}
 }

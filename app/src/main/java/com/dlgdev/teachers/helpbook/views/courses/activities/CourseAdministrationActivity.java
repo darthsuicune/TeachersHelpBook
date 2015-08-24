@@ -48,11 +48,15 @@ public class CourseAdministrationActivity extends AppCompatActivity
 
 	@Override public void onSaved(Course course) {
 		openModelInfoActivity(CourseOverviewActivity.class, course.getId());
+		finish();
 	}
 
 	private void openModelInfoActivity(Class<? extends ModelInfoActivity> target, long id) {
+		if(course.getId() == null) {
+			course.save();
+		}
 		Intent intent = new Intent(this, target);
-		intent.putExtra(ModelInfoActivity.KEY_COURSE_ID, id);
+		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, id);
 		startActivity(intent);
 	}
 

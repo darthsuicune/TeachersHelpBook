@@ -61,7 +61,7 @@ public class IntentCourseAdministrationActivityTest {
 
 	private Matcher<Intent> intentFor(Model model, Class<? extends ModelInfoActivity> targetClass) {
 		return allOf(
-				hasExtra(ModelInfoActivity.KEY_COURSE_ID, model.getId()),
+				hasExtra(ModelInfoActivity.KEY_MODEL_ID, model.getId()),
 				toPackage(PACKAGE_NAME),
 				hasComponent(
 						allOf(hasPackageName(PACKAGE_NAME),

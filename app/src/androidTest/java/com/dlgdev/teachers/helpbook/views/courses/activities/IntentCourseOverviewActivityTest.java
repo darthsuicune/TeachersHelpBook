@@ -36,11 +36,10 @@ public class IntentCourseOverviewActivityTest {
 
 	private void loadActivity() {
 		activity = rule.getActivity();
-		activity.course = course;
 	}
 
 	@Test public void onPanelTappedCallsTheCourseAdministrationActivity() throws Throwable {
-		activity.onPanelTapped();
+		activity.onPanelTapped(course);
 		String expectedComponentName = ".views.courses.activities.CourseAdministrationActivity";
 		String expectedPackageName = "com.dlgdev.teachers.helpbook";
 		intended(allOf(hasComponent(ComponentNameMatchers.hasShortClassName(expectedComponentName)),

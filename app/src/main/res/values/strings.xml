@@ -50,4 +50,8 @@
     <string formatted="false" name="holidays_marker">Holidays (%d)</string>
     <string formatted="false" name="subjects_marker">Subjects (%d)</string>
     <string formatted="false" name="events_marker">Events (%d)</string>
+    <string name="create_course_dialog_title">Create course</string>
+    <string name="create_course">Create</string>
+    <string name="new_course_name_hint">Course name</string>
+    <string name="new_course_description_hint">Course description</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
-import android.support.test.espresso.intent.matcher.ComponentNameMatchers;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -19,6 +18,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry;
+import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtras;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
@@ -56,11 +56,10 @@ public class CoursesListActivityWithoutDefaultTest {
 	}
 
 	private void itThrowsAnIntentWithTheCourseId() {
-		String expectedComponentName = ".views.courses.activities.CourseOverviewActivity";
 		String expectedPackageName = "com.dlgdev.teachers.helpbook";
-		intended(allOf(hasComponent(ComponentNameMatchers.hasShortClassName(expectedComponentName)),
+		intended(allOf(hasComponent(hasClassName(CourseOverviewActivity.class.getName())),
 				toPackage(expectedPackageName),
-				hasExtras(hasEntry(CourseOverviewActivity.KEY_COURSE, course.getId()))));
+				hasExtras(hasEntry(CourseOverviewActivity.KEY_MODEL_ID, course.getId()))));
 	}
 
 	@Test public void whenANewCourseIsRequestedTheAppropiateIntentIsThrown() throws Exception {
@@ -69,9 +68,8 @@ public class CoursesListActivityWithoutDefaultTest {
 	}
 
 	private void itThrowsAnIntentForANewCourse() {
-		String expectedComponentName = ".views.courses.activities.CourseAdministrationActivity";
 		String expectedPackageName = "com.dlgdev.teachers.helpbook";
-		intended(allOf(hasComponent(ComponentNameMatchers.hasShortClassName(expectedComponentName)),
+		intended(allOf(hasComponent(hasClassName(CourseOverviewActivity.class.getName())),
 				toPackage(expectedPackageName)));
 	}
 }

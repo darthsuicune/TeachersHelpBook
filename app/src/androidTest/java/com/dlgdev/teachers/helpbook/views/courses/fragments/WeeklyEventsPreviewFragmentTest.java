@@ -34,7 +34,7 @@ public class WeeklyEventsPreviewFragmentTest {
 		Course course = new Course();
 		course.save();
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
 		rule.launchActivity(intent);
 	}
 

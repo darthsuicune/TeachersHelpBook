@@ -75,7 +75,6 @@ public class CourseAdministrationFragment extends Fragment {
 		holidaysView.setText(getString(R.string.holidays_marker, holidays));
 		subjectsView.setText(getString(R.string.subjects_marker, subjects));
 		eventsView.setText(getString(R.string.events_marker, events));
-
 	}
 
 	@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

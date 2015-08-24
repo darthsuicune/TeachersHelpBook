@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -49,7 +50,7 @@ public class CourseOverviewActivityTest {
 
 	private void loadActivity() {
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course.getId());
+		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.getId());
 		loadActivity(intent);
 	}
 
@@ -67,7 +68,7 @@ public class CourseOverviewActivityTest {
 
 	@Test public void testPreConditionsPanelIsDisplayed() throws Exception {
 		loadActivity();
-		onView(withId(R.id.course_overview_panel)).check(matches(isDisplayed()));
+		onView(withId(R.id.course_info_panel)).check(matches(isDisplayed()));
 	}
 
 	@Test public void testPreConditionsImplementsItsFragmentsCallbacks() throws Exception {
@@ -87,7 +88,7 @@ public class CourseOverviewActivityTest {
 		Course course2 = createSecondCourse(title);
 		//Pass the first course id
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_COURSE, course2.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course2.getId());
 		loadActivity(intent);
 		//Make sure the new information is displayed
 		onView(withText(title)).check(matches(isDisplayed()));

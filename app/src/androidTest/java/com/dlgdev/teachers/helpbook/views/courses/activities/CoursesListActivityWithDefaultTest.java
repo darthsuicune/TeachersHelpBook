@@ -37,7 +37,8 @@ public class CoursesListActivityWithDefaultTest {
 	}
 
 	@Test public void withACurrentCourseItShouldSkipToCourseOverview() throws Exception {
-		// Simply verify that one of the new activity views is displayed
+		// Simply verify that one of the new activity views is displayed.
+		// Can't catch the intent because it's thrown on the onCreate method.
 		rule.launchActivity(new Intent());
 		onView(withText(TITLE)).check(matches(isDisplayed()));
 	}

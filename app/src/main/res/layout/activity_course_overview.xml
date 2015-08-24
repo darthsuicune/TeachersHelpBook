@@ -39,8 +39,8 @@
                 android:orientation="horizontal">
 
                 <fragment
-                    android:id="@+id/course_overview_panel"
-                    android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CoursePanelFragment"
+                    android:id="@+id/course_info_panel"
+                    android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoFragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
