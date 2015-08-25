@@ -96,6 +96,6 @@ public class Course extends ValidatingModel {
 	}
 
 	@Override protected boolean checkConstraints() {
-		return !TextUtils.isEmpty(title) && start != null && end != null;
+		return !TextUtils.isEmpty(title) && start != null && end != null && end.isAfter(start);
 	}
 }

@@ -1,105 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.dlgdev.teachers.helpbook.views.events.NewEventView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/new_event_dialog"
-    android:orientation="vertical"
-    android:layout_margin="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/create_event_dialog_full_day_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:text="@string/full_day_event_checkbox" />
+
+    <TextView
+        android:id="@+id/start_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/create_event_dialog_full_day_checkbox"
+        android:text="@string/start_date_time_tag" />
+
+    <com.dlgdev.views.DateView
+        android:id="@+id/create_event_dialog_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/create_event_dialog_full_day_checkbox"
+        android:layout_toEndOf="@id/start_tag"
+        android:layout_toRightOf="@id/start_tag" />
+
+    <com.dlgdev.views.TimeView
+        android:id="@+id/create_event_dialog_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/create_event_dialog_full_day_checkbox"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/end_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/start_tag"
+        android:text="@string/end_date_time_tag" />
+
+    <com.dlgdev.views.DateView
+        android:id="@+id/create_event_dialog_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@+id/create_event_dialog_start_date"
+        android:layout_toEndOf="@id/end_tag"
+        android:layout_toRightOf="@id/end_tag" />
+
+    <com.dlgdev.views.TimeView
+        android:id="@+id/create_event_dialog_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/create_event_dialog_start_time"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/create_event_dialog_title"
-        android:hint="@string/new_event_name_hint"
-        android:layout_gravity="center_horizontal"/>
-
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/end_tag"
+        android:hint="@string/new_event_name_hint" />
+
+    <EditText
         android:id="@+id/create_event_dialog_description"
-        android:hint="@string/new_event_description_hint"
-        android:layout_gravity="center_horizontal"/>
-
-    <RelativeLayout
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/start_tag"
-            android:text="@string/start_date_time_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-            android:id="@+id/end_tag"
-            android:text="@string/end_date_time_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
-        <include
-            layout="@layout/date_view"
-            android:id="@+id/create_event_dialog_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/start_tag"/>
-
-        <include
-            layout="@layout/date_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/create_event_dialog_end_date"
-            android:inputType="date"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/end_tag"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/create_event_dialog_start_time"
-            android:inputType="time"
-            android:layout_below="@id/create_event_dialog_start_date"/>
-        <ImageView
-            android:id="@+id/create_event_dialog_start_time_icon"
-            android:src="@android:drawable/ic_menu_my_calendar"
-            android:contentDescription="@string/choose_date_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/create_event_dialog_start_time"
-            android:layout_toEndOf="@+id/create_event_dialog_start_time"
-            android:layout_below="@id/create_event_dialog_start_date"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/create_event_dialog_end_time"
-            android:inputType="time"
-            android:layout_below="@id/create_event_dialog_end_date"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
-        <ImageView
-            android:id="@+id/create_event_dialog_end_time_icon"
-            android:src="@android:drawable/ic_menu_my_calendar"
-            android:contentDescription="@string/choose_date_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/create_event_dialog_end_time"
-            android:layout_toStartOf="@+id/create_event_dialog_end_time"
-            android:layout_below="@id/create_event_dialog_end_date"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/create_event_dialog_full_day_checkbox"
-            android:text="@string/full_day_event_checkbox"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_below="@id/create_event_dialog_start_time"/>
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/create_event_dialog_title"
+        android:hint="@string/new_event_description_hint" />
 
 </com.dlgdev.teachers.helpbook.views.events.NewEventView>

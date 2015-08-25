@@ -96,14 +96,14 @@ public class Event extends Model implements Serializable, Listable {
 
     public void start(DateTime newDateTime) {
         if (newDateTime.isAfter(end)) {
-            throw new InvalidDateTimeException(R.string.start_cannot_be_after_end);
+            throw new InvalidDateTimeException(R.string.error_start_cannot_be_after_end);
         }
         start = newDateTime;
     }
 
     public void end(DateTime newDateTime) {
         if (newDateTime.isBefore(start)) {
-            throw new InvalidDateTimeException(R.string.start_cannot_be_after_end);
+            throw new InvalidDateTimeException(R.string.error_start_cannot_be_after_end);
         }
         end = newDateTime;
     }

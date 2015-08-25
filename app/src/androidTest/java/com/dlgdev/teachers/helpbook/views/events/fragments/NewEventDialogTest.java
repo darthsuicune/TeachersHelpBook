@@ -61,7 +61,6 @@ public class NewEventDialogTest {
 
 	private void allParametersAreSetInPlaceAfterCreation() {
 		assertNotNull(dialog.listener);
-		assertNotNull(dialog.parentFragmentId);
 		assertNotNull(dialog.event);
 	}
 

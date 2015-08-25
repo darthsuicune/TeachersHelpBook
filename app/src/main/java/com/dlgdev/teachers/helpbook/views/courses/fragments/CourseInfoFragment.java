@@ -25,18 +25,16 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseInfoFragment extends WeeklyEventsFragment
-		implements NewCourseDialog.NewCourseDialogListener {
+public class CourseInfoFragment extends WeeklyEventsFragment {
 	private static final int LOADER_COURSE = 1;
 	private static final String KEY_COURSE_ID = "course";
-	private static final String TAG_NEW_COURSE_DIALOG = "new course";
 	CoursePanelListener listener;
 	DateTime currentDate;
 	TextView currentWeek;
 	TextView referenceWeek;
 	TextView eventCounter;
 	List<Event> eventList;
-	List<WeeklyEventsFragment> fragments = new ArrayList<>();
+	List<WeeklyEventsFragment> listeners = new ArrayList<>();
 
 	public CourseInfoFragment() {
 	}
@@ -66,31 +64,17 @@ public class CourseInfoFragment extends WeeklyEventsFragment
 
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (course != null) {
-			outState.putLong(KEY_COURSE_ID, course.getId());
-		}
+		outState.putLong(KEY_COURSE_ID, course.getId());
 	}
 
 	public void setup(Long courseId) {
-		if (courseId != null) {
-			loadCourse(courseId);
-		} else {
-			createNewCourse();
+		loadCourse(courseId);
+	}
+
+	public void registerListeners(WeeklyEventsFragment... fragments) {
+		for(WeeklyEventsFragment fragment : fragments) {
+			this.listeners.add(fragment);
 		}
-	}
-
-	private void createNewCourse() {
-		NewCourseDialog dialog = new NewCourseDialog();
-		dialog.setup(this, R.id.course_info_panel);
-		dialog.show(getFragmentManager(), TAG_NEW_COURSE_DIALOG);
-	}
-
-	@Override public void onCourseCreated(Course course) {
-
-	}
-
-	@Override public void onDialogCancelled() {
-		getActivity().finish();
 	}
 
 	private void loadCourse(Long courseId) {
@@ -104,7 +88,6 @@ public class CourseInfoFragment extends WeeklyEventsFragment
 		if (referenceWeek != null) {
 			referenceWeek.setText(Dates.formatDateRange(startOfWeek, endOfWeek));
 		}
-
 	}
 
 	private void showCurrentDate() {
@@ -115,7 +98,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment
 	}
 
 	@Override void loadEvents() {
-		if(course != null) {
+		if (course != null) {
 			eventList(course.events());
 		}
 	}
@@ -135,8 +118,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment
 			Uri uri = ContentProvider.createUri(Course.class, id);
 			String selection = TeachersDBContract.Courses._ID + "=?";
 			String[] selectionArgs = {Long.toString(id)};
-			return new CursorLoader(getActivity(), uri, null, selection,
-					selectionArgs, null);
+			return new CursorLoader(getActivity(), uri, null, selection, selectionArgs, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -159,7 +141,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment
 	}
 
 	private void reportCourseToFragments() {
-		for(WeeklyEventsFragment fragment : fragments) {
+		for (WeeklyEventsFragment fragment : listeners) {
 			fragment.updateCourse(course);
 		}
 	}

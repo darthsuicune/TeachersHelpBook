@@ -58,6 +58,8 @@ public class CourseOverviewActivity extends ModelInfoActivity
 		secondNextWeekFragment =
 				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
 		courseInfoFragment = (CourseInfoFragment) fm.findFragmentById(R.id.course_info_panel);
+		courseInfoFragment.registerListeners(mainViewFragment, previousWeekFragment,
+				nextWeekFragment, secondNextWeekFragment);
 	}
 
 	private void prepareCurrentDate(Bundle savedInstanceState) {

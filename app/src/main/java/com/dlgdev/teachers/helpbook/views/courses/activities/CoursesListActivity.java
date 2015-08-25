@@ -10,9 +10,11 @@ import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.OnCourseListInteractionListener;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.NewCourseDialog;
 
 public class CoursesListActivity extends AppCompatActivity implements
-		OnCourseListInteractionListener {
+		OnCourseListInteractionListener, NewCourseDialog.CourseCreationDialogListener {
+	private static final String TAG_NEW_COURSE_DIALOG = "new course";
 	CoursesListFragment fragment;
 	Course course;
 
@@ -46,7 +48,18 @@ public class CoursesListActivity extends AppCompatActivity implements
 	}
 
 	@Override public void onNewCourseRequested() {
-		Intent intent = new Intent(this, CourseOverviewActivity.class);
-		startActivity(intent);
+		NewCourseDialog dialog = new NewCourseDialog();
+		dialog.setup(this, R.id.course_info_panel);
+		dialog.show(getSupportFragmentManager(), TAG_NEW_COURSE_DIALOG);
 	}
+
+	@Override public void onCourseCreated(Course course) {
+		onCourseSelected(course);
+	}
+
+	@Override public void onDialogCancelled() {
+		//Nothing to do here
+	}
+
+
 }

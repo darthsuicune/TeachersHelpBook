@@ -1,64 +1,46 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 
+import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
-import com.dlgdev.teachers.helpbook.views.courses.NewCourseView;
+import com.dlgdev.teachers.helpbook.models.InvalidModelException;
+import com.dlgdev.teachers.helpbook.views.ModelCreationDialogFragment;
+import com.dlgdev.teachers.helpbook.views.events.NewEventView;
 
-public class NewCourseDialog extends DialogFragment {
-	private static final String ARG_PARENT_ID = "parent id";
-	Course course;
-	NewCourseDialogListener listener;
-	int parentId;
-	NewCourseView newCourseView;
+import org.joda.time.DateTime;
+
+public class NewCourseDialog extends ModelCreationDialogFragment {
+	Course course = new Course();
+	NewEventView newCourseView;
 
 	public NewCourseDialog() {
 	}
 
-	public void setup(NewCourseDialogListener listener, int parentId) {
-		this.listener = listener;
-		this.parentId = parentId;
-		course = new Course();
+	@Override public Long modelId() {
+		return course.getId();
 	}
 
-	@Override public void onSaveInstanceState(@NonNull Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putInt(ARG_PARENT_ID, parentId);
-		course.save();
+	@Override public void restoreModel(Long id) {
+		course = new Select().from(Course.class).where("_id=?", id).executeSingle();
 	}
 
-	@Override @NonNull public Dialog onCreateDialog(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			restoreFragment(savedInstanceState);
-		}
-		return buildDialog(getDialogView(R.layout.dialog_create_course));
-	}
-
-	private void restoreFragment(Bundle savedInstanceState) {
-		parentId = savedInstanceState.getInt(ARG_PARENT_ID);
-		listener = (NewCourseDialogListener) getFragmentManager().findFragmentById(parentId);
-	}
-
-	private AlertDialog buildDialog(View view) {
+	@Override public AlertDialog buildDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getString(R.string.create_course_dialog_title));
-		builder.setView(view);
+		builder.setView(getDialogView(R.layout.dialog_create_event));
 		builder.setPositiveButton(R.string.create_course, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
 				save();
-				listener.onCourseCreated(course);
+				verifySavedData();
 			}
 		});
 		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
-				if(course.getId() != null) {
+				if (course.getId() != null) {
 					course.delete();
 				}
 				listener.onDialogCancelled();
@@ -67,23 +49,32 @@ public class NewCourseDialog extends DialogFragment {
 		return builder.create();
 	}
 
+	private void verifySavedData() {
+		try {
+			course.safelySave();
+			((CourseCreationDialogListener) listener).onCourseCreated(course);
+		} catch (InvalidModelException e) {
+			newCourseView.setErrors();
+		}
+	}
+
 	private View getDialogView(int layout) {
-		newCourseView = (NewCourseView) getActivity().getLayoutInflater().inflate(layout, null);
-		newCourseView.setup(course);
+		newCourseView = (NewEventView) getActivity().getLayoutInflater().inflate(layout, null);
+		DateTime start = (course.start != null) ? course.start : DateTime.now();
+		DateTime end =  (course.end != null) ? course.end : DateTime.now();
+		newCourseView.setup(getFragmentManager(), start, end);
 		return newCourseView;
 	}
 
-	private void save() {
+	@Override public void save() {
 		course.title = newCourseView.getTitle();
 		course.description = newCourseView.getDescription();
-		course.start = newCourseView.getCourseStart();
-		course.end = newCourseView.getCourseEnd();
+		course.start = newCourseView.getStart();
+		course.end = newCourseView.getEnd();
 		course.save();
 	}
 
-	public interface NewCourseDialogListener {
+	public interface CourseCreationDialogListener extends ModelCreationDialogListener {
 		void onCourseCreated(Course course);
-
-		void onDialogCancelled();
 	}
 }
