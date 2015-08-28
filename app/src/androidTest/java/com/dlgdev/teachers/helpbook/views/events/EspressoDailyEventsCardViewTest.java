@@ -1,10 +1,12 @@
 package com.dlgdev.teachers.helpbook.views.events;
 
+import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.EventList;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
@@ -34,11 +36,15 @@ public class EspressoDailyEventsCardViewTest {
 	EventActionsListener listener;
 	DateTime date;
 	EventList list;
+	Course course;
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
-			new ActivityTestRule<>(CourseOverviewActivity.class);
+			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
+	CourseOverviewActivity activity;
 
 	@Before public void setup() throws Exception {
+		course = new Course();
+		course.save();
 		date = DateTime.now().withDayOfWeek(THURSDAY);
 		listener = mock(EventActionsListener.class);
 	}
@@ -65,7 +71,10 @@ public class EspressoDailyEventsCardViewTest {
 	}
 
 	private void getCard() {
-		card = ((DailyEventsCardView) rule.getActivity().findViewById(R.id.thursday_card));
+		Intent intent = new Intent();
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		activity = rule.launchActivity(intent);
+		card = ((DailyEventsCardView) activity.findViewById(R.id.thursday_card));
 	}
 
 	private void whenWeSendAnUpdatedEventListWithEvents(int eventCount) throws Throwable {

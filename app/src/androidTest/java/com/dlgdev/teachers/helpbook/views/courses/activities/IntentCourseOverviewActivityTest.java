@@ -1,12 +1,16 @@
 package com.dlgdev.teachers.helpbook.views.courses.activities;
 
+import android.content.Intent;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.ComponentNameMatchers;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,16 +26,24 @@ import static org.hamcrest.core.AllOf.allOf;
 @RunWith(AndroidJUnit4.class)
 public class IntentCourseOverviewActivityTest {
 
-	@Rule public IntentsTestRule<CourseOverviewActivity> rule =
-			new IntentsTestRule<>(CourseOverviewActivity.class);
+	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
+			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
 	Course course;
 	CourseOverviewActivity activity;
 
 	@Before public void setup() throws Exception {
+		Intents.init();
 		course = new Course(DateTime.now(), DateTime.now());
 		course.title = "course1";
 		course.save();
-		activity = rule.getActivity();
+		Intent intent = new Intent();
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		activity = rule.launchActivity(intent);
+	}
+
+	@After public void tearDown() throws Exception {
+		DatabaseUtils.clearDatabase();
+		Intents.release();
 	}
 
 	@Test public void onPanelTappedCallsTheCourseAdministrationActivity() throws Throwable {
