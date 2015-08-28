@@ -9,7 +9,6 @@ import com.dlgdev.teachers.helpbook.models.Course;
 
 import org.joda.time.DateTime;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +25,7 @@ public class CoursesListActivityWithDefaultTest {
 	@Rule public ActivityTestRule<CoursesListActivity> rule =
 			new ActivityTestRule<>(CoursesListActivity.class, true, false);
 
-	@Before public void setup() throws Exception {
-		Course course = new Course(DateTime.now().minusWeeks(1), DateTime.now().plusWeeks(1));
-		course.title = TITLE;
-		course.save();
-	}
+	CoursesListActivity activity;
 
 	@After public void tearDown() throws Exception {
 		DatabaseUtils.clearDatabase();
@@ -39,7 +34,14 @@ public class CoursesListActivityWithDefaultTest {
 	@Test public void withACurrentCourseItShouldSkipToCourseOverview() throws Exception {
 		// Simply verify that one of the new activity views is displayed.
 		// Can't catch the intent because it's thrown on the onCreate method.
-		rule.launchActivity(new Intent());
+		launchActivityWithCourse();
 		onView(withText(TITLE)).check(matches(isDisplayed()));
+	}
+
+	private void launchActivityWithCourse() {
+		Course course = new Course(DateTime.now().minusWeeks(1), DateTime.now().plusWeeks(1));
+		course.title = TITLE;
+		course.save();
+		activity = rule.launchActivity(new Intent());
 	}
 }

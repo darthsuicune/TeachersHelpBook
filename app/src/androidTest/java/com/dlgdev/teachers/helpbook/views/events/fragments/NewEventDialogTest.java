@@ -1,12 +1,14 @@
 package com.dlgdev.teachers.helpbook.views.events.fragments;
 
 
+import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
@@ -33,7 +35,7 @@ public class NewEventDialogTest {
 	private static final String TAG = "dialog";
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
-			new ActivityTestRule<>(CourseOverviewActivity.class);
+			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);
 	NewEventDialog dialog;
 	CourseOverviewActivity activity;
 	NewEventDialog.NewEventDialogListener mockListener;
@@ -42,13 +44,22 @@ public class NewEventDialogTest {
 	String someData = "someData";
 
 	@Before public void setUp() throws Exception {
-		activity = rule.getActivity();
+		launchActivity();
 		mockListener = Mockito.mock(NewEventDialog.NewEventDialogListener.class);
 		dialog = new NewEventDialog();
 		provider = new EventsFactory();
 		Event event = provider.createEmpty();
 		dialog.setup(mockListener, event, R.id.course_weekly_main_fragment);
 		dialog.show(activity.getSupportFragmentManager(), TAG);
+	}
+
+	private void launchActivity() {
+		Course course = new Course();
+		course.save();
+		Intent intent = new Intent();
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		activity = rule.launchActivity(intent);
+
 	}
 
 	@After public void teardown() throws Exception {

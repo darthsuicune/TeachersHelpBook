@@ -31,10 +31,6 @@ public class IntentCourseOverviewActivityTest {
 		course = new Course(DateTime.now(), DateTime.now());
 		course.title = "course1";
 		course.save();
-		loadActivity();
-	}
-
-	private void loadActivity() {
 		activity = rule.getActivity();
 	}
 

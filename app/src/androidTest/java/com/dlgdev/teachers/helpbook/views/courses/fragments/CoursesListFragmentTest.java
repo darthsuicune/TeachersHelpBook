@@ -22,6 +22,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -31,6 +33,7 @@ public class CoursesListFragmentTest {
 	CoursesListFragment fragment;
 	Course course;
 	OnCourseListInteractionListener listener;
+	CoursesListActivity activity;
 
 	@Rule public ActivityTestRule<CoursesListActivity> rule =
 			new ActivityTestRule<>(CoursesListActivity.class);
@@ -60,10 +63,10 @@ public class CoursesListFragmentTest {
 		course.save();
 	}
 
-	@Test public void clickTheAddCourseIconPassesTheCallToTheListener() throws Exception {
+	@Test public void clickTheAddCourseIconOpensADialog() throws Exception {
 		whenWeSetupTheFragment();
 		onView(withId(R.id.add_new_course)).perform(click());
-		verify(listener).onNewCourseRequested();
+		onView(withId(R.id.create_event_dialog_title)).check(matches(isDisplayed()));
 	}
 
 	private void whenWeSetupTheFragment() {
@@ -73,7 +76,8 @@ public class CoursesListFragmentTest {
 	}
 
 	public void getFragment() {
-		fragment = (CoursesListFragment) rule.getActivity().getSupportFragmentManager()
+		activity = rule.getActivity();
+		fragment = (CoursesListFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.courses_list_fragment);
 	}
 
@@ -82,10 +86,30 @@ public class CoursesListFragmentTest {
 		onView(withId(R.id.item_list_title)).check(matches(withText(COURSE_TITLE)));
 	}
 
-	@Test public void clickACourseToGoToCallTheCallback() throws Exception {
+	@Test public void clickACourseToCallTheCallback() throws Exception {
 		afterCreatingACourse();
 		whenWeSetupTheFragment();
 		onView(withId(R.id.item_list_title)).perform(click());
 		verify(listener).onCourseSelected(course);
+	}
+
+	@Test public void creatingADialogAndRotatingHoldsTheDialog() throws Exception {
+		getFragment();
+		onView(withId(R.id.add_new_course)).perform(click());
+		restartActivity();
+		assertNotNull(fragment);
+		assertFalse(fragment.canSkip());
+	}
+
+	private void restartActivity() throws InterruptedException {
+		activity.finish();
+		activity = rule.getActivity();
+	}
+
+	@Test public void creatingADialogRotatingAndCancellingDoesntCrash() throws Exception {
+		getFragment();
+		onView(withId(R.id.add_new_course)).perform(click());
+		restartActivity();
+		fragment.onDialogCancelled();
 	}
 }

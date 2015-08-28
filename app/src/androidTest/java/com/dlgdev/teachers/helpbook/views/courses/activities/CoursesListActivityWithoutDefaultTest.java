@@ -61,15 +61,4 @@ public class CoursesListActivityWithoutDefaultTest {
 				toPackage(expectedPackageName),
 				hasExtras(hasEntry(CourseOverviewActivity.KEY_MODEL_ID, course.getId()))));
 	}
-
-	@Test public void whenANewCourseIsRequestedTheAppropiateIntentIsThrown() throws Exception {
-		activity.onNewCourseRequested();
-		itThrowsAnIntentForANewCourse();
-	}
-
-	private void itThrowsAnIntentForANewCourse() {
-		String expectedPackageName = "com.dlgdev.teachers.helpbook";
-		intended(allOf(hasComponent(hasClassName(CourseOverviewActivity.class.getName())),
-				toPackage(expectedPackageName)));
-	}
 }

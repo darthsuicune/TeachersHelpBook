@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -94,6 +96,21 @@ public class NewEventView extends RelativeLayout {
 				onFullDayChanged(checked);
 			}
 		});
+
+		titleView.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+			}
+
+			@Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+			}
+
+			@Override public void afterTextChanged(Editable editable) {
+				setTitleError(editable);
+			}
+		});
 	}
 
 	private void requestStartDatePicker() {
@@ -164,7 +181,7 @@ public class NewEventView extends RelativeLayout {
 	public void changeStartDate(DateTime date) {
 		start = date;
 		startDateView.setDate(date);
-		setErrors();
+		setDatesError();
 	}
 
 	public void changeEndDate(int year, int month, int day) {
@@ -174,7 +191,7 @@ public class NewEventView extends RelativeLayout {
 	public void changeEndDate(DateTime date) {
 		end = date;
 		endDateView.setDate(date);
-		setErrors();
+		setDatesError();
 	}
 
 	public void changeStartTime(int hour, int minute) {
@@ -184,7 +201,7 @@ public class NewEventView extends RelativeLayout {
 	public void changeStartTime(DateTime time) {
 		start = time;
 		startTimeView.setTime(time);
-		setErrors();
+		setDatesError();
 	}
 
 	public void changeEndTime(int hour, int minute) {
@@ -194,7 +211,7 @@ public class NewEventView extends RelativeLayout {
 	public void changeEndTime(DateTime time) {
 		end = time;
 		endTimeView.setTime(time);
-		setErrors();
+		setDatesError();
 	}
 
 	public String getTitle() {
@@ -214,11 +231,17 @@ public class NewEventView extends RelativeLayout {
 	}
 
 	public void setErrors() {
-		if(TextUtils.isEmpty(titleView.getText())) {
-			titleView.setError(getContext().getString(R.string.error_title_is_required));
-		}
-		if(start.isAfter(end)) {
-			endDateView.setError(getContext().getString(R.string.error_start_cannot_be_after_end));
-		}
+		setTitleError(titleView.getText());
+		setDatesError();
+	}
+
+	private void setDatesError() {
+		endDateView.setError((start.isAfter(end)) ?
+				getContext().getString(R.string.error_start_cannot_be_after_end) : null);
+	}
+
+	private void setTitleError(CharSequence text) {
+		titleView.setError((TextUtils.isEmpty(text)) ?
+				getContext().getString(R.string.error_title_is_required) : null);
 	}
 }

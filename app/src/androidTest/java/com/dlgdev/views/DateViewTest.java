@@ -3,6 +3,8 @@ package com.dlgdev.views;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.dlgdev.teachers.helpbook.utils.Dates;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +36,12 @@ public class DateViewTest {
 		assertEquals(view.getDate(), date);
 	}
 
-	@Test public void theIconViewHasAnOnClickListenerAddedThatCallsItsCallback() {
+	@Test public void settingTheDateSetsATextWithTheFormattedText() throws Exception {
+		view.setDate(date);
+		assertEquals(view.getText(), Dates.formatDate(date));
+	}
+
+	@Test public void theViewHasAnOnClickListenerAddedThatCallsItsCallback() {
 		view.performClick();
 		verify(listener).requestDatePicker();
 	}

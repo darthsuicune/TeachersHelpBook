@@ -1,6 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,9 +28,13 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class CoursesListFragment extends Fragment {
+public class CoursesListFragment extends Fragment
+		implements NewCourseDialog.CourseCreationDialogListener {
+	static final String TAG_NEW_COURSE_DIALOG = "new course";
+	static final String KEY_DIALOG_IS_SHOWN = "dialog is shown";
 	private static final int LOADER_COURSE = 1;
 	List<Course> courses = new ArrayList<>();
+	boolean isDisplayingDialog = false;
 
 	DividerWrappedRecyclerView courseList;
 	TextView emptyList;
@@ -41,13 +45,13 @@ public class CoursesListFragment extends Fragment {
 	public CoursesListFragment() {
 	}
 
-	@Override public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		listener = (OnCourseListInteractionListener) activity;
+	@Override public void onAttach(Context context) {
+		super.onAttach(context);
+		listener = (OnCourseListInteractionListener) context;
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+									   Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_courses_list, container, false);
 		setViews(v);
 		return v;
@@ -59,9 +63,30 @@ public class CoursesListFragment extends Fragment {
 		addCourseButton = (FloatingActionButton) v.findViewById(R.id.add_new_course);
 		addCourseButton.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
-				addNewCourse();
+				requestNewCourse();
 			}
 		});
+	}
+
+	private void requestNewCourse() {
+		isDisplayingDialog = true;
+		NewCourseDialog dialog = new NewCourseDialog();
+		dialog.setup(this, this.getId());
+		dialog.show(getFragmentManager(), TAG_NEW_COURSE_DIALOG);
+	}
+
+	@Override public void onCourseCreated(Course course) {
+		listener.onCourseSelected(course);
+		isDisplayingDialog = false;
+	}
+
+	@Override public void onDialogCancelled() {
+		isDisplayingDialog = false;
+	}
+
+	@Override public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(KEY_DIALOG_IS_SHOWN, isDisplayingDialog);
 	}
 
 	@Override public void onResume() {
@@ -69,8 +94,8 @@ public class CoursesListFragment extends Fragment {
 		getLoaderManager().initLoader(LOADER_COURSE, null, new CourseLoaderHelper());
 	}
 
-	private void addNewCourse() {
-		listener.onNewCourseRequested();
+	public boolean canSkip() {
+		return !isDisplayingDialog;
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -119,7 +144,6 @@ public class CoursesListFragment extends Fragment {
 
 	public interface OnCourseListInteractionListener {
 		void onCourseSelected(Course course);
-		void onNewCourseRequested();
 	}
 
 	private class CoursesAdapter extends RecyclerView.Adapter<ListElementViewHolder>
@@ -130,16 +154,14 @@ public class CoursesListFragment extends Fragment {
 			courses = CoursesListFragment.this.courses;
 		}
 
-		@Override
-		public ListElementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		@Override public ListElementViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(getActivity()).inflate(R.layout.list_item, parent, false);
 			ListElementViewHolder holder = new ListElementViewHolder(v, this);
 			v.setOnClickListener(holder);
 			return holder;
 		}
 
-		@Override
-		public void onBindViewHolder(ListElementViewHolder holder, int position) {
+		@Override public void onBindViewHolder(ListElementViewHolder holder, int position) {
 			Course course = courses.get(position);
 			holder.position(position);
 			holder.title(course.title);
