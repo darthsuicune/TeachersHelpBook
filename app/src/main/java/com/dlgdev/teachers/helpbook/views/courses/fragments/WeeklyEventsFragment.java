@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 
 import static org.joda.time.DateTimeConstants.MONDAY;
 
-public abstract class WeeklyEventsFragment extends Fragment {
+public abstract class WeeklyEventsFragment extends Fragment implements CourseInfoHolder {
 	SharedPreferences prefs;
 	DateTime referenceDate;
 	DateTime startOfWeek;
@@ -43,7 +43,7 @@ public abstract class WeeklyEventsFragment extends Fragment {
 
 	abstract void loadEvents();
 
-	public void updateCourse(Course course) {
+	@Override public void updateCourse(Course course) {
 		this.course = course;
 		loadEvents();
 	}

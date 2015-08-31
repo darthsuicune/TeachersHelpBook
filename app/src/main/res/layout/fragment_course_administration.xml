@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/course_administration_students"
-            style="@style/Course.Items"
+            style="@style/Drawer.CourseMembers"
             android:text="@string/student_groups_marker"
             android:layout_below="@id/course_administration_description"
             android:layout_width="match_parent"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/course_administration_subjects"
-            style="@style/Course.Items"
+            style="@style/Drawer.CourseMembers"
             android:text="@string/subjects_marker"
             android:layout_below="@id/course_administration_students"
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
 
         <TextView
             android:id="@+id/course_administration_holidays"
-            style="@style/Course.Items"
+            style="@style/Drawer.CourseMembers"
             android:text="@string/holidays_marker"
             android:layout_below="@id/course_administration_subjects"
             android:layout_width="match_parent"
@@ -72,7 +72,7 @@
 
         <TextView
             android:id="@+id/course_administration_events"
-            style="@style/Course.Items"
+            style="@style/Drawer.CourseMembers"
             android:text="@string/events_marker"
             android:layout_below="@id/course_administration_holidays"
             android:layout_width="match_parent"

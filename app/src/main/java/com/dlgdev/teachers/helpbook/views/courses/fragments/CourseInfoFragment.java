@@ -23,9 +23,10 @@ import com.dlgdev.teachers.helpbook.utils.Dates;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class CourseInfoFragment extends WeeklyEventsFragment {
+public class CourseInfoFragment extends WeeklyEventsFragment implements CourseInfoHolder {
 	private static final int LOADER_COURSE = 1;
 	private static final String KEY_COURSE_ID = "course";
 	CoursePanelListener listener;
@@ -34,7 +35,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 	TextView referenceWeek;
 	TextView eventCounter;
 	List<Event> eventList;
-	List<WeeklyEventsFragment> listeners = new ArrayList<>();
+	List<CourseInfoHolder> listeners = new ArrayList<>();
 
 	public CourseInfoFragment() {
 	}
@@ -71,10 +72,8 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 		loadCourse(courseId);
 	}
 
-	public void registerListeners(WeeklyEventsFragment... fragments) {
-		for(WeeklyEventsFragment fragment : fragments) {
-			this.listeners.add(fragment);
-		}
+	public void registerListeners(CourseInfoHolder... holders) {
+		Collections.addAll(this.listeners, holders);
 	}
 
 	private void loadCourse(Long courseId) {
@@ -141,8 +140,8 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 	}
 
 	private void reportCourseToFragments() {
-		for (WeeklyEventsFragment fragment : listeners) {
-			fragment.updateCourse(course);
+		for (CourseInfoHolder holder : listeners) {
+			holder.updateCourse(course);
 		}
 	}
 }

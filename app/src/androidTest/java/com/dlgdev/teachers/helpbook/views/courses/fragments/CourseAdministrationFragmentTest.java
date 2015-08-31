@@ -74,7 +74,7 @@ public class CourseAdministrationFragmentTest {
 	private void launchActivityWithCourse() {
 		createStuffForTheCourse();
 		Intent intent = new Intent();
-		intent.putExtra(CourseAdministrationActivity.KEY_COURSE, course.getId());
+		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.getId());
 		launchActivityWithIntent(intent);
 	}
 

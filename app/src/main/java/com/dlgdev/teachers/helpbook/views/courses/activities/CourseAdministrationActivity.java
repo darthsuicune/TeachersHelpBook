@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
@@ -22,9 +21,8 @@ import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidaysInfoActivi
 import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupsInfoActivity;
 import com.dlgdev.teachers.helpbook.views.subjects.activities.SubjectsInfoActivity;
 
-public class CourseAdministrationActivity extends AppCompatActivity
+public class CourseAdministrationActivity extends ModelInfoActivity
 		implements CourseAdministrationActionListener {
-	public static final String KEY_COURSE = "course";
 	private static final int LOADER_COURSE = 1;
 	CourseAdministrationFragment fragment;
 	Course course;
@@ -41,7 +39,7 @@ public class CourseAdministrationActivity extends AppCompatActivity
 
 	private void parseInvocationArguments() {
 		Bundle extras = getIntent().getExtras();
-		if (extras != null && extras.containsKey(KEY_COURSE)) {
+		if (extras != null && extras.containsKey(KEY_MODEL_ID)) {
 			getSupportLoaderManager().initLoader(LOADER_COURSE, extras, new CourseLoaderHelper());
 		}
 	}
@@ -78,7 +76,7 @@ public class CourseAdministrationActivity extends AppCompatActivity
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-			long courseId = args.getLong(KEY_COURSE);
+			long courseId = args.getLong(KEY_MODEL_ID);
 			Uri uri = ContentProvider.createUri(Course.class, courseId);
 			return new CursorLoader(CourseAdministrationActivity.this, uri, null, null, null, null);
 		}

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,10 +16,17 @@ import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoHolder;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseOverviewDrawerFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseOverviewDrawerFragment.OnOverviewDrawerListener;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment.WeeklyEventsListener;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
+import com.dlgdev.teachers.helpbook.views.events.activities.EventsInfoActivity;
+import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidaysInfoActivity;
+import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupsInfoActivity;
+import com.dlgdev.teachers.helpbook.views.subjects.activities.SubjectsInfoActivity;
 
 import org.joda.time.DateTime;
 
@@ -26,28 +34,32 @@ import static com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoFra
 
 
 public class CourseOverviewActivity extends ModelInfoActivity
-		implements WeeklyEventsListener, WeeklyPreviewListener, CoursePanelListener {
+		implements WeeklyEventsListener, WeeklyPreviewListener, CoursePanelListener,
+		OnOverviewDrawerListener, CourseInfoHolder {
 	private static final String WORKING_DATE = "workingDate";
 	SharedPreferences prefs;
 	WeeklyEventsFragment mainViewFragment;
 	WeeklyEventsFragment previousWeekFragment;
 	WeeklyEventsFragment nextWeekFragment;
 	WeeklyEventsFragment secondNextWeekFragment;
+	CourseOverviewDrawerFragment drawerFragment;
 	CourseInfoFragment courseInfoFragment;
 	DateTime currentDate;
+	Course course;
 
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		setContentView(R.layout.activity_course_overview);
-		setSupportActionBar((Toolbar) findViewById(R.id.course_overview_toolbar));
-		loadFragments();
+		Toolbar toolbar = (Toolbar) findViewById(R.id.course_overview_toolbar);
+		setSupportActionBar(toolbar);
+		loadFragments(toolbar);
 		prepareCurrentDate(savedInstanceState);
 		prepareCourseData();
 	}
 
-	private void loadFragments() {
+	private void loadFragments(Toolbar toolbar) {
 		FragmentManager fm = getSupportFragmentManager();
 		mainViewFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
@@ -57,9 +69,15 @@ public class CourseOverviewActivity extends ModelInfoActivity
 				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_next);
 		secondNextWeekFragment =
 				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
+		drawerFragment = (CourseOverviewDrawerFragment) fm
+				.findFragmentById(R.id.course_overview_navigation_drawer);
+		drawerFragment.setup((DrawerLayout) findViewById(R.id.overview_drawer_layout),
+				findViewById(R.id.course_overview_navigation_drawer), toolbar,
+				PreferenceManager.getDefaultSharedPreferences(this));
 		courseInfoFragment = (CourseInfoFragment) fm.findFragmentById(R.id.course_info_panel);
-		courseInfoFragment.registerListeners(mainViewFragment, previousWeekFragment,
-				nextWeekFragment, secondNextWeekFragment);
+		courseInfoFragment
+				.registerListeners(mainViewFragment, previousWeekFragment, nextWeekFragment,
+						secondNextWeekFragment, drawerFragment, this);
 	}
 
 	private void prepareCurrentDate(Bundle savedInstanceState) {
@@ -80,7 +98,7 @@ public class CourseOverviewActivity extends ModelInfoActivity
 	}
 
 	private void prepareCourseData() {
-		Long id = null;
+		long id = 0;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.containsKey(KEY_MODEL_ID)) {
 			id = extras.getLong(KEY_MODEL_ID);
@@ -131,7 +149,41 @@ public class CourseOverviewActivity extends ModelInfoActivity
 
 	@Override public void onPanelTapped(Course course) {
 		Intent intent = new Intent(getApplicationContext(), CourseAdministrationActivity.class);
-		intent.putExtra(CourseAdministrationActivity.KEY_COURSE, course.getId());
+		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.getId());
 		startActivity(intent);
+	}
+
+	public void openDrawer() {
+		drawerFragment.openDrawer();
+	}
+
+	@Override public void onEventsRequested() {
+		openModelListActivity(EventsInfoActivity.class);
+	}
+
+	private void openModelListActivity(Class<? extends ModelInfoActivity> modelClass) {
+		Intent intent = new Intent(this, modelClass);
+		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.getId());
+		startActivity(intent);
+	}
+
+	@Override public void onSubjectsRequested() {
+		openModelListActivity(SubjectsInfoActivity.class);
+	}
+
+	@Override public void onStudentGroupsRequested() {
+		openModelListActivity(StudentGroupsInfoActivity.class);
+	}
+
+	@Override public void onHolidaysRequested() {
+		openModelListActivity(HolidaysInfoActivity.class);
+	}
+
+	@Override public void onCourseInfoRequested() {
+		onPanelTapped(course);
+	}
+
+	@Override public void updateCourse(Course course) {
+		this.course = course;
 	}
 }

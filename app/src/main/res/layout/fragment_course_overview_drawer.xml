@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    tools:context="com.dlgdev.teachers.helpbook.views.courses.fragments.CourseOverviewDrawerFragment">
+    <TextView
+        android:id="@+id/course_overview_drawer_header"
+        style="@style/Drawer.Header" />
+
+    <TextView
+        android:id="@+id/course_overview_drawer_subjects"
+        style="@style/Drawer.CourseMembers"
+        android:layout_below="@id/course_overview_drawer_header"/>
+
+    <TextView
+        android:id="@+id/course_overview_drawer_student_groups"
+        style="@style/Drawer.CourseMembers"
+        android:layout_below="@+id/course_overview_drawer_subjects" />
+    <TextView
+        android:id="@+id/course_overview_drawer_events"
+        style="@style/Drawer.CourseMembers"
+        android:layout_below="@+id/course_overview_drawer_student_groups" />
+    <TextView
+        android:id="@+id/course_overview_drawer_holidays"
+        style="@style/Drawer.CourseMembers"
+        android:layout_below="@+id/course_overview_drawer_events" />
+
+</RelativeLayout>

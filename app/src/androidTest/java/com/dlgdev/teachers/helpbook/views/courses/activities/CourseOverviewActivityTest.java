@@ -114,4 +114,14 @@ public class CourseOverviewActivityTest {
 		course.save();
 		onView(withText(title)).check(matches(isDisplayed()));
 	}
+
+	@Test public void navigationDrawerIsIncluded() throws Throwable {
+		loadActivity();
+		rule.runOnUiThread(new Runnable() {
+			@Override public void run() {
+				activity.openDrawer();
+			}
+		});
+		onView(withId(R.id.course_overview_navigation_drawer)).check(matches(isDisplayed()));
+	}
 }
