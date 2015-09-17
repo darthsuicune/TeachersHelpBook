@@ -4,12 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
-import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
 import com.dlgdev.teachers.helpbook.views.ModelCreationDialogFragment;
 import com.dlgdev.teachers.helpbook.views.events.NewEventView;
+
+import ollie.query.Select;
 
 public class NewEventDialog extends ModelCreationDialogFragment {
 
@@ -25,11 +26,11 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 	}
 
 	@Override public Long modelId() {
-		return event.getId();
+		return event.id;
 	}
 
 	@Override public void restoreModel(Long id) {
-		event = new Select().from(Event.class).where("_id=?", id).executeSingle();
+		event = Select.from(Event.class).where("_id=?", id).fetchSingle();
 	}
 
 	@Override public AlertDialog buildDialog() {

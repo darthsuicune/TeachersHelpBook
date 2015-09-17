@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 
-import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.InvalidModelException;
@@ -12,6 +11,8 @@ import com.dlgdev.teachers.helpbook.views.ModelCreationDialogFragment;
 import com.dlgdev.teachers.helpbook.views.events.NewEventView;
 
 import org.joda.time.DateTime;
+
+import ollie.query.Select;
 
 public class NewCourseDialog extends ModelCreationDialogFragment {
 	Course course = new Course();
@@ -21,11 +22,11 @@ public class NewCourseDialog extends ModelCreationDialogFragment {
 	}
 
 	@Override public Long modelId() {
-		return course.getId();
+		return course.id;
 	}
 
 	@Override public void restoreModel(Long id) {
-		course = new Select().from(Course.class).where("_id=?", id).executeSingle();
+		course = Select.from(Course.class).where("_id=?", id).fetchSingle();
 	}
 
 	@Override public AlertDialog buildDialog() {
@@ -40,7 +41,7 @@ public class NewCourseDialog extends ModelCreationDialogFragment {
 		});
 		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
-				if (course.getId() != null) {
+				if (course.id != null) {
 					course.delete();
 				}
 				listener.onDialogCancelled();

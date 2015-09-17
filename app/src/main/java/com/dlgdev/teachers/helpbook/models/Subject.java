@@ -1,34 +1,37 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 
 import org.joda.time.DateTime;
 
 import java.util.List;
 
-@Table(name = TeachersDBContract.Subjects.TABLE_NAME, id = TeachersDBContract.Subjects._ID)
+import ollie.Model;
+import ollie.annotation.Column;
+import ollie.annotation.Table;
+import ollie.query.Select;
+
+@Table(TeachersDBContract.Subjects.TABLE_NAME)
 public class Subject extends Model implements Listable {
-	@Column(name = TeachersDBContract.Subjects.TITLE) public String title;
-	@Column(name = TeachersDBContract.Subjects.DESCRIPTION) public String description;
-	@Column(name = TeachersDBContract.Subjects.COURSE) public Course course;
-	@Column(name = TeachersDBContract.Subjects.START) public DateTime start;
-	@Column(name = TeachersDBContract.Subjects.END) public DateTime end;
+	@Column(TeachersDBContract.Subjects.TITLE) public String title;
+	@Column(TeachersDBContract.Subjects.DESCRIPTION) public String description;
+	@Column(TeachersDBContract.Subjects.COURSE) public Course course;
+	@Column(TeachersDBContract.Subjects.START) public DateTime start;
+	@Column(TeachersDBContract.Subjects.END) public DateTime end;
 
 	public Subject() {}
 
 	public List<Event> events() {
-		return getMany(Event.class, TeachersDBContract.Events.SUBJECT);
+		return Select.from(Event.class).fetch();
 	}
 
 	public List<TimeTableEntry> timeTable() {
-		return getMany(TimeTableEntry.class, TeachersDBContract.TimeTableEntries.SUBJECT);
+		return Select.from(TimeTableEntry.class).fetch();
 	}
 
 	public List<GroupTakesSubject> groupsWithSubject() {
-		return getMany(GroupTakesSubject.class, TeachersDBContract.GroupTakesSubjects.SUBJECT);
+		return Select.from(GroupTakesSubject.class).fetch();
 	}
 
 	public void course(Course course) {

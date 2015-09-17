@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
+
+import ollie.Model;
 
 public abstract class ValidatingModel extends Model {
 	public void safelySave() {
@@ -14,6 +15,6 @@ public abstract class ValidatingModel extends Model {
 	protected abstract boolean checkConstraints();
 
 	public boolean isPersisted() {
-		return this.getId() != null;
+		return this.id != null;
 	}
 }

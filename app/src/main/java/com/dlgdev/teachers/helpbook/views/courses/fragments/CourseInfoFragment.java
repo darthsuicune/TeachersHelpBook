@@ -13,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
-import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.db.TeachersProvider;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
@@ -25,6 +24,8 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import ollie.Ollie;
 
 public class CourseInfoFragment extends WeeklyEventsFragment implements CourseInfoHolder {
 	private static final int LOADER_COURSE = 1;
@@ -65,7 +66,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment implements CourseIn
 
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong(KEY_COURSE_ID, course.getId());
+		outState.putLong(KEY_COURSE_ID, course.id);
 	}
 
 	public void setup(Long courseId) {
@@ -114,16 +115,13 @@ public class CourseInfoFragment extends WeeklyEventsFragment implements CourseIn
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
 			long id = args.getLong(KEY_COURSE_ID);
-			Uri uri = ContentProvider.createUri(Course.class, id);
-			String selection = TeachersDBContract.Courses._ID + "=?";
-			String[] selectionArgs = {Long.toString(id)};
-			return new CursorLoader(getActivity(), uri, null, selection, selectionArgs, null);
+			Uri uri = TeachersProvider.createUri(Course.class, id);
+			return new CursorLoader(getActivity(), uri, null, null, null, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			if (data.moveToFirst()) {
-				course = new Course();
-				course.loadFromCursor(data);
+				course = Ollie.processCursor(Course.class, data).get(0);
 				loadCourseData();
 			}
 		}

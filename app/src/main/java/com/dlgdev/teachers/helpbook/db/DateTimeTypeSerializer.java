@@ -1,23 +1,17 @@
 package com.dlgdev.teachers.helpbook.db;
 
-import com.activeandroid.serializer.TypeSerializer;
-
 import org.joda.time.DateTime;
 
-public class DateTimeTypeSerializer extends TypeSerializer {
-	@Override public Class<?> getDeserializedType() {
-		return DateTime.class;
-	}
+import ollie.TypeAdapter;
 
-	@Override public Class<?> getSerializedType() {
-		return Long.class;
-	}
+public class DateTimeTypeSerializer extends TypeAdapter<DateTime, Long> {
+    @Override
+    public Long serialize(DateTime dateTime) {
+        return dateTime.getMillis();
+    }
 
-	@Override public Object serialize(Object data) {
-		return ((DateTime) data).getMillis();
-	}
-
-	@Override public Object deserialize(Object data) {
-		return new DateTime(((Long)data).longValue());
-	}
+    @Override
+    public DateTime deserialize(Long date) {
+        return new DateTime(date.longValue());
+    }
 }

@@ -1,13 +1,14 @@
 package com.dlgdev.teachers.helpbook.models;
 
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract.GroupTakesSubjects;
 
-@Table(name = GroupTakesSubjects.TABLE_NAME, id = GroupTakesSubjects._ID)
+import ollie.Model;
+import ollie.annotation.Column;
+import ollie.annotation.Table;
+
+@Table(GroupTakesSubjects.TABLE_NAME)
 public class GroupTakesSubject extends Model {
-	@Column(name = GroupTakesSubjects.SUBJECT) Subject subject;
-	@Column(name = GroupTakesSubjects.STUDENT_GROUP) StudentGroup group;
+	@Column(GroupTakesSubjects.SUBJECT) Subject subject;
+	@Column(GroupTakesSubjects.STUDENT_GROUP) StudentGroup group;
 }

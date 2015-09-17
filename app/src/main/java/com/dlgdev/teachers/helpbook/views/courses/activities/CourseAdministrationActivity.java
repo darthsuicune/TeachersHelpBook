@@ -10,8 +10,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
-import com.activeandroid.content.ContentProvider;
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.db.TeachersProvider;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
@@ -20,6 +20,8 @@ import com.dlgdev.teachers.helpbook.views.events.activities.EventsInfoActivity;
 import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidaysInfoActivity;
 import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupsInfoActivity;
 import com.dlgdev.teachers.helpbook.views.subjects.activities.SubjectsInfoActivity;
+
+import ollie.Ollie;
 
 public class CourseAdministrationActivity extends ModelInfoActivity
 		implements CourseAdministrationActionListener {
@@ -45,12 +47,12 @@ public class CourseAdministrationActivity extends ModelInfoActivity
 	}
 
 	@Override public void onSaved(Course course) {
-		openModelInfoActivity(CourseOverviewActivity.class, course.getId());
+		openModelInfoActivity(CourseOverviewActivity.class, course.id);
 		finish();
 	}
 
 	private void openModelInfoActivity(Class<? extends ModelInfoActivity> target, long id) {
-		if(course.getId() == null) {
+		if(course.id == null) {
 			course.save();
 		}
 		Intent intent = new Intent(this, target);
@@ -59,31 +61,31 @@ public class CourseAdministrationActivity extends ModelInfoActivity
 	}
 
 	@Override public void onStudentGroupsInfoRequested() {
-		openModelInfoActivity(StudentGroupsInfoActivity.class, course.getId());
+		openModelInfoActivity(StudentGroupsInfoActivity.class, course.id);
 	}
 
 	@Override public void onHolidaysInfoRequested() {
-		openModelInfoActivity(HolidaysInfoActivity.class, course.getId());
+		openModelInfoActivity(HolidaysInfoActivity.class, course.id);
 	}
 
 	@Override public void onEventsInfoRequested() {
-		openModelInfoActivity(EventsInfoActivity.class, course.getId());
+		openModelInfoActivity(EventsInfoActivity.class, course.id);
 	}
 
 	@Override public void onSubjectsInfoRequested() {
-		openModelInfoActivity(SubjectsInfoActivity.class, course.getId());
+		openModelInfoActivity(SubjectsInfoActivity.class, course.id);
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			long courseId = args.getLong(KEY_MODEL_ID);
-			Uri uri = ContentProvider.createUri(Course.class, courseId);
+			Uri uri = TeachersProvider.createUri(Course.class, courseId);
 			return new CursorLoader(CourseAdministrationActivity.this, uri, null, null, null, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			if (data != null && data.moveToFirst()) {
-				course.loadFromCursor(data);
+				course = Ollie.processCursor(Course.class, data).get(0);
 				fragment.course(course);
 				if (!TextUtils.isEmpty(course.title)) {
 					setTitle(course.title);

@@ -1,8 +1,5 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.utils.InvalidDateTimeException;
@@ -11,22 +8,29 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
-@Table(name = TeachersDBContract.Events.TABLE_NAME, id = TeachersDBContract.Events._ID)
+import ollie.Model;
+import ollie.annotation.Column;
+import ollie.annotation.ForeignKey;
+import ollie.annotation.Table;
+
+@Table(TeachersDBContract.Events.TABLE_NAME)
 public class Event extends Model implements Serializable, Listable {
     public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
-    @Column(name = TeachersDBContract.Events.START, index = true)
+    @Column(TeachersDBContract.Events.START)
     DateTime start;
-    @Column(name = TeachersDBContract.Events.END, index = true)
+    @Column(TeachersDBContract.Events.END)
     DateTime end;
-    @Column(name = TeachersDBContract.Events.TITLE)
+    @Column(TeachersDBContract.Events.TITLE)
     String title;
-    @Column(name = TeachersDBContract.Events.DESCRIPTION)
+    @Column(TeachersDBContract.Events.DESCRIPTION)
     String description;
-    @Column(name = TeachersDBContract.Events.COURSE, index = true)
+    @Column(TeachersDBContract.Events.COURSE)
+    @ForeignKey(foreignColumns = {TeachersDBContract.Courses._ID})
     Course course;
-    @Column(name = TeachersDBContract.Events.SUBJECT, index = true)
-    Course subject;
-    @Column(name = TeachersDBContract.Events.TYPE, index = true)
+    @Column(TeachersDBContract.Events.SUBJECT)
+    @ForeignKey(foreignColumns = {TeachersDBContract.Subjects._ID})
+    Subject subject;
+    @Column(TeachersDBContract.Events.TYPE)
     String type;
 
     // For use only through ActiveAndroid

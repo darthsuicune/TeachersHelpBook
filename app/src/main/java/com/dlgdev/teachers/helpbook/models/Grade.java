@@ -1,13 +1,14 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+
+import ollie.Model;
+import ollie.annotation.Column;
+import ollie.annotation.Table;
 
 import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Grades;
 
-@Table(name = Grades.TABLE_NAME, id = Grades._ID)
+@Table(Grades.TABLE_NAME)
 public class Grade extends Model {
-	@Column(name = Grades.GRADE) String grade;
-	@Column(name = Grades.STUDENT) Student student;
+	@Column(Grades.GRADE) String grade;
+	@Column(Grades.STUDENT) Student student;
 }

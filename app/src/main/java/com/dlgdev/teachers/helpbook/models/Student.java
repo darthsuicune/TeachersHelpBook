@@ -1,27 +1,30 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
+
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract.Students;
 
 import org.joda.time.DateTime;
 
 import java.util.List;
 
-import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Grades;
-import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Students;
+import ollie.Model;
+import ollie.annotation.Column;
+import ollie.annotation.Table;
+import ollie.query.Select;
 
-@Table(name = Students.TABLE_NAME, id = Students._ID)
+@Table(Students.TABLE_NAME)
 public class Student extends Model {
-	@Column(name = Students.NAME) String name;
-	@Column(name = Students.SURNAME) String surname;
-	@Column(name = Students.BIRTHDAY) DateTime birthday;
-	@Column(name = Students.GROUP) StudentGroup group;
-	@Column(name = Students.OBSERVATIONS) String observations;
+	@Column(Students.NAME) String name;
+	@Column(Students.SURNAME) String surname;
+	@Column(Students.BIRTHDAY)
+	DateTime birthday;
+	@Column(Students.GROUP) StudentGroup group;
+	@Column(Students.OBSERVATIONS) String observations;
 
 	public Student() {}
 
 	public List<Grade> grades() {
-		return getMany(Grade.class, Grades.STUDENT);
+		return Select.from(Grade.class).fetch();
 	}
 }

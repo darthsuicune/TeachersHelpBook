@@ -4,31 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name="com.activeandroid.app.Application"
+        android:name=".OrmApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:allowBackup="true">
-        <meta-data
-            android:name="AA_DB_NAME"
-            android:value="Helpbook.db" />
-        <meta-data
-            android:name="AA_DB_VERSION"
-            android:value="6" />
-        <meta-data
-            android:name="AA_SERIALIZERS"
-            android:value="com.dlgdev.teachers.helpbook.db.DateTimeTypeSerializer" />
-        <meta-data
-            android:name="AA_MODELS"
-            android:value="com.dlgdev.teachers.helpbook.model.Course,
-            com.dlgdev.teachers.helpbook.model.Event,
-            com.dlgdev.teachers.helpbook.model.Holiday,
-            com.dlgdev.teachers.helpbook.model.GroupTakesSubject
-            com.dlgdev.teachers.helpbook.model.TimeTableEntry,
-            com.dlgdev.teachers.helpbook.model.Subject,
-            com.dlgdev.teachers.helpbook.model.Student,
-            com.dlgdev.teachers.helpbook.model.StudentGroup,
-            com.dlgdev.teachers.helpbook.model.Grade" />
 
         <activity
             android:name=".views.courses.activities.CourseOverviewActivity"
@@ -38,7 +18,7 @@
             android:label="@string/course_administration_title"/>
 
         <provider
-            android:name="com.activeandroid.content.ContentProvider"
+            android:name="com.dlgdev.teachers.helpbook.db.TeachersProvider"
             android:authorities="com.dlgdev.teachers.helpbook"
             android:exported="false" />
 

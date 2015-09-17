@@ -1,25 +1,26 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 
 import java.util.List;
 
-import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.GroupTakesSubjects;
+import ollie.Model;
+import ollie.annotation.Column;
+import ollie.annotation.Table;
+import ollie.query.Select;
+
 import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.StudentGroups;
-import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Students;
-@Table(name = StudentGroups.TABLE_NAME, id = StudentGroups._ID)
+
+@Table(StudentGroups.TABLE_NAME)
 public class StudentGroup extends Model implements Listable {
-	@Column(name = StudentGroups.NAME) String name;
-	@Column(name = StudentGroups.COURSE, index = true) Course course;
+	@Column(StudentGroups.NAME) String name;
+	@Column(StudentGroups.COURSE) Course course;
 
 	public List<Student> students() {
-		return getMany(Student.class, Students.GROUP);
+		return Select.from(Student.class).fetch();
 	}
 
 	public List<GroupTakesSubject> subjectsTaken() {
-		return getMany(GroupTakesSubject.class, GroupTakesSubjects.STUDENT_GROUP);
+		return Select.from(GroupTakesSubject.class).fetch();
 	}
 
 	public Course course() {
