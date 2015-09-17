@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 
 import ollie.TypeAdapter;
 
-public class DateTimeTypeSerializer extends TypeAdapter<DateTime, Long> {
+public class DateTimeTypeAdapter extends TypeAdapter<DateTime, Long> {
     @Override
     public Long serialize(DateTime dateTime) {
         return dateTime.getMillis();

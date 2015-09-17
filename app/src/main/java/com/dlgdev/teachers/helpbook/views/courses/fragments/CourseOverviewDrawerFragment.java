@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -104,7 +103,7 @@ public class CourseOverviewDrawerFragment extends Fragment implements CourseInfo
 		this.fragmentContainerView = fragmentView;
 		userLearnedDrawer = prefs.getBoolean(PREFERENCE_IS_LEARNED, false);
 		// set a custom shadow that overlays the main content when the drawer opens
-		layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+//		layout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the navigation drawer and the action bar app icon.

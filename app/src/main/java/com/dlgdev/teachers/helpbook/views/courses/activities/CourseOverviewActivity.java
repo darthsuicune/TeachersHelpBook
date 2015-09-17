@@ -149,7 +149,7 @@ public class CourseOverviewActivity extends ModelInfoActivity
 
 	@Override public void onPanelTapped(Course course) {
 		Intent intent = new Intent(getApplicationContext(), CourseAdministrationActivity.class);
-		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.id);
 		startActivity(intent);
 	}
 
@@ -163,7 +163,7 @@ public class CourseOverviewActivity extends ModelInfoActivity
 
 	private void openModelListActivity(Class<? extends ModelInfoActivity> modelClass) {
 		Intent intent = new Intent(this, modelClass);
-		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.id);
 		startActivity(intent);
 	}
 

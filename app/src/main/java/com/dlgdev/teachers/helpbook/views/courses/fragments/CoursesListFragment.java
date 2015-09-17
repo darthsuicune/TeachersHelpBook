@@ -25,6 +25,8 @@ import com.dlgdev.views.ListElementViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import ollie.Ollie;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -105,14 +107,7 @@ public class CoursesListFragment extends Fragment
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-			List<Course> courses = new ArrayList<>();
-			if (data != null && data.moveToFirst()) {
-				do {
-					Course course = new Course();
-					course.loadFromCursor(data);
-					courses.add(course);
-				} while (data.moveToNext());
-			}
+			List<Course> courses = Ollie.processCursor(Course.class, data);
 			updateCourses(courses);
 		}
 

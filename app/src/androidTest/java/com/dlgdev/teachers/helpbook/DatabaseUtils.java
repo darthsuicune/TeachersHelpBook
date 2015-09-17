@@ -1,6 +1,5 @@
 package com.dlgdev.teachers.helpbook;
 
-import com.activeandroid.query.Delete;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.Grade;
@@ -11,16 +10,18 @@ import com.dlgdev.teachers.helpbook.models.StudentGroup;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.models.TimeTableEntry;
 
+import ollie.query.Delete;
+
 public class DatabaseUtils {
 	public static void clearDatabase() {
-		new Delete().from(GroupTakesSubject.class).execute();
-		new Delete().from(Holiday.class).execute();
-		new Delete().from(TimeTableEntry.class).execute();
-		new Delete().from(Event.class).execute();
-		new Delete().from(Grade.class).execute();
-		new Delete().from(Student.class).execute();
-		new Delete().from(Subject.class).execute();
-		new Delete().from(StudentGroup.class).execute();
-		new Delete().from(Course.class).execute();
+		Delete.from(GroupTakesSubject.class).execute();
+		Delete.from(Holiday.class).execute();
+		Delete.from(TimeTableEntry.class).execute();
+		Delete.from(Event.class).execute();
+		Delete.from(Grade.class).execute();
+		Delete.from(Student.class).execute();
+		Delete.from(Subject.class).execute();
+		Delete.from(StudentGroup.class).execute();
+		Delete.from(Course.class).execute();
 	}
 }

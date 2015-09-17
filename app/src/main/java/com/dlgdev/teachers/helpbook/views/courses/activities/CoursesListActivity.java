@@ -41,7 +41,7 @@ public class CoursesListActivity extends AppCompatActivity implements
 	@Override public void onCourseSelected(Course course) {
 		this.course = course;
 		Intent intent = new Intent(this, CourseOverviewActivity.class);
-		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.id);
 		startActivity(intent);
 	}
 }

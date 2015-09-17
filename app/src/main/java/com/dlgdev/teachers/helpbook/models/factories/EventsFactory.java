@@ -8,8 +8,9 @@ import com.dlgdev.teachers.helpbook.models.EventList;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import ollie.Ollie;
 
 public class EventsFactory implements Serializable {
 	int defaultEventDurationInHours;
@@ -73,14 +74,7 @@ public class EventsFactory implements Serializable {
 	}
 
 	public EventList listFromCursor(Cursor data) {
-		List<Event> eventList = new ArrayList<>();
-		if(data.moveToFirst()) {
-			do {
-				Event event = new Event();
-				event.loadFromCursor(data);
-				eventList.add(event);
-			} while(data.moveToNext());
-		}
+		List<Event> eventList = Ollie.processCursor(Event.class, data);
 		return new EventList(eventList);
 	}
 
