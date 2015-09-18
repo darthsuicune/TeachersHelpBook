@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.Model;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
@@ -19,6 +18,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import ollie.Model;
 
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
@@ -61,11 +62,10 @@ public class IntentCourseAdministrationActivityTest {
 
 	private Matcher<Intent> intentFor(Model model, Class<? extends ModelInfoActivity> targetClass) {
 		return allOf(
-				hasExtra(ModelInfoActivity.KEY_MODEL_ID, model.getId()),
+				hasExtra(ModelInfoActivity.KEY_MODEL_ID, model.id),
 				toPackage(PACKAGE_NAME),
 				hasComponent(
-						allOf(hasPackageName(PACKAGE_NAME),
-								hasClassName(targetClass.getName()))));
+						allOf(hasPackageName(PACKAGE_NAME), hasClassName(targetClass.getName()))));
 	}
 
 	@Test public void testOnStudentGroupsInfoRequested() throws Exception {

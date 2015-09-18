@@ -1,16 +1,19 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import android.support.test.InstrumentationRegistry;
+
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import ollie.query.Delete;
+import ollie.query.Select;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,7 +26,7 @@ public class CourseTest {
 	int count;
 
 	@Before public void setUp() throws Exception {
-		count = new Select().from(Course.class).count();
+		count = Select.columns("COUNT(*)").from(Course.class).fetchValue(Integer.class);
 	}
 
 	@After public void tearDown() throws Exception {
@@ -32,7 +35,7 @@ public class CourseTest {
 
 	@Test public void testModelGetsAnIdAfterSaving() throws Exception {
 		afterCreatingACourse();
-		assertTrue(course.getId() > 0);
+		assertTrue(course.id > 0);
 	}
 
 	private void afterCreatingACourse() {
@@ -49,7 +52,7 @@ public class CourseTest {
 	}
 
 	private Course whenWeQueryTheDatabaseForOne() {
-		return new Select().from(Course.class).orderBy("_ID DESC").limit(1).executeSingle();
+		return Select.from(Course.class).orderBy("_ID DESC").limit("1").fetchSingle();
 	}
 
 	@Test public void testModelEqualsTheStoredObject() throws Exception {
@@ -70,7 +73,7 @@ public class CourseTest {
 		course.save();
 		course = new Course(DateTime.now().minusMonths(2), DateTime.now().plusMonths(2));
 		course.save();
-		long result = course.getId();
+		long result = course.id;
 		course = new Course(DateTime.now().plusMonths(3), DateTime.now().plusYears(1));
 		course.save();
 		return result;
@@ -78,7 +81,7 @@ public class CourseTest {
 
 	@Test public void currentReturnsNullIfNoneMatchesTheCurrentDate() throws Exception {
 		long current = addSeveralCoursesWithOneToday();
-		Course.delete(Course.class, current);
+		Delete.from(Course.class).where(TeachersDBContract.Courses._ID + "=?", current).execute();
 		Course course = Course.current();
 		assertNull(course);
 	}

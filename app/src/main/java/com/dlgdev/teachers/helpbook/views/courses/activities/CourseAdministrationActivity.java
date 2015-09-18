@@ -31,7 +31,6 @@ public class CourseAdministrationActivity extends ModelInfoActivity
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		course = new Course();
 		parseInvocationArguments();
 		setContentView(R.layout.activity_course_administration);
 		setSupportActionBar((Toolbar) findViewById(R.id.course_administration_toolbar));

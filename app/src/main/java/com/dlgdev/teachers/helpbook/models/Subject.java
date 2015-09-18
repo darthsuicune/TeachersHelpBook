@@ -9,6 +9,7 @@ import java.util.List;
 
 import ollie.Model;
 import ollie.annotation.Column;
+import ollie.annotation.ForeignKey;
 import ollie.annotation.Table;
 import ollie.query.Select;
 
@@ -16,6 +17,7 @@ import ollie.query.Select;
 public class Subject extends Model implements Listable {
 	@Column(TeachersDBContract.Subjects.TITLE) public String title;
 	@Column(TeachersDBContract.Subjects.DESCRIPTION) public String description;
+	@ForeignKey
 	@Column(TeachersDBContract.Subjects.COURSE) public Course course;
 	@Column(TeachersDBContract.Subjects.START) public DateTime start;
 	@Column(TeachersDBContract.Subjects.END) public DateTime end;

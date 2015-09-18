@@ -16,22 +16,15 @@ import ollie.annotation.Table;
 @Table(TeachersDBContract.Events.TABLE_NAME)
 public class Event extends Model implements Serializable, Listable {
     public static final int DEFAULT_EVENT_DURATION_IN_HOURS = 1;
-    @Column(TeachersDBContract.Events.START)
-    DateTime start;
-    @Column(TeachersDBContract.Events.END)
-    DateTime end;
-    @Column(TeachersDBContract.Events.TITLE)
-    String title;
-    @Column(TeachersDBContract.Events.DESCRIPTION)
-    String description;
-    @Column(TeachersDBContract.Events.COURSE)
-    @ForeignKey(foreignColumns = {TeachersDBContract.Courses._ID})
-    Course course;
-    @Column(TeachersDBContract.Events.SUBJECT)
-    @ForeignKey(foreignColumns = {TeachersDBContract.Subjects._ID})
-    Subject subject;
-    @Column(TeachersDBContract.Events.TYPE)
-    String type;
+    @Column(TeachersDBContract.Events.START) public DateTime start;
+    @Column(TeachersDBContract.Events.END) public DateTime end;
+    @Column(TeachersDBContract.Events.TITLE) public String title;
+    @Column(TeachersDBContract.Events.DESCRIPTION) public String description;
+    @ForeignKey
+    @Column(TeachersDBContract.Events.COURSE) public Course course;
+    @ForeignKey
+    @Column(TeachersDBContract.Events.SUBJECT) public Subject subject;
+    @Column(TeachersDBContract.Events.TYPE) public String type;
 
     // For use only through ActiveAndroid
     public Event() {

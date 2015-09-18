@@ -14,14 +14,14 @@ import ollie.query.Delete;
 
 public class DatabaseUtils {
 	public static void clearDatabase() {
-		Delete.from(GroupTakesSubject.class).execute();
-		Delete.from(Holiday.class).execute();
-		Delete.from(TimeTableEntry.class).execute();
+		Delete.from(Course.class).execute();
 		Delete.from(Event.class).execute();
 		Delete.from(Grade.class).execute();
+		Delete.from(GroupTakesSubject.class).execute();
+		Delete.from(Holiday.class).execute();
 		Delete.from(Student.class).execute();
-		Delete.from(Subject.class).execute();
 		Delete.from(StudentGroup.class).execute();
-		Delete.from(Course.class).execute();
+		Delete.from(Subject.class).execute();
+		Delete.from(TimeTableEntry.class).execute();
 	}
 }

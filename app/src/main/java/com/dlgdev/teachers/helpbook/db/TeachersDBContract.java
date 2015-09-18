@@ -87,6 +87,7 @@ public class TeachersDBContract {
 		public static final Uri URI = TeachersProvider.createUri(Grade.class);
 		public static final String GRADE = "grade";
 		public static final String STUDENT = "student";
+		public static final String SUBJECT = "subject";
 	}
 
 	public static final class GroupTakesSubjects implements BaseColumns {

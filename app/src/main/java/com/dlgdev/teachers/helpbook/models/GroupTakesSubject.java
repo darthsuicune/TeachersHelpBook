@@ -9,6 +9,6 @@ import ollie.annotation.Table;
 
 @Table(GroupTakesSubjects.TABLE_NAME)
 public class GroupTakesSubject extends Model {
-	@Column(GroupTakesSubjects.SUBJECT) Subject subject;
-	@Column(GroupTakesSubjects.STUDENT_GROUP) StudentGroup group;
+	@Column(GroupTakesSubjects.SUBJECT) public Subject subject;
+	@Column(GroupTakesSubjects.STUDENT_GROUP) public StudentGroup group;
 }

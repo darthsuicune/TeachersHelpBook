@@ -44,7 +44,7 @@ public class IntentCourseOverviewActivityTest {
 		course.title = "course1";
 		course.save();
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.id);
 		activity = rule.launchActivity(intent);
 	}
 
@@ -59,7 +59,7 @@ public class IntentCourseOverviewActivityTest {
 		String expectedPackageName = "com.dlgdev.teachers.helpbook";
 		intended(allOf(hasComponent(ComponentNameMatchers.hasShortClassName(expectedComponentName)),
 				toPackage(expectedPackageName),
-				hasExtras(hasEntry(CourseAdministrationActivity.KEY_MODEL_ID, course.getId()))));
+				hasExtras(hasEntry(CourseAdministrationActivity.KEY_MODEL_ID, course.id))));
 	}
 
 	@Test public void clickOnSubjectsThrowsAnIntentToSeeTheSubjects() throws Exception {
@@ -68,7 +68,7 @@ public class IntentCourseOverviewActivityTest {
 	}
 
 	private void dispatchesAnIntentFor(Class<? extends ModelInfoActivity> activity) {
-		intended(allOf(hasExtra(ModelInfoActivity.KEY_MODEL_ID, course.getId()),
+		intended(allOf(hasExtra(ModelInfoActivity.KEY_MODEL_ID, course.id),
 				hasComponent(hasClassName(activity.getName()))));
 	}
 

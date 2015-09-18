@@ -5,6 +5,7 @@ import java.util.List;
 
 import ollie.Model;
 import ollie.annotation.Column;
+import ollie.annotation.ForeignKey;
 import ollie.annotation.Table;
 import ollie.query.Select;
 
@@ -12,8 +13,9 @@ import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.StudentGroups;
 
 @Table(StudentGroups.TABLE_NAME)
 public class StudentGroup extends Model implements Listable {
-	@Column(StudentGroups.NAME) String name;
-	@Column(StudentGroups.COURSE) Course course;
+	@Column(StudentGroups.NAME) public String name;
+	@ForeignKey
+	@Column(StudentGroups.COURSE) public Course course;
 
 	public List<Student> students() {
 		return Select.from(Student.class).fetch();

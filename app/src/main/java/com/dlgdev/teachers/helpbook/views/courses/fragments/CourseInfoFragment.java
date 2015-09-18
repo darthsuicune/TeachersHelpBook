@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.db.TeachersProvider;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
@@ -27,7 +28,7 @@ import java.util.List;
 
 import ollie.Ollie;
 
-public class CourseInfoFragment extends WeeklyEventsFragment implements CourseInfoHolder {
+public class CourseInfoFragment extends WeeklyEventsFragment {
 	private static final int LOADER_COURSE = 1;
 	private static final String KEY_COURSE_ID = "course";
 	CoursePanelListener listener;
@@ -69,15 +70,11 @@ public class CourseInfoFragment extends WeeklyEventsFragment implements CourseIn
 		outState.putLong(KEY_COURSE_ID, course.id);
 	}
 
-	public void setup(Long courseId) {
-		loadCourse(courseId);
-	}
-
 	public void registerListeners(CourseInfoHolder... holders) {
 		Collections.addAll(this.listeners, holders);
 	}
 
-	private void loadCourse(Long courseId) {
+	public void setup(Long courseId) {
 		Bundle args = new Bundle();
 		args.putLong(KEY_COURSE_ID, courseId);
 		getLoaderManager().initLoader(LOADER_COURSE, args, new CourseLoaderHelper());
@@ -116,7 +113,9 @@ public class CourseInfoFragment extends WeeklyEventsFragment implements CourseIn
 		@Override public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
 			long id = args.getLong(KEY_COURSE_ID);
 			Uri uri = TeachersProvider.createUri(Course.class, id);
-			return new CursorLoader(getActivity(), uri, null, null, null, null);
+			String selection = TeachersDBContract.Courses._ID + "=?";
+			String[] selectionArgs = {Long.toString(id)};
+			return new CursorLoader(getActivity(), uri, null, selection, selectionArgs, null);
 		}
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

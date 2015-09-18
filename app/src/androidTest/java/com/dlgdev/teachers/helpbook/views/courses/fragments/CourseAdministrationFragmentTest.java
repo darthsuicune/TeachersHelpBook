@@ -5,7 +5,6 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
@@ -22,6 +21,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+
+import ollie.query.Select;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -68,13 +69,13 @@ public class CourseAdministrationFragmentTest {
 
 	@Test public void afterLoadActivityLoadsTheCorrectCourse() throws Exception {
 		launchActivityWithCourse();
-		assertEquals(course.getId(), fragment.course.getId());
+		assertEquals(course.id, fragment.course.id);
 	}
 
 	private void launchActivityWithCourse() {
 		createStuffForTheCourse();
 		Intent intent = new Intent();
-		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.id);
 		launchActivityWithIntent(intent);
 	}
 
@@ -117,7 +118,7 @@ public class CourseAdministrationFragmentTest {
 		launchActivityWithIntent(new Intent());
 		assertNull(fragment.course);
 		onView(withId(R.id.menu_save_course)).perform(click());
-		assertNotNull(fragment.course.getId());
+		assertNotNull(fragment.course.id);
 	}
 
 	@Test public void theSaveButtonForwardsTheSaveToItsListener() throws Exception {
@@ -135,7 +136,7 @@ public class CourseAdministrationFragmentTest {
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(500);
 		onView(withId(R.id.menu_save_course)).perform(click());
-		course = new Select().from(Course.class).orderBy("_ID DESC").executeSingle();
+		course = Select.from(Course.class).orderBy("_ID DESC").fetchSingle();
 		assertEquals(course.title, COURSE_TITLE);
 		assertEquals(course.description, COURSE_DESC);
 
@@ -150,7 +151,7 @@ public class CourseAdministrationFragmentTest {
 		Espresso.closeSoftKeyboard();
 		Thread.sleep(500);
 		onView(withId(R.id.menu_save_course)).perform(click());
-		course = new Select().from(Course.class).orderBy("_ID DESC").executeSingle();
+		course = Select.from(Course.class).orderBy("_ID DESC").fetchSingle();
 		assertEquals(Dates.parseDate(COURSE_START), course.start);
 		assertEquals(Dates.parseDate(COURSE_END), course.end);
 	}

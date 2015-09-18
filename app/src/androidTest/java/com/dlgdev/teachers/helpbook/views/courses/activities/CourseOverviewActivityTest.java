@@ -50,7 +50,7 @@ public class CourseOverviewActivityTest {
 
 	private void loadActivity() {
 		Intent intent = new Intent();
-		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(ModelInfoActivity.KEY_MODEL_ID, course.id);
 		loadActivity(intent);
 	}
 
@@ -88,7 +88,7 @@ public class CourseOverviewActivityTest {
 		Course course2 = createSecondCourse(title);
 		//Pass the first course id
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course2.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course2.id);
 		loadActivity(intent);
 		//Make sure the new information is displayed
 		onView(withText(title)).check(matches(isDisplayed()));

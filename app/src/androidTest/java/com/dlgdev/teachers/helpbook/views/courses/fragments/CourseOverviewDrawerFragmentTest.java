@@ -48,7 +48,7 @@ public class CourseOverviewDrawerFragmentTest {
 		course.title = COURSE_TITLE;
 		course.save();
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.id);
 		activity = rule.launchActivity(intent);
 		fragment = (CourseOverviewDrawerFragment) activity.getSupportFragmentManager()
 				.findFragmentById(R.id.course_overview_navigation_drawer);

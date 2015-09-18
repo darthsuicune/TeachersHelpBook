@@ -5,7 +5,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 
-import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
@@ -16,6 +15,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import ollie.query.Select;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -78,7 +79,7 @@ public class WeeklyEventsMainFragmentTest {
 	}
 
 	private void theEventWasCreated() {
-		Event event = new Select().from(Event.class).orderBy("_ID ASC").limit(1).executeSingle();
-		assertEquals(event.getId(), this.event.getId());
+		Event event = Select.from(Event.class).orderBy("_ID ASC").limit("1").fetchSingle();
+		assertEquals(event.id, this.event.id);
 	}
 }

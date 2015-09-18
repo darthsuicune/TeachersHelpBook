@@ -1,6 +1,5 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import android.support.v4.text.TextUtilsCompat;
 import android.text.TextUtils;
 
 import org.joda.time.DateTime;
@@ -16,14 +15,10 @@ import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Courses;
 
 @Table(Courses.TABLE_NAME)
 public class Course extends ValidatingModel {
-    @Column(Courses.START)
-    public DateTime start;
-    @Column(Courses.END)
-    public DateTime end;
-    @Column(Courses.TITLE)
-    public String title;
-    @Column(Courses.DESCRIPTION)
-    public String description;
+    @Column(Courses.START) public DateTime start;
+    @Column(Courses.END) public DateTime end;
+    @Column(Courses.TITLE) public String title;
+    @Column(Courses.DESCRIPTION) public String description;
 
     //For use only through ActiveAndroid
     public Course() {

@@ -1,9 +1,7 @@
 package com.dlgdev.teachers.helpbook.models;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.activeandroid.query.Select;
 import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.models.factories.EventsFactory;
 
@@ -15,6 +13,8 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ollie.query.Select;
 
 import static org.junit.Assert.assertEquals;
 
@@ -52,7 +52,7 @@ public class EventListTest {
 
     @Test public void eventsForDayReturnsANewEventListWithTheEventsForTheDay() throws Exception {
         afterCreatingEventsInDifferentDays();
-        List<Event> events = new Select().from(Event.class).execute();
+        List<Event> events = Select.from(Event.class).fetch();
         eventList = provider.listFromList(events);
         assertEquals(1, eventList.eventsForDay(DateTime.now()).eventCount());
     }

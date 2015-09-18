@@ -57,7 +57,7 @@ public class NewEventDialogTest {
 		Course course = new Course();
 		course.save();
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.id);
 		activity = rule.launchActivity(intent);
 
 	}

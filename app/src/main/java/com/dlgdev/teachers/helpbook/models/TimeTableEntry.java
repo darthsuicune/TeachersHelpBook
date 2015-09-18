@@ -6,11 +6,13 @@ import org.joda.time.DateTime;
 
 import ollie.Model;
 import ollie.annotation.Column;
+import ollie.annotation.ForeignKey;
 import ollie.annotation.Table;
 
 @Table(TimeTableEntries.TABLE_NAME)
 public class TimeTableEntry extends Model {
-	@Column(TimeTableEntries.SUBJECT) Subject subject;
-	@Column(TimeTableEntries.START) DateTime start;
-	@Column(TimeTableEntries.END) DateTime end;
+	@ForeignKey
+	@Column(TimeTableEntries.SUBJECT) public Subject subject;
+	@Column(TimeTableEntries.START) public DateTime start;
+	@Column(TimeTableEntries.END) public DateTime end;
 }

@@ -59,6 +59,6 @@ public class CoursesListActivityWithoutDefaultTest {
 		String expectedPackageName = "com.dlgdev.teachers.helpbook";
 		intended(allOf(hasComponent(hasClassName(CourseOverviewActivity.class.getName())),
 				toPackage(expectedPackageName),
-				hasExtras(hasEntry(CourseOverviewActivity.KEY_MODEL_ID, course.getId()))));
+				hasExtras(hasEntry(CourseOverviewActivity.KEY_MODEL_ID, course.id))));
 	}
 }

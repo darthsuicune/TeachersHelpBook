@@ -41,7 +41,7 @@ public class CourseAdministrationActivityTest {
 
 	private void activity() {
 		Intent intent = new Intent();
-		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.id);
 		activity = rule.launchActivity(intent);
 	}
 

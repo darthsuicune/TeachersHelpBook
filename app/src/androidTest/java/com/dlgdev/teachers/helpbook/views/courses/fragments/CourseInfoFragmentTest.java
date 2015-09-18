@@ -48,7 +48,7 @@ public class CourseInfoFragmentTest {
 		course.save();
 		provider = new EventsFactory();
 		Intent intent = new Intent();
-		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.getId());
+		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.id);
 		rule.launchActivity(intent);
 	}
 
