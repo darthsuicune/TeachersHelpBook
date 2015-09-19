@@ -37,8 +37,8 @@ public class DailyEventsCardView extends CardWithBackground {
         super(context, attrs);
     }
 
-    public void setup(EventActionsListener fragment, DateTime newDate) {
-        this.listener = fragment;
+    public void setup(EventActionsListener listener, DateTime newDate) {
+        this.listener = listener;
         this.date = newDate;
         loadViews();
         setupViewParameters();
@@ -61,6 +61,10 @@ public class DailyEventsCardView extends CardWithBackground {
         });
     }
 
+    private void newEventRequested() {
+        listener.onNewEventRequested(date);
+    }
+
     private void setBackground() {
         int color;
         if (date.dayOfYear().equals(new DateTime().dayOfYear())) {
@@ -69,10 +73,6 @@ public class DailyEventsCardView extends CardWithBackground {
             color = Color.parseColor("#fafafa");
         }
         setCardBackgroundColor(color);
-    }
-
-    private void newEventRequested() {
-        listener.onNewEventRequested(date);
     }
 
     public void updateEvents(EventList eventList) {

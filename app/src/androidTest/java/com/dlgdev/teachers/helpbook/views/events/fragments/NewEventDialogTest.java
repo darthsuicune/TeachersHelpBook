@@ -1,8 +1,8 @@
 package com.dlgdev.teachers.helpbook.views.events.fragments;
 
-
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -23,6 +23,7 @@ import org.mockito.Mockito;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
@@ -82,9 +83,7 @@ public class NewEventDialogTest {
 	}
 
 	private void whenWeEnterSomeData(String s) throws Throwable {
-		onView(withId(R.id.create_event_dialog_title)).perform(typeText(s));
-		Espresso.closeSoftKeyboard();
-		Thread.sleep(1000); //Delay needed because espresso doesn't wait until the kb is gone
+		onView(withId(R.id.create_event_dialog_title)).perform(typeText(s)).perform(closeSoftKeyboard());
 	}
 
 	private void andDestroyRestoreTheState() throws InterruptedException {

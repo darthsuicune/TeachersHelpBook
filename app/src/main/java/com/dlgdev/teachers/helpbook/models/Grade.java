@@ -11,8 +11,8 @@ import static com.dlgdev.teachers.helpbook.db.TeachersDBContract.Grades;
 @Table(Grades.TABLE_NAME)
 public class Grade extends Model {
 	@Column(Grades.GRADE) public String grade;
-	@ForeignKey
+	@ForeignKey(onDelete = ForeignKey.ReferentialAction.SET_DEFAULT)
 	@Column(Grades.STUDENT) public Student student;
-	@ForeignKey
+	@ForeignKey(onDelete = ForeignKey.ReferentialAction.SET_DEFAULT)
 	@Column(Grades.SUBJECT) public Subject subject;
 }

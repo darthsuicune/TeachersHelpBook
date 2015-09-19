@@ -32,7 +32,6 @@ import org.joda.time.DateTime;
 
 import static com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoFragment.CoursePanelListener;
 
-
 public class CourseOverviewActivity extends ModelInfoActivity
 		implements WeeklyEventsListener, WeeklyPreviewListener, CoursePanelListener,
 		OnOverviewDrawerListener, CourseInfoHolder {

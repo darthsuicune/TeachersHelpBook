@@ -121,7 +121,7 @@ public class NewEventView extends RelativeLayout {
 					public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 						changeStartDate(year, month, day);
 					}
-				}, start.getYear(), start.getMonthOfYear(), start.getDayOfMonth()));
+				}, start.getYear(), start.getMonthOfYear() - 1, start.getDayOfMonth()));
 		fragment.show(manager, TAG_START_DATE_PICKER);
 	}
 
@@ -133,7 +133,7 @@ public class NewEventView extends RelativeLayout {
 					public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 						changeEndDate(year, month, day);
 					}
-				}, end.getYear(), end.getMonthOfYear(), end.getDayOfMonth()));
+				}, end.getYear(), end.getMonthOfYear() - 1, end.getDayOfMonth()));
 		fragment.show(manager, TAG_END_DATE_PICKER);
 	}
 
@@ -175,7 +175,8 @@ public class NewEventView extends RelativeLayout {
 	}
 
 	public void changeStartDate(int year, int month, int day) {
-		changeStartDate(start.withYear(year).withMonthOfYear(month).withDayOfMonth(day));
+		//F...ing month will come back in a 0..11 range instead of 1..12
+		changeStartDate(start.withYear(year).withMonthOfYear(month + 1).withDayOfMonth(day));
 	}
 
 	public void changeStartDate(DateTime date) {
@@ -185,7 +186,8 @@ public class NewEventView extends RelativeLayout {
 	}
 
 	public void changeEndDate(int year, int month, int day) {
-		changeEndDate(end.withYear(year).withMonthOfYear(month).withDayOfMonth(day));
+		//F...ing month will come back in a 0..11 range instead of 1..12s
+		changeEndDate(end.withYear(year).withMonthOfYear(month + 1).withDayOfMonth(day));
 	}
 
 	public void changeEndDate(DateTime date) {

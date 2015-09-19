@@ -21,11 +21,15 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeDown;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.joda.time.DateTimeConstants.MONDAY;
 import static org.joda.time.DateTimeConstants.THURSDAY;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -45,7 +49,7 @@ public class EspressoDailyEventsCardViewTest {
 	@Before public void setup() throws Exception {
 		course = new Course();
 		course.save();
-		date = DateTime.now().withDayOfWeek(THURSDAY);
+		date = DateTime.now().withDayOfWeek(MONDAY);
 		listener = mock(EventActionsListener.class);
 	}
 
@@ -56,15 +60,15 @@ public class EspressoDailyEventsCardViewTest {
 	@Test public void clickOnAnEventCallsTheCallback() throws Throwable {
 		setMockListener();
 		whenWeSendAnUpdatedEventListWithEvents(1);
-		onView(allOf(withId(R.id.event_entry_name), isDescendantOfA(withId(R.id.thursday_card))))
-				.perform(click());
+		onView(withId(card.getId())).perform(click());
 		verify(listener).onEventSelected(list.events().get(0));
 	}
 
 	private void setMockListener() throws Throwable {
 		getCard();
 		rule.runOnUiThread(new Runnable() {
-			@Override public void run() {
+			@Override
+			public void run() {
 				card.setup(listener, date);
 			}
 		});
@@ -74,7 +78,7 @@ public class EspressoDailyEventsCardViewTest {
 		Intent intent = new Intent();
 		intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.id);
 		activity = rule.launchActivity(intent);
-		card = ((DailyEventsCardView) activity.findViewById(R.id.thursday_card));
+		card = ((DailyEventsCardView) activity.findViewById(R.id.monday_card));
 	}
 
 	private void whenWeSendAnUpdatedEventListWithEvents(int eventCount) throws Throwable {
@@ -86,7 +90,8 @@ public class EspressoDailyEventsCardViewTest {
 			event.save();
 		}
 		rule.runOnUiThread(new Runnable() {
-			@Override public void run() {
+			@Override
+			public void run() {
 				card.updateEvents(list);
 			}
 		});

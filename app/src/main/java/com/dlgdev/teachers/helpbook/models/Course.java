@@ -20,7 +20,7 @@ public class Course extends ValidatingModel {
     @Column(Courses.TITLE) public String title;
     @Column(Courses.DESCRIPTION) public String description;
 
-    //For use only through ActiveAndroid
+    //For use only through Ollie
     public Course() {
         super();
     }

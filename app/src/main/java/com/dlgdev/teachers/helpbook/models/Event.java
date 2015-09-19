@@ -20,13 +20,13 @@ public class Event extends Model implements Serializable, Listable {
     @Column(TeachersDBContract.Events.END) public DateTime end;
     @Column(TeachersDBContract.Events.TITLE) public String title;
     @Column(TeachersDBContract.Events.DESCRIPTION) public String description;
-    @ForeignKey
+    @ForeignKey(onDelete = ForeignKey.ReferentialAction.SET_DEFAULT)
     @Column(TeachersDBContract.Events.COURSE) public Course course;
-    @ForeignKey
+    @ForeignKey(onDelete = ForeignKey.ReferentialAction.SET_DEFAULT)
     @Column(TeachersDBContract.Events.SUBJECT) public Subject subject;
     @Column(TeachersDBContract.Events.TYPE) public String type;
 
-    // For use only through ActiveAndroid
+    // For use only through Ollie
     public Event() {
         super();
     }

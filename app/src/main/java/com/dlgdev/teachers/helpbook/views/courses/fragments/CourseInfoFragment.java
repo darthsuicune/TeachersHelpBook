@@ -65,11 +65,6 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 		eventCounter = (TextView) v.findViewById(R.id.event_counter);
 	}
 
-	@Override public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putLong(KEY_COURSE_ID, course.id);
-	}
-
 	public void registerListeners(CourseInfoHolder... holders) {
 		Collections.addAll(this.listeners, holders);
 	}
