@@ -25,5 +25,10 @@
         android:id="@+id/course_overview_drawer_holidays"
         style="@style/Drawer.CourseMembers"
         android:layout_below="@+id/course_overview_drawer_events" />
+    <TextView
+        android:id="@+id/course_overview_drawer_other_courses"
+        android:text="@string/other_courses"
+        style="@style/Drawer.CourseMembers"
+        android:layout_below="@id/course_overview_drawer_holidays"/>
 
 </RelativeLayout>
