@@ -1,5 +1,6 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
+import android.content.pm.ActivityInfo;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -17,13 +18,12 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -96,14 +96,14 @@ public class CoursesListFragmentTest {
 	@Test public void creatingADialogAndRotatingHoldsTheDialog() throws Exception {
 		getFragment();
 		onView(withId(R.id.add_new_course)).perform(click());
+		onView(withId(R.id.create_event_dialog_title)).perform(typeText(COURSE_TITLE));
 		restartActivity();
-		assertNotNull(fragment);
-		assertFalse(fragment.canSkip());
+		onView(withId(R.id.create_event_dialog_title)).check(matches(withText(COURSE_TITLE)));
 	}
 
 	private void restartActivity() throws InterruptedException {
-		activity.finish();
-		activity = rule.getActivity();
+		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	}
 
 	@Test public void creatingADialogRotatingAndCancellingDoesntCrash() throws Exception {

@@ -11,8 +11,8 @@ import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CoursesListFragment.OnCourseListInteractionListener;
 
-public class CoursesListActivity extends AppCompatActivity implements
-		OnCourseListInteractionListener {
+public class CoursesListActivity extends AppCompatActivity
+		implements OnCourseListInteractionListener {
 	CoursesListFragment fragment;
 	Course course;
 
@@ -21,17 +21,22 @@ public class CoursesListActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_courses_list);
 		fragment = (CoursesListFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.courses_list_fragment);
-		course = Course.current();
-		if (shouldSkipList()) {
-			skipToCourse();
-			finish();
-		} else {
-			setSupportActionBar((Toolbar)findViewById(R.id.course_list_toolbar));
+		if (justEnteredApp(savedInstanceState)) {
+			course = Course.current();
+			if (shouldSkipList()) {
+				skipToCourse();
+				finish();
+			}
+			setSupportActionBar((Toolbar) findViewById(R.id.course_list_toolbar));
 		}
 	}
 
+	private boolean justEnteredApp(Bundle savedInstanceState) {
+		return savedInstanceState != null;
+	}
+
 	private boolean shouldSkipList() {
-		return course != null && fragment.canSkip();
+		return course != null;
 	}
 
 	private void skipToCourse() {

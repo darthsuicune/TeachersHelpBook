@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.content.Intent;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -10,6 +11,7 @@ import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.models.Subject;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
+import com.dlgdev.teachers.helpbook.views.courses.activities.CoursesListActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseOverviewDrawerFragment.OnOverviewDrawerListener;
 
 import org.joda.time.DateTime;
@@ -23,6 +25,9 @@ import org.mockito.Mockito;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -40,6 +45,7 @@ public class CourseOverviewDrawerFragmentTest {
 	OnOverviewDrawerListener listener;
 
 	@Before public void setUp() throws Throwable {
+		Intents.init();
 		getFragment();
 	}
 
@@ -65,6 +71,7 @@ public class CourseOverviewDrawerFragmentTest {
 	}
 
 	@After public void tearDown() throws Exception {
+		Intents.release();
 		DatabaseUtils.clearDatabase();
 	}
 
@@ -122,7 +129,7 @@ public class CourseOverviewDrawerFragmentTest {
 		onView(withId(R.id.course_overview_drawer_holidays)).perform(click());
 		verify(listener).onHolidaysRequested();
 	}
-	
+
 	@Test public void clickOnHeaderCallsTheCallbackForTheCourseInfo() throws Exception {
 		onView(withId(R.id.course_overview_drawer_header)).perform(click());
 		verify(listener).onCourseInfoRequested();
@@ -131,5 +138,10 @@ public class CourseOverviewDrawerFragmentTest {
 	@Test public void headerDisplaysTheCourseTitle() throws Exception {
 		String title = activity.getString(R.string.course_header, course.title);
 		onView(withId(R.id.course_overview_drawer_header)).check(matches(withText(title)));
+	}
+
+	@Test public void clickingTheOtherCoursesViewOpensTheCourseList() throws Exception {
+		onView(withId(R.id.course_overview_drawer_other_courses)).perform(click());
+		intending(hasComponent(hasClassName(CoursesListActivity.class.getName())));
 	}
 }

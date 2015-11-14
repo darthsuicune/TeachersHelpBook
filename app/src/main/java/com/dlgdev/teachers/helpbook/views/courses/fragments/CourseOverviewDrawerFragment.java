@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
+import com.dlgdev.teachers.helpbook.views.courses.activities.CoursesListActivity;
 
 
 /**
@@ -37,6 +39,7 @@ public class CourseOverviewDrawerFragment extends Fragment implements CourseInfo
 	TextView holidaysView;
 	TextView eventsView;
 	TextView headerView;
+	TextView otherCoursesView;
 
 	public CourseOverviewDrawerFragment() {
 		// Required empty public constructor
@@ -59,6 +62,7 @@ public class CourseOverviewDrawerFragment extends Fragment implements CourseInfo
 		holidaysView = (TextView) v.findViewById(R.id.course_overview_drawer_holidays);
 		eventsView = (TextView) v.findViewById(R.id.course_overview_drawer_events);
 		headerView = (TextView) v.findViewById(R.id.course_overview_drawer_header);
+		otherCoursesView = (TextView) v.findViewById(R.id.course_overview_drawer_other_courses);
 
 		subjectsView.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
@@ -85,6 +89,16 @@ public class CourseOverviewDrawerFragment extends Fragment implements CourseInfo
 				listener.onCourseInfoRequested();
 			}
 		});
+		otherCoursesView.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View view) {
+				openCourseList();
+			}
+		});
+	}
+
+	private void openCourseList() {
+		Intent intent = new Intent(getActivity(), CoursesListActivity.class);
+		startActivity(intent);
 	}
 
 	@Override public void onAttach(Context context) {

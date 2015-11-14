@@ -18,8 +18,8 @@ public abstract class ModelCreationDialogFragment extends DialogFragment {
 
 	@Override public void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(ARG_PARENT_ID, parentId);
 		save();
+		outState.putInt(ARG_PARENT_ID, parentId);
 		outState.putLong(KEY_MODEL_ID, modelId());
 	}
 
