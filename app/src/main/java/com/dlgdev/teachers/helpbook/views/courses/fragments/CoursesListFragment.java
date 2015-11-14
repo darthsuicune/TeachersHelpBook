@@ -36,7 +36,6 @@ public class CoursesListFragment extends Fragment
 	static final String KEY_DIALOG_IS_SHOWN = "dialog is shown";
 	private static final int LOADER_COURSE = 1;
 	List<Course> courses = new ArrayList<>();
-	boolean isDisplayingDialog = false;
 
 	DividerWrappedRecyclerView courseList;
 	TextView emptyList;
@@ -71,7 +70,6 @@ public class CoursesListFragment extends Fragment
 	}
 
 	private void requestNewCourse() {
-		isDisplayingDialog = true;
 		NewCourseDialog dialog = new NewCourseDialog();
 		dialog.setup(this, this.getId());
 		dialog.show(getFragmentManager(), TAG_NEW_COURSE_DIALOG);
@@ -79,25 +77,15 @@ public class CoursesListFragment extends Fragment
 
 	@Override public void onCourseCreated(Course course) {
 		listener.onCourseSelected(course);
-		isDisplayingDialog = false;
 	}
 
 	@Override public void onDialogCancelled() {
-		isDisplayingDialog = false;
-	}
-
-	@Override public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putBoolean(KEY_DIALOG_IS_SHOWN, isDisplayingDialog);
+		//Nothing to do here
 	}
 
 	@Override public void onResume() {
 		super.onResume();
 		getLoaderManager().initLoader(LOADER_COURSE, null, new CourseLoaderHelper());
-	}
-
-	public boolean canSkip() {
-		return !isDisplayingDialog;
 	}
 
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {

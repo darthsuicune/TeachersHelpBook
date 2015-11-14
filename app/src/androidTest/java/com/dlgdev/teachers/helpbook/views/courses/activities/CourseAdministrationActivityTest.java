@@ -36,12 +36,11 @@ public class CourseAdministrationActivityTest {
 		course.title = COURSE_TITLE;
 		course.description = COURSE_DESCRIPTION;
 		course.save();
-		activity();
 	}
 
-	private void activity() {
+	private void activity(long id) {
 		Intent intent = new Intent();
-		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, course.id);
+		intent.putExtra(CourseAdministrationActivity.KEY_MODEL_ID, id);
 		activity = rule.launchActivity(intent);
 	}
 
@@ -50,8 +49,24 @@ public class CourseAdministrationActivityTest {
 	}
 
 	@Test public void testOnCreateLoadsTheCorrectCourse() throws Exception {
+		activity(course.id);
 		onView(withId(R.id.course_administration_name)).check(matches(withText(COURSE_TITLE)));
 		onView(withId(R.id.course_administration_description))
 				.check(matches(withText(COURSE_DESCRIPTION)));
+	}
+
+	@Test public void bugHavingTwoCoursesDisplaysOnlyTheFirst() throws Exception {
+		String title = "other title";
+		long id = createSecondCourse(title);
+		activity(id);
+		onView(withId(R.id.course_administration_name)).check(matches(withText(title)));
+	}
+
+	private long createSecondCourse(String title) {
+		Course secondCourse = new Course();
+		secondCourse.title = title;
+		secondCourse.description = "other description";
+		secondCourse.save();
+		return secondCourse.id;
 	}
 }

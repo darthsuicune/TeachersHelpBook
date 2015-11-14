@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dlgdev.teachers.helpbook"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -8,7 +9,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:allowBackup="true">
+        android:allowBackup="true"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
             android:name=".views.courses.activities.CourseOverviewActivity"
@@ -16,11 +18,6 @@
         <activity
             android:name=".views.courses.activities.CourseAdministrationActivity"
             android:label="@string/course_administration_title"/>
-
-        <provider
-            android:name="com.dlgdev.teachers.helpbook.db.TeachersProvider"
-            android:authorities="com.dlgdev.teachers.helpbook"
-            android:exported="false" />
 
         <activity
             android:name=".views.courses.activities.CoursesListActivity"
@@ -43,6 +40,11 @@
         <activity
             android:name=".views.subjects.activities.SubjectsInfoActivity"
             android:label="@string/title_activity_subject_info"/>
+
+        <provider
+            android:name="com.dlgdev.teachers.helpbook.db.TeachersProvider"
+            android:authorities="com.dlgdev.teachers.helpbook"
+            android:exported="false"/>
     </application>
 
 </manifest>

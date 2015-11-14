@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.db.TeachersProvider;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.Event;
 import com.dlgdev.teachers.helpbook.utils.Dates;
@@ -25,8 +24,6 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import ollie.Ollie;
 
 public class CourseInfoFragment extends WeeklyEventsFragment {
 	private static final int LOADER_COURSE = 1;
@@ -107,7 +104,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
 			long id = args.getLong(KEY_COURSE_ID);
-			Uri uri = TeachersProvider.createUri(Course.class, id);
+			Uri uri = TeachersDBContract.Courses.URI;
 			String selection = TeachersDBContract.Courses._ID + "=?";
 			String[] selectionArgs = {Long.toString(id)};
 			return new CursorLoader(getActivity(), uri, null, selection, selectionArgs, null);
@@ -115,7 +112,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			if (data.moveToFirst()) {
-				course = Ollie.processCursor(Course.class, data).get(0);
+				//course = Ollie.processCursor(Course.class, data).get(0);
 				loadCourseData();
 			}
 		}
