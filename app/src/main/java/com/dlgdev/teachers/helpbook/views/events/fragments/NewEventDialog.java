@@ -25,10 +25,6 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 		this.event = event;
 	}
 
-	@Override public Long modelId() {
-		return event.id;
-	}
-
 	@Override public void restoreModel(Long id) {
 		event = Select.from(Event.class).where("_id=?", id).fetchSingle();
 	}
@@ -40,7 +36,7 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 		builder.setView(getDialogView(R.layout.dialog_create_event));
 		builder.setPositiveButton(R.string.create_event, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
-				save();
+				saveAndGetId();
 				((NewEventDialogListener) listener).onNewEventCreated(event);
 			}
 		});
@@ -58,10 +54,10 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 		return newEventView;
 	}
 
-	@Override public void save() {
+	@Override public Long saveAndGetId() {
 		event.title(newEventView.getTitle());
 		event.description(newEventView.getDescription());
-		event.save();
+		return event.save();
 	}
 
 	public interface NewEventDialogListener extends ModelCreationDialogListener {

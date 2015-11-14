@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ollie.Ollie;
+
 public class CourseInfoFragment extends WeeklyEventsFragment {
 	private static final int LOADER_COURSE = 1;
 	private static final String KEY_COURSE_ID = "course";
@@ -112,7 +114,7 @@ public class CourseInfoFragment extends WeeklyEventsFragment {
 
 		@Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			if (data.moveToFirst()) {
-				//course = Ollie.processCursor(Course.class, data).get(0);
+				course = Ollie.processCursor(Course.class, data).get(0);
 				loadCourseData();
 			}
 		}

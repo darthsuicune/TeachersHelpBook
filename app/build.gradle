@@ -33,7 +33,7 @@ dependencies {
     def jodaVersion = "2.7"
     def daggerVersion = "2.0.2"
     compile fileTree(dir: "libs", include: ["*.jar"])
-    provided "com.michaelpardo:ollie-compiler:${ollieVersion}"
+    apt "com.michaelpardo:ollie-compiler:${ollieVersion}"
     apt "com.google.dagger:dagger-compiler:${daggerVersion}"
     compile "com.michaelpardo:ollie:${ollieVersion}"
     compile "com.google.dagger:dagger:${daggerVersion}"

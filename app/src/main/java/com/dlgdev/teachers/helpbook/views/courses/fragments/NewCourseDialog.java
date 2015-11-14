@@ -5,12 +5,15 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import com.dlgdev.teachers.helpbook.R;
+import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.models.InvalidModelException;
 import com.dlgdev.teachers.helpbook.views.ModelCreationDialogFragment;
 import com.dlgdev.teachers.helpbook.views.events.NewEventView;
 
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 import ollie.query.Select;
 
@@ -21,21 +24,17 @@ public class NewCourseDialog extends ModelCreationDialogFragment {
 	public NewCourseDialog() {
 	}
 
-	@Override public Long modelId() {
-		return course.id;
-	}
-
 	@Override public void restoreModel(Long id) {
-		course = Select.from(Course.class).where("_id=?", id).fetchSingle();
+		course = Select.from(Course.class).where(TeachersDBContract.Courses._ID + "=?", id).fetchSingle();
 	}
 
-	@Override public AlertDialog buildDialog() {
+    @Override public AlertDialog buildDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getString(R.string.create_course_dialog_title));
 		builder.setView(getDialogView(R.layout.dialog_create_event));
 		builder.setPositiveButton(R.string.create_course, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
-				save();
+				saveAndGetId();
 				verifySavedData();
 			}
 		});
@@ -67,12 +66,12 @@ public class NewCourseDialog extends ModelCreationDialogFragment {
 		return newCourseView;
 	}
 
-	@Override public void save() {
+	@Override public Long saveAndGetId() {
 		course.title = newCourseView.getTitle();
 		course.description = newCourseView.getDescription();
 		course.start = newCourseView.getStart();
 		course.end = newCourseView.getEnd();
-		course.save();
+		return course.save();
 	}
 
 	public interface CourseCreationDialogListener extends ModelCreationDialogListener {

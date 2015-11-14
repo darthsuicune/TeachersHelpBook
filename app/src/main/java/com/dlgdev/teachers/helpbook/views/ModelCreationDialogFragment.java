@@ -18,12 +18,9 @@ public abstract class ModelCreationDialogFragment extends DialogFragment {
 
 	@Override public void onSaveInstanceState(@NonNull Bundle outState) {
 		super.onSaveInstanceState(outState);
-		save();
 		outState.putInt(ARG_PARENT_ID, parentId);
-		outState.putLong(KEY_MODEL_ID, modelId());
+		outState.putLong(KEY_MODEL_ID, saveAndGetId());
 	}
-
-	public abstract Long modelId();
 
 	@Override @NonNull public Dialog onCreateDialog(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
@@ -42,7 +39,7 @@ public abstract class ModelCreationDialogFragment extends DialogFragment {
 
 	public abstract Dialog buildDialog();
 
-	public abstract void save();
+	public abstract Long saveAndGetId();
 
 	public interface ModelCreationDialogListener {
 		void onDialogCancelled();
