@@ -14,6 +14,8 @@ public class OrmApplication extends Application {
         Ollie.with(this)
                 .setName(DB_NAME)
                 .setVersion(DB_VERSION)
+				.setCacheSize(Ollie.DEFAULT_CACHE_SIZE)
+				.setLogLevel(Ollie.LogLevel.FULL)
                 .init();
     }
 }

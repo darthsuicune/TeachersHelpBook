@@ -12,7 +12,6 @@ import android.text.TextUtils;
 
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.db.TeachersDBContract;
-import com.dlgdev.teachers.helpbook.db.TeachersProvider;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.ModelInfoActivity;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseAdministrationFragment;
@@ -79,7 +78,7 @@ public class CourseAdministrationActivity extends ModelInfoActivity
 	private class CourseLoaderHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 		@Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 			long courseId = args.getLong(KEY_MODEL_ID);
-			Uri uri = TeachersProvider.createUri(Course.class, courseId);
+			Uri uri = TeachersDBContract.Courses.URI;
 			String selection = TeachersDBContract.Courses._ID + "=?";
 			String[] selectionArgs = {Long.toString(courseId)};
 			return new CursorLoader(CourseAdministrationActivity.this, uri, null, selection, selectionArgs, null);
