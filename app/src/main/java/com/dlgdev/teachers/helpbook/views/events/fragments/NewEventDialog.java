@@ -23,6 +23,7 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 
 	public void setup(NewEventDialogListener listener, Event event, int parentId) {
 		super.setup(listener, parentId);
+		this.listener = listener;
 		this.event = event;
 	}
 

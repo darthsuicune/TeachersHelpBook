@@ -1,6 +1,7 @@
 package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.content.Intent;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -21,6 +22,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
@@ -53,7 +55,7 @@ public class WeeklyEventsPreviewFragmentTest {
 	private void thePanelShowsTheStartAndEndOfWeekForDate(int parent, DateTime date) {
 		String range = Dates.formatDateRange(Dates.startOfWeek(date, DateTimeConstants.MONDAY),
 				Dates.endOfWeek(date, DateTimeConstants.MONDAY));
-		onView(allOf(withId(R.id.weekly_events_preview_text), isDescendantOfA(withId(parent))))
+		onView(allOf(withParent(withId(parent)), withId(R.id.weekly_events_preview_text)))
 				.check(matches(withText(range)));
 	}
 
