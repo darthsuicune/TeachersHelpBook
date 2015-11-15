@@ -30,14 +30,14 @@ import static org.joda.time.DateTimeConstants.THURSDAY;
 import static org.joda.time.DateTimeConstants.TUESDAY;
 import static org.joda.time.DateTimeConstants.WEDNESDAY;
 
-public class WeeklyEventsMainFragment extends WeeklyEventsFragment
+public class WeekMainFragment extends WeeklyEventsFragment
 		implements NewEventDialogListener, EventActionsListener {
 	private static final String DIALOG_FRAGMENT_TAG = "dialog fragment";
 	Map<Integer, DailyEventsCardView> dailyCards = new HashMap<>();
 	WeeklyEventsListener listener;
 	View rootView;
 
-	public WeeklyEventsMainFragment() {}
+	public WeekMainFragment() {}
 
 	@Override public void onAttach(Context context) {
 		super.onAttach(context);
@@ -50,7 +50,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		return rootView;
 	}
 
-	@Override protected void onDateUpdated() {
+	@Override public void onDateUpdated() {
 		if (isAdded()) {
 			prepareMainLayout();
 			updateViews();
@@ -83,7 +83,7 @@ public class WeeklyEventsMainFragment extends WeeklyEventsFragment
 		}
 	}
 
-	@Override void loadEvents() {
+	@Override public void loadEvents() {
 		if(course != null) {
 			this.eventList = course.eventsBetween(startOfWeek, endOfWeek);
 			for (Integer day : dailyCards.keySet()) {

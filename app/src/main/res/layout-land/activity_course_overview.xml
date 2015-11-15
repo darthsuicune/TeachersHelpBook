@@ -45,7 +45,7 @@
 
                     <fragment
                         android:id="@+id/course_weekly_previous"
-                        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+                        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeekPreviewFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp" />
@@ -53,7 +53,7 @@
 
                 <fragment
                     android:id="@+id/course_weekly_main_fragment"
-                    android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment"
+                    android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeekMainFragment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="4dp"
@@ -69,13 +69,13 @@
 
                     <fragment
                         android:id="@+id/course_weekly_next"
-                        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+                        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeekPreviewFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                     <fragment
                         android:id="@+id/course_weekly_second_next"
-                        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment"
+                        android:name="com.dlgdev.teachers.helpbook.views.courses.fragments.WeekPreviewFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp" />

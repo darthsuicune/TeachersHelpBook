@@ -23,21 +23,21 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
-public class WeeklyEventsMainFragmentTest {
-	WeeklyEventsMainFragment fragment;
+public class WeekMainFragmentTest {
+	WeekMainFragment fragment;
 	DateTime currentDate = DateTime.now();
-	WeeklyEventsMainFragment.WeeklyEventsListener listener;
+	WeekMainFragment.WeeklyEventsListener listener;
 	Event event;
 
 	@Before public void setup() throws Exception {
 		Context context = InstrumentationRegistry.getTargetContext();
 		Course course = new Course();
 		course.save();
-		fragment = (WeeklyEventsMainFragment) Fragment
-				.instantiate(context, WeeklyEventsMainFragment.class.getName());
+		fragment = (WeekMainFragment) Fragment
+				.instantiate(context, WeekMainFragment.class.getName());
 		fragment.updateDate(currentDate);
 		fragment.updateCourse(course);
-		listener = mock(WeeklyEventsMainFragment.WeeklyEventsListener.class);
+		listener = mock(WeekMainFragment.WeeklyEventsListener.class);
 		fragment.listener = listener;
 	}
 

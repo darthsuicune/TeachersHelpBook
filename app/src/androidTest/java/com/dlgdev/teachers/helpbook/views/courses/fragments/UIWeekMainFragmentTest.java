@@ -2,7 +2,6 @@ package com.dlgdev.teachers.helpbook.views.courses.fragments;
 
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -10,7 +9,7 @@ import com.dlgdev.teachers.helpbook.DatabaseUtils;
 import com.dlgdev.teachers.helpbook.R;
 import com.dlgdev.teachers.helpbook.models.Course;
 import com.dlgdev.teachers.helpbook.views.courses.activities.CourseOverviewActivity;
-import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment.WeeklyEventsListener;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeekMainFragment.WeeklyEventsListener;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -32,8 +31,8 @@ import static org.hamcrest.Matchers.allOf;
 import static org.mockito.Mockito.mock;
 
 @RunWith(AndroidJUnit4.class)
-public class UIWeeklyEventsMainFragmentTest {
-    WeeklyEventsMainFragment fragment;
+public class UIWeekMainFragmentTest {
+    WeekMainFragment fragment;
     WeeklyEventsListener listener = mock(WeeklyEventsListener.class);
     String text = "someText";
     DateTime date = DateTime.now().withDayOfWeek(DateTimeConstants.MONDAY);
@@ -55,7 +54,7 @@ public class UIWeeklyEventsMainFragmentTest {
         Intent intent = new Intent();
         intent.putExtra(CourseOverviewActivity.KEY_MODEL_ID, course.id);
         rule.launchActivity(intent);
-        fragment = (WeeklyEventsMainFragment) rule.getActivity().getSupportFragmentManager()
+        fragment = (WeekMainFragment) rule.getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.course_weekly_main_fragment);
         fragment.listener = listener;
     }

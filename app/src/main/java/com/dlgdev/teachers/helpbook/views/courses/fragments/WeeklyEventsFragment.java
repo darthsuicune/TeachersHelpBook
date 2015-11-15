@@ -39,9 +39,9 @@ public abstract class WeeklyEventsFragment extends Fragment implements CourseInf
 		}
 	}
 
-	abstract void onDateUpdated();
+	public abstract void onDateUpdated();
 
-	abstract void loadEvents();
+	public abstract void loadEvents();
 
 	@Override public void updateCourse(Course course) {
 		this.course = course;

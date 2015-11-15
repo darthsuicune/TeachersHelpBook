@@ -20,9 +20,9 @@ import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseInfoHolder;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseOverviewDrawerFragment;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.CourseOverviewDrawerFragment.OnOverviewDrawerListener;
 import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsFragment;
-import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsMainFragment.WeeklyEventsListener;
-import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment;
-import com.dlgdev.teachers.helpbook.views.courses.fragments.WeeklyEventsPreviewFragment.WeeklyPreviewListener;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeekMainFragment.WeeklyEventsListener;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeekPreviewFragment;
+import com.dlgdev.teachers.helpbook.views.courses.fragments.WeekPreviewFragment.WeeklyPreviewListener;
 import com.dlgdev.teachers.helpbook.views.events.activities.EventsInfoActivity;
 import com.dlgdev.teachers.helpbook.views.holidays.activities.HolidaysInfoActivity;
 import com.dlgdev.teachers.helpbook.views.students.activities.StudentGroupsInfoActivity;
@@ -63,11 +63,11 @@ public class CourseOverviewActivity extends ModelInfoActivity
 		mainViewFragment =
 				(WeeklyEventsFragment) fm.findFragmentById(R.id.course_weekly_main_fragment);
 		previousWeekFragment =
-				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_previous);
+				(WeekPreviewFragment) fm.findFragmentById(R.id.course_weekly_previous);
 		nextWeekFragment =
-				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_next);
+				(WeekPreviewFragment) fm.findFragmentById(R.id.course_weekly_next);
 		secondNextWeekFragment =
-				(WeeklyEventsPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
+				(WeekPreviewFragment) fm.findFragmentById(R.id.course_weekly_second_next);
 		drawerFragment = (CourseOverviewDrawerFragment) fm
 				.findFragmentById(R.id.course_overview_navigation_drawer);
 		drawerFragment.setup((DrawerLayout) findViewById(R.id.overview_drawer_layout),

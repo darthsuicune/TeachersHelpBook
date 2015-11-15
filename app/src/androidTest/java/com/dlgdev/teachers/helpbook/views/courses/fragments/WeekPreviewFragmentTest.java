@@ -27,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
-public class WeeklyEventsPreviewFragmentTest {
+public class WeekPreviewFragmentTest {
 
 	@Rule public ActivityTestRule<CourseOverviewActivity> rule =
 			new ActivityTestRule<>(CourseOverviewActivity.class, true, false);

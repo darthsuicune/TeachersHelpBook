@@ -13,11 +13,11 @@ import com.dlgdev.teachers.helpbook.utils.Dates;
 
 import org.joda.time.DateTime;
 
-public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
+public class WeekPreviewFragment extends WeeklyEventsFragment {
 	WeeklyPreviewListener previewListener;
 	TextView dateView;
 
-	public WeeklyEventsPreviewFragment() {
+	public WeekPreviewFragment() {
 	}
 
 	@Override public void onAttach(Context context) {
@@ -41,13 +41,13 @@ public class WeeklyEventsPreviewFragment extends WeeklyEventsFragment {
 		});
 	}
 
-	@Override protected void onDateUpdated() {
+	@Override public void onDateUpdated() {
 		if (dateView != null) {
 			dateView.setText(Dates.formatDateRange(startOfWeek, endOfWeek));
 		}
 	}
 
-	@Override void loadEvents() {
+	@Override public void loadEvents() {
 		if (course != null) {
 			this.eventList = course.eventsBetween(startOfWeek, endOfWeek);
 		}
