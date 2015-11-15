@@ -32,10 +32,10 @@ public abstract class ModelCreationDialogFragment extends DialogFragment {
 	private void restoreState(Bundle savedInstanceState) {
 		parentId = savedInstanceState.getInt(ARG_PARENT_ID);
 		listener = (ModelCreationDialogListener) getFragmentManager().findFragmentById(parentId);
-		restoreModel(savedInstanceState.getLong(KEY_MODEL_ID));
+		restoreState(listener, savedInstanceState.getLong(KEY_MODEL_ID));
 	}
 
-	public abstract void restoreModel(Long id);
+	public abstract void restoreState(ModelCreationDialogListener listener, Long id);
 
 	public abstract Dialog buildDialog();
 

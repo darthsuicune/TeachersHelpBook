@@ -13,18 +13,23 @@ import com.dlgdev.teachers.helpbook.views.events.NewEventView;
 
 import org.joda.time.DateTime;
 
-import java.util.List;
-
 import ollie.query.Select;
 
 public class NewCourseDialog extends ModelCreationDialogFragment {
 	Course course = new Course();
 	NewEventView newCourseView;
+	CourseCreationDialogListener listener;
 
 	public NewCourseDialog() {
 	}
 
-	@Override public void restoreModel(Long id) {
+	@Override public void setup(ModelCreationDialogListener listener, int parentId) {
+		super.setup(listener, parentId);
+		this.listener = (CourseCreationDialogListener) listener;
+	}
+
+	@Override public void restoreState(ModelCreationDialogListener listener, Long id) {
+		this.listener = (CourseCreationDialogListener) listener;
 		course = Select.from(Course.class).where(TeachersDBContract.Courses._ID + "=?", id).fetchSingle();
 	}
 
@@ -52,7 +57,7 @@ public class NewCourseDialog extends ModelCreationDialogFragment {
 	private void verifySavedData() {
 		try {
 			course.safelySave();
-			((CourseCreationDialogListener) listener).onCourseCreated(course);
+			listener.onCourseCreated(course);
 		} catch (InvalidModelException e) {
 			newCourseView.setErrors();
 		}

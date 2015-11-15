@@ -51,11 +51,11 @@ public class NewCourseDialogTest {
 	}
 
 	@Test public void creatingADialogRotatingAndCancellingDoesntCrash() throws Exception {
-		rotateActivity();
+		restartActivity();
 		onView(withText(android.R.string.cancel)).perform(click());
 	}
 
-	private void rotateActivity() {
+	private void restartActivity() {
 		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	}

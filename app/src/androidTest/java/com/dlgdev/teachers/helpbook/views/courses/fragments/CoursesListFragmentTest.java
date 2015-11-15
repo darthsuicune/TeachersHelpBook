@@ -110,6 +110,6 @@ public class CoursesListFragmentTest {
 		getFragment();
 		onView(withId(R.id.add_new_course)).perform(click());
 		restartActivity();
-		fragment.onDialogCancelled();
+		onView(withText(android.R.string.cancel)).perform(click());
 	}
 }

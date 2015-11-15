@@ -16,6 +16,7 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 
 	NewEventView newEventView;
 	Event event;
+	NewEventDialogListener listener;
 
 	public NewEventDialog() {
 	}
@@ -25,8 +26,10 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 		this.event = event;
 	}
 
-	@Override public void restoreModel(Long id) {
+	@Override public void restoreState(ModelCreationDialogListener listener, Long id) {
+		this.listener = (NewEventDialogListener) listener;
 		event = Select.from(Event.class).where("_id=?", id).fetchSingle();
+
 	}
 
 	@Override public AlertDialog buildDialog() {
@@ -37,11 +40,14 @@ public class NewEventDialog extends ModelCreationDialogFragment {
 		builder.setPositiveButton(R.string.create_event, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
 				saveAndGetId();
-				((NewEventDialogListener) listener).onNewEventCreated(event);
+				listener.onNewEventCreated(event);
 			}
 		});
 		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override public void onClick(DialogInterface dialogInterface, int which) {
+				if(event.id != null) {
+					event.delete();
+				}
 				listener.onDialogCancelled();
 			}
 		});
