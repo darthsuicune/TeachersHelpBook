@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">TeachersHelpBook</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="add_new">Add new</string>
+    <string name="event_list_empty">Nothing for today. Have a nice day!</string>
+    <string name="create_event">Create</string>
+    <string name="create_event_dialog_title">Create new event</string>
+    <string name="new_event_name_hint">Title</string>
+    <string name="new_event_description_hint">Description</string>
+    <string name="event_created">You have created an event!</string>
+    <string name="start_time_title">Start time</string>
+    <string name="end_time_title">End time</string>
+    <string name="end_date_title">End date</string>
+    <string name="start_date_title">Start date</string>
+    <string name="full_day_event_checkbox">Is full day?</string>
+    <string name="start_date_time_tag">Start date/time</string>
+    <string name="end_date_time_tag">End date/time</string>
+    <string name="choose_date_dialog">Choose date</string>
+    <string name="course_administration_title">Administer Course</string>
+    <string name="holidays">Holidays</string>
+    <string name="subjects">Subjects</string>
+    <string name="events">Events</string>
+    <string name="student_groups">Student Groups</string>
+    <string name="title_activity_courses_list">CoursesListActivity</string>
+    <string name="course_list_empty">No courses yet. Hit the add button to add one!</string>
+    <string name="course_title">Course title</string>
+    <string name="course_description">Course description</string>
+    <string name="save_course">Save course</string>
+    <string name="course_start_date">Course start date</string>
+    <string name="title_activity_event_info">EventInfo</string>
+    <string name="title_activity_holiday_info">Holiday info</string>
+    <string name="title_activity_student_group_info">Student Group</string>
+    <string name="title_activity_subject_info">Subject info</string>
+    <string name="course_end_date">Course end date</string>
+    <string name="no_holidays">No holidays, add some!</string>
+    <string name="no_groups">No groups added yet</string>
+    <string name="no_subjects">No subjects added yet</string>
+    <string name="no_events">No events added yet</string>
+    <string formatted="false" name="student_groups_marker">Student groups (%d)</string>
+    <string formatted="false" name="holidays_marker">Holidays (%d)</string>
+    <string formatted="false" name="subjects_marker">Subjects (%d)</string>
+    <string formatted="false" name="events_marker">Events (%d)</string>
+    <string name="create_course_dialog_title">Create course</string>
+    <string name="create_course">Create</string>
+    <string name="new_course_name_hint">Course name</string>
+    <string name="new_course_description_hint">Course description</string>
+    <string name="navigation_drawer_open">Open drawer</string>
+    <string name="navigation_drawer_close">Close drawer</string>
+    <string name="course_header">Course %s</string>
+    <string name="other_courses">Other courses</string>
+</resources>

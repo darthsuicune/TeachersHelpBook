@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_start_date">Invalid start date</string>
+    <string name="invalid_end_date">Invalid end date</string>
+    <string name="error_title_is_required">Title is required</string>
+    <string name="invalid_day">Invalid day selected</string>
+    <string name="error_start_cannot_be_after_end">Start cannot occur after the end</string>
+    <string name="error_invalid_start_date">Invalid start date</string>
+    <string name="error_invalid_end_date">Invalid end date</string>
+    <string name="error_invalid_start_time">Invalid start time</string>
+    <string name="error_invalid_end_time">Invalid end time</string>
+    <string name="invalid_date_format">Invalid date format. It must be DD/MM/YYYY</string>
+    <string name="invalid_time_format">Invalid time format, it must be hh:mm</string>
+</resources>

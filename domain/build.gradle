@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    testOptions{
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+    //Runtime
+    def domainDeps = rootProject.ext.domainDependencies
+
+    apt domainDeps.daggerCompiler
+    apt domainDeps.ollieCompiler
+    compile domainDeps.dagger
+    compile domainDeps.ollie
+    compile domainDeps.jodaTime
+    compile domainDeps.javaxAnnotation
+    compile domainDeps.annotations
+
+    //Unit testing
+    def domainTestDeps = rootProject.ext.domainTestDependencies
+    testCompile domainTestDeps.junit
+    testCompile domainTestDeps.mockito
+
+
+    //Framework Testing
+    androidTestCompile domainTestDeps.support
+    androidTestCompile domainTestDeps.mockito
+    androidTestCompile domainTestDeps.dexmakerMockito
+    androidTestCompile domainTestDeps.dexmaker
+    androidTestCompile domainTestDeps.dexmakerDx
+    androidTestCompile domainTestDeps.espressoRunner
+}
